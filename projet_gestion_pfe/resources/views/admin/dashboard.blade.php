@@ -1,0 +1,32 @@
+@extends('layouts.admin')
+
+@section('title', 'Tableau de Bord')
+
+@section('content')
+    <div class="content-header">
+        <div>
+            <h1>Hi, {{ session('user_data')->last_name ." ".session('user_data')->name }}!</h1>
+            <p>Données Personnelles Administratives</p>
+        </div>
+    </div>
+
+    <div class="details-container">
+        <div class="details-section">
+            <table>
+                <tr>
+                    <td>Matricule</td>
+                    <td>M-2025-000654</td>
+                </tr>
+                <tr>
+                    <td>Nom et Prénom</td>
+                    <td>{{ session('user_data')->last_name ." ".session('user_data')->name }}</td>
+                </tr>
+                <tr>
+                    <td>Campus</td>
+                    <td>EMSI CENTRE</td>
+                </tr>
+                <!-- Ajoutez les autres données ici -->
+            </table>
+        </div>
+    </div>
+@endsection
