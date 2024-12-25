@@ -118,7 +118,7 @@
         </div>
         <button class="logout">Logout</button>
     </div> --}}
-    <x-navbar/>
+    <x-dashnav/>
     @if (Session::get('error'))
     <script>
    swal("message", "{{Session::get('error')}}",'error',{

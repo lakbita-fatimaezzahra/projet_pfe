@@ -10,6 +10,7 @@ use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\FiliereController;
+use App\Http\Controllers\prof\ProfController;
 use App\Http\Controllers\studentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -90,3 +91,6 @@ Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestF
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('password/reset', [ResetPasswordController::class, 'reset']);
+
+//prof
+Route::get('/prof', [ProfController::class,'home'])->name('prof');

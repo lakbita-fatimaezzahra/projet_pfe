@@ -31,6 +31,7 @@
             padding: 8px 15px;
             border-radius: 5px;
             font-size: 0.9rem;
+            margin-left: 95%;
         }
 
 
@@ -39,11 +40,9 @@
 </head>
 <body>
     <div class="navbar">
-        <div class="logo">
-            <img src={{ asset('images/navlogo.png') }} alt="EMSI Logo" style="height: 40px;">
-        </div>
         
-        <a href="{{ route('Showlogin') }}" class="login-btn">Login</a>
+        
+        <a href="{{ route('Showlogin') }}" class="login-btn">Logout</a>
     </div>
 </body>
 </html>

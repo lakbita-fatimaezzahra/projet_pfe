@@ -204,15 +204,8 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="navbar">
-            <div class="menu">
-                <a href="#">Home</a>
-                <a href="#">About</a>
-                <a href="#">Service</a>
-                <a href="#">Contact Us</a>
-            </div>
-            <a class="logout" href="{{ route('logout') }}" >Logout</a>
-        </div>
+        <x-dashnav/>
+        
         @if (Session::get('error'))
         <script>
        swal("message", "{{Session::get('error')}}",'error',{

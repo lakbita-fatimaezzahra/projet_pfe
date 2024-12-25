@@ -17,7 +17,7 @@
     </div>
 
     <a href="/rapport" class="{{ request()->is('rapport') ? 'active' : '' }}"><i class="fas fa-chart-line"></i> Rapport</a>
-    <a href="#"><i class="fas fa-cog"></i> Paramètre</a>
+    
 </div>
 
 <script>
