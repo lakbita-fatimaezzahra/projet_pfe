@@ -159,66 +159,6 @@
     <x-sidebar />
 
     <!-- Main Content -->
-    <div class="main-content">
-        <div class="navbar">
-            <div class="menu">
-                <a href="#">Home</a>
-                <a href="#">About</a>
-                <a href="#">Service</a>
-                <a href="#">Contact Us</a>
-            </div>
-            <button class="logout">Logout</button>
-        </div>
-
-        <div class="content-header">
-            <h1>Information d'encadrement</h1>
-        </div>
-        @if (Session::get('error'))
-        <script>
-       swal("message", "{{Session::get('error')}}",'error',{
-        button:true,
-        button:"OK",
-        timer:3000,
-        dangerMode:true,
-       })
-        </script>
-        @endif
-        <!-- Form Container -->
-        <div class="form-container">
-            <form method="POST" action="">
-                @csrf
-                <!-- Rapport Deadline -->
-                <div>
-                    <label for="rapport-deadline" class="custom-label">Rapport Deadline</label>
-                    <input type="text" id="rapport-deadline" value="12 décembre 2024" disabled />
-                </div>
-
-                <!-- Mode de Stage -->
-                <div>
-                    <label for="mode" class="custom-label">Mode d'encadrement</label>
-                    <select id="mode" name="mode" onchange="toggleSala()" required>
-                        <option value="distance">Distance</option>
-                        <option value="presentiel">Présentiel</option>
-                    </select>
-                </div>
-
-                <!-- Sala Input, shown only if Présentiel is selected -->
-                <div id="sall-container">
-                    <label for="sall" class="custom-label">Sall</label>
-                    <input type="text" id="sall" name="sall" disabled />
-                </div>
-
-                <!-- Encadrent -->
-                <div>
-                    <label for="encadrent" class="custom-label">Encadrent</label>
-                    <input type="text" id="encadrent" name="encadrent" disabled />
-                </div>
-
-
-
-            </form>
-        </div>
-    </div>
 
     <script>
         function toggleSala() {
