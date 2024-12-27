@@ -237,7 +237,7 @@
 </head>
 <body>
     <!-- Sidebar -->
-    <x-dashnav/>
+    <x-sidebar />
 
     <!-- Main Content -->
     <div class="main-content">

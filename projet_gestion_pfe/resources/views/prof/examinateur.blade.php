@@ -197,6 +197,7 @@
     </style>
 </head>
 <body>
+    <x-dashnav/>
     <x-profbar/>
 </body>
 </html>

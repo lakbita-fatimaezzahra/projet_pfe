@@ -218,8 +218,8 @@
         @endif
         <div>
             <h2>Deadlines :</h2>
-                <p>Deadline de dépôt du stage : {{ $deadline->date_deadline_stage}}</p>
-                <p>Deadline de dépôt du rapport : {{ $deadline->date_deadline_rapport }}</p>
+                {{-- <p>Deadline de dépôt du stage : {{ $deadline->date_deadline_stage}}</p> --}}
+                {{-- <p>Deadline de dépôt du rapport : {{ $deadline->date_deadline_rapport }}</p> --}}
            </div>
         <div class="content-header">
             <div>

@@ -11,8 +11,8 @@ use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\FiliereController;
 use App\Http\Controllers\prof\ProfController;
+use App\Http\Controllers\prof\RespController;
 use App\Http\Controllers\studentController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -70,7 +70,9 @@ Route::get('/etap2', function () {
     return view('etudiant/etape2', compact('id_user'));
 })->name('documents');
 Route::get('/stage', function () {
-    return view('etudiant/stage');
+    $id_user = session('user_id'); //
+
+    return view('etudiant/stage',compact('id_user'));
 });
 Route::get('/apres', function () {
     return view('etudiant/apresstage');
@@ -93,4 +95,14 @@ Route::get('password/reset/{token}', [ResetPasswordController::class, 'showReset
 Route::post('password/reset', [ResetPasswordController::class, 'reset']);
 
 //prof
-Route::get('/prof', [ProfController::class,'home'])->name('prof');
+Route::get('/home',[ProfController::class,'home'])->name('home');
+
+//responsable
+
+
+Route::get('responsable/affectations', [RespController::class, 'index'])->name('index');
+Route::post('responsable/assign-role', [RespController::class, 'assignRole']);
+Route::post('responsable/remove-role', [RespController::class, 'removeRole']);
+Route::get('responsable/professor-stages/{profId}/{role}', [RespController::class, 'getProfessorStages']);
+Route::get('responsable/stage-assignments/{stageId}', [RespController::class, 'getStageAssignments']);
+Route::post('responsable/update-role', [RespController::class, 'updateRole']);
