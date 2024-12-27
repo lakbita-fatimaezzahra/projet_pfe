@@ -328,6 +328,10 @@
                     <input type="text" id="sujet" name="sujet" >
                 </div>
                 <div>
+                    <label for="Skills">Skills</label>
+                    <input type="text" id="Skills" name="Skills" >
+                </div>
+                <div>
                     <label for="date_debut">Date de début</label>
                     <input type="date" id="date_debut" name="date_debut">
                 </div>
@@ -337,10 +341,9 @@
                 </div>
                 <div>
                     <label for="type_stage">Type de stage</label>
-                    <select id="type_stage" name="type_stage" >
-                        <option value="stage_technique">Stage Technique</option>
-                        <option value="stage_projet">Stage Projet</option>
-                        <option value="stage_recherche">Stage Recherche</option>
+                    <select id="type_stage" name="type_stage" disabled>
+                        <option value="PFE">PFE</option>
+                     
                     </select>
                 </div>
 

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\prof;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class rapporteurController extends Controller
+class RapporteurController extends Controller
 {
     //
 }

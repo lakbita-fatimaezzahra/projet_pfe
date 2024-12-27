@@ -31,6 +31,7 @@
                         <option value="admin">Admin</option>
                         <option value="professeur">professeur</option>
                         <option value="etudiant">etudiant</option>
+                        <option value="responsable">responsable</option>
 
                     </select>
                     <div>

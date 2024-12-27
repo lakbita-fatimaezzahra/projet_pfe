@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>home</title>
+    <title>Student Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <style>
         body {
             margin: 0;
@@ -18,7 +19,6 @@
         /* Sidebar */
         .sidebar {
             width: 250px;
-            height: 1000px;
             background-color: #007035;
             color: rgb(255, 255, 255);
             display: flex;
@@ -118,79 +118,82 @@
             margin: 0;
         }
 
-        .form-container {
-            margin: 20px;
+        .student-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid white;
+            object-fit: cover;
+        }
+
+        .details-container {
+            display: flex;
             padding: 20px;
-            background-color: #ffffff;
-            color: black;
-            border-radius: 10px;
+            justify-content: space-between;
+            margin-top: 20px;
         }
 
-        .form-container input,
-        .form-container select,
-        .form-container textarea {
+        .details-section {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .details-section:last-child {
+            margin-right: 0;
+        }
+
+        .details-section table {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            border-collapse: collapse;
         }
 
-        .form-container button {
-            padding: 15px;
-            background-color: #007035;
-            color: white;
+        .details-section table td {
+            padding: 8px 0;
+        }
+
+        .details-section table td:first-child {
+            font-weight: bold;
+        }
+        .button-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: center;
+            gap: 200px;
+            margin: 20px 0;
+        }
+        .button-row1 {
+            display: flex;
+            justify-content: center;
+            gap: 200px;
+            margin: 20px 0;
+            margin-top: 10%
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 20px 30px;
+            font-size: 25px;
+            color: #ffffff;
+            background-color:#007035 ;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .form-container button:hover {
-            background-color: #005522;
-        }
-
-        /* Drag-and-Drop Area */
-        .drag-drop-area {
-            border: 2px dashed #007035;
             border-radius: 10px;
-            padding: 30px;
-            text-align: center;
-            color: #007035;
+            cursor: pointer;
+            text-decoration: none;
         }
 
-        .drag-drop-area.hover {
-            background-color: #e6f9e6;
-            border-color: #005522;
+        .btn:hover {
+            background-color: #007035;
         }
 
-        .drag-drop-area p {
-            font-size: 16px;
-        }
-
-        .file-input {
-            display: none;
-        }
-        .input-wrapper {
-            position: relative;
-            width: 300px;
-        }
-
-        label {
-            font-size: 14px;
-            margin-bottom: 5px;
-            display: block;
-            color: #333;
-        }
-
-        /* Disabled state styles */
-        .input-with-link:disabled {
-            background-color: #f1f1f1;
-            color: #bbb;
-        }
-
-        #notes-link-container {
-            display: block;
+        .study-btn {
+            padding: 20px 40px;
+            border-radius: 50px;
             margin-top: 20px;
         }
 
@@ -198,5 +201,62 @@
 </head>
 <body>
     <x-profbar/>
+ 
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        
+        @if (Session::get('error'))
+        <script>
+       swal("message", "{{Session::get('error')}}",'error',{
+        button:true,
+        button:"OK",
+        timer:3000,
+        dangerMode:true,
+       })
+        </script>
+        @endif
+        <div>
+           
+        <div class="content-header">
+            <div>
+
+                <h1>Hi, {{ session('user_data')->last_name ." ".session('user_data')->name }}!</h1>
+                <p>Données Personnelles Administratives</p>
+            </div>
+        </div>
+
+        <div class="details-container">
+            <div class="details-section">
+                <table>
+                   
+                    <tr>
+                        <td>Nom et Prénom</td>
+                        <td>{{ session('user_data')->last_name ." ".session('user_data')->name }} </td>
+                    </tr>
+                    <tr>
+                        <td>type</td>
+                        <td>{{ session('user_data')->type}}</td>
+                    </tr>
+                    <tr>
+                        <td>skills</td>
+                        <td>{{ session('user_data')->skills }}</td>
+                    </tr>
+                    <tr>
+                        <td>role</td>
+                        <td>{{ session('user_data')->role }}</td>
+                    </tr>
+
+                </table>
+             
+            </div>
+                </table>
+            
+            </div>
+        </div>
+
+       
+    </div>
 </body>
 </html>

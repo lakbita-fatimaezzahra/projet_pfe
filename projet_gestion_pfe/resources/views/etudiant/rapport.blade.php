@@ -317,7 +317,60 @@
     </script>
     @endif
     <!-- Main Content -->
-  
+    <div class="main-content">
+        <x-dashnav/>
+
+        <div class="content-header">
+            <h1>Rapport Information</h1>
+        </div>
+
+        <!-- Form Container -->
+        <div class="form-container">
+            <form method="POST" action="{{ route('submitRapport') }}" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden"  name="idStudent" value='{{$id_user}}'>
+                <div>
+                    <label for="titre">Titre</label>
+                    <input type="text" id="titre" name="titre" required>
+                </div>
+                <div>
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <div>
+                    <label for="status">Status</label>
+                    <select id="status" name="status" required>
+                        <option value="valid">valid</option>
+                        <option value="non_valid">non valid</option>
+                    </select>
+                </div>
+                <!-- Notes Link -->
+                <div id="notes-link-container" style="display: none;">
+                    <label for="disabled-input">Remarque:</label>
+                    <div style="position: relative;">
+                    <input type="text" id="disabled-input" class="input-with-link"
+                   placeholder="Voici les remarques" value="Some remarks here" disabled>
+                     <a href="#" class="input-link">Allez vers</a>
+        </div>
+                </div>
+                <div>
+                    <label for="contenu">Contenu</label>
+                    <!-- Drag-and-drop or File input -->
+                    <div id="drag-drop-area" class="drag-drop-area">
+                        <p>Drag and drop your Word document here, or click to select a file</p>
+                        <input type="file" name="contenu" id="contenu" class="file-input" accept=".docx,.doc">
+                    </div>
+                </div>
+                <div>
+                    <label for="deadline">Deadline</label>
+                    <input type="date" id="deadline" name="deadline" required>
+                </div>
+                <div>
+                    <button type="submit">Submit Rapport</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script>
         // Drag-and-drop functionality

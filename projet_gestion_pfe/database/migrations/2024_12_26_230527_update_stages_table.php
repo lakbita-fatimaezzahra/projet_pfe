@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('Stages', function (Blueprint $table) {
-            $table->string('document');
+        Schema::table('stages', function (Blueprint $table) {
+            
+                $table->string('documentsDebut')->nullable();
+                $table->string('documentsFin')->nullable();
+            
         });
     }
 
@@ -21,7 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('Stages', function (Blueprint $table) {
+        Schema::table('stages', function (Blueprint $table) {
             //
         });
     }

@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Stage extends Model
 {
     protected $fillable = [
-        'entreprise', 'sujet', 'date_debut', 'date_fin', 'type_stage', 'dernier_delai', 'etudiant_id','documentsDebut','documentsfin'
+        'entreprise', 'sujet', 'date_debut', 'date_fin', 'type_stage',
+         'etudiant_id','documentsDebut','documentsfin','Skills'
     ];
 
     public function etudiant()
@@ -17,7 +18,7 @@ class Stage extends Model
 
     public function cahierEncadrement()
     {
-        return $this->hasOne(CahierEncadrement::class);
+        return $this->hasOne(cahiers_encadrement::class);
     }
 
     public function affectations()

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\prof;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class examinateurController extends Controller
+class ExaminateurController extends Controller
 {
     //
 }
