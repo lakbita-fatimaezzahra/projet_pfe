@@ -200,11 +200,14 @@
     </style>
 </head>
 <body>
-    <x-profbar/>
+    
  
-
+    <x-profbar/>
     <!-- Main Content -->
     <div class="main-content">
+        
+        <x-dashnav/>
+        
         
         
         @if (Session::get('error'))

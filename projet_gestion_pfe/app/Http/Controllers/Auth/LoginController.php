@@ -94,7 +94,7 @@ class LoginController extends Controller
                     'etudiant' => to_route('student'),
                     'admin'=>to_route('dashboard'),
                     'professeur' => to_route('home'),
-                    'responsable' => to_route('index'),
+                    'responsable' => to_route('responsable'),
                     default => back(),
                 };
             }
