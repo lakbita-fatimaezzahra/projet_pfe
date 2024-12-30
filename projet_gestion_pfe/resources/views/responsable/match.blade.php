@@ -103,8 +103,8 @@
             <label for="role" class="mt-3">Rôle:</label>
             <select name="role" id="role" class="form-control" required>
                 <option value="encadrent">Encadrent</option>
-                <option value="rapporteur">Rapporteur</option>
-                <option value="examinateur">Examinateur</option>
+                {{-- <option value="rapporteur">Rapporteur</option>
+                <option value="examinateur">Examinateur</option> --}}
                 <option value="president">Président</option>
             </select>
 

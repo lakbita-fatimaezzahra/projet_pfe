@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Stage;
 use App\Models\Etudiant;
+use Illuminate\Support\Facades\Log;
+
 
 class StageController extends Controller
 {

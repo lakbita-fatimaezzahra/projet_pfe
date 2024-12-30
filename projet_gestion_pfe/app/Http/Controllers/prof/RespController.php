@@ -61,31 +61,45 @@ class RespController extends Controller
 public function matchAndAssign(Request $request)
 {
     try {
+        // Validate the incoming request
         $request->validate([
             'prof_id' => 'required|exists:profs,id',
             'role' => 'required|in:encadrent,rapporteur,examinateur,president',
             'stage_id' => 'required|exists:stages,id',
         ]);
 
-        
-        $prof = Prof::find($request->input('prof_id'));
-        $stage = Stage::find($request->input('stage_id'));
+        $profId = $request->input('prof_id');
+        $role = $request->input('role');
+        $stageId = $request->input('stage_id');
 
-        
+        // Check if a record already exists for this stage_id and role
+        $existingAffectation = Affectation::where('stage_id', $stageId)
+                                          ->where('role', $role)
+                                          ->first();
+
+        if ($existingAffectation) {
+            return view('responsable.assignError' ,compact('role'));
+        }
+
+        // Proceed to create the new affectation
         Affectation::create([
-            'prof_id' => $prof->id,
-            'stage_id' => $stage->id,
-            'role' => $request->input('role'),
+            'prof_id' => $profId,
+            'stage_id' => $stageId,
+            'role' => $role,
         ]);
 
         return view('responsable.assignSuccess');
 
     } catch (\Exception $e) {
-        
+        // Log and handle the exception
         Log::error("Error in matchAndAssign: " . $e->getMessage());
-        return response()->json(['message' => 'An error occurred.', 'error' => $e->getMessage()], 500);
+        return response()->json([
+            'message' => 'An error occurred.',
+            'error' => $e->getMessage(),
+        ], 500);
     }
 }
+
 
 
     
