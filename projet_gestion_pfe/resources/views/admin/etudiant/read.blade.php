@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.admin') 
 
 @section('title', 'Liste des Étudiants')
 
@@ -97,23 +97,48 @@
         .text-end {
             margin-bottom: 30px;
         }
+        /* Message de succès */
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
     </style>
-@if ($errors->any())
-<div class="alert alert-danger">
-    <ul>
-        @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
     <div class="container mt-5">
         <h1 class="mb-4">Liste des étudiants</h1>
 
-        <!-- Bouton Ajouter -->
-        <div class="text-end">
-            <a href="{{ route('etudiant.create') }}" class="btn btn-success mb-3">Ajouter un étudiant</a>
-        </div>
+        <!-- Afficher un message de succès -->
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+            <!-- Bouton Ajouter et Importer -->
+            <div class="text-end mb-3">
+                <a href="{{ route('etudiant.create') }}" class="btn btn-success">Ajouter un étudiant</a>
+
+                <!-- Formulaire d'importation CSV -->
+                <form action="{{ route('etudiant.import') }}" method="POST" enctype="multipart/form-data" style="display:inline-block;">
+                    @csrf
+                    <div style="display: inline-block; margin-right: 10px;">
+                        <input type="file" name="csv_file" accept=".csv" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Importer</button>
+                </form>
+            </div>
 
         <!-- Tableau des étudiants -->
         <table class="table table-bordered table-striped">
@@ -152,7 +177,7 @@
                             <img src="{{ asset($etudiant->photo) }}" alt="Photo de l'étudiant" width="50" height="50">
                         </td>
                         <td>
-                            <a href="" class="btn btn-primary btn-sm">Modifier</a>
+                            <a href="{{ route('etudiant.edit', $etudiant->id) }}" class="btn btn-primary btn-sm">Modifier</a>
                             <form action="{{ route('etudiant.destroy', $etudiant->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
@@ -162,6 +187,8 @@
                                 </button>
                             </form>
                         </td>
+
+
                     </tr>
                 @endforeach
             </tbody>

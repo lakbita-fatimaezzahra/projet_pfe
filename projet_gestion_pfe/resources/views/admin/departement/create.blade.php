@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.admin') 
 
 @section('title', 'Ajouter un Département')
 
@@ -53,19 +53,33 @@
         box-shadow: 0 0 5px rgba(0, 112, 53, 0.5);
     }
 
+    /* Boutons */
     .btn-success {
         background-color: #28a745;
         border-color: #28a745;
         font-size: 1rem;
         padding: 10px 20px;
         border-radius: 5px;
-        width: 100%;
         transition: background-color 0.3s ease;
     }
 
     .btn-success:hover {
         background-color: #218838;
         border-color: #1e7e34;
+    }
+
+    .btn-secondary {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        font-size: 1rem;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
     }
 
     /* Message d'erreur */
@@ -75,20 +89,24 @@
     }
 </style>
 
-    <div class="container mt-5">
-        <h1>Ajouter un Département</h1>
+<div class="container mt-5">
+    <h1>Ajouter un Département</h1>
 
-        <!-- Formulaire d'ajout -->
-        <form action="{{ route('admin.departement.store') }}" method="POST">
-            @csrf
-            <div class="form-group">
-                <label for="libelle">Nom du département</label>
-                <input type="text" id="libelle" name="libelle" class="form-control" value="{{ old('libelle') }}" required>
-                @error('libelle')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-            <button type="submit" class="btn btn-success mt-3">Ajouter</button>
-        </form>
-    </div>
+    <form action="{{ route('admin.departement.store') }}" method="POST">
+        @csrf
+        <div class="form-group">
+            <label for="libelle">Nom du département</label>
+            <input type="text" id="libelle" name="libelle" class="form-control" value="{{ old('libelle') }}" required>
+            @error('libelle')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="d-flex justify-content-between mt-3">
+            <button type="submit" class="btn btn-success w-48">Ajouter</button>
+            <a href="{{ route('admin.departement.index') }}" class="btn btn-secondary w-48">Annuler</a>
+        </div>
+    </form>
+</div>
+
 @endsection

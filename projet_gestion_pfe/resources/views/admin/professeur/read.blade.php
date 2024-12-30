@@ -97,15 +97,32 @@
         .text-end {
             margin-bottom: 30px;
         }
+        /* Message de succès */
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
     </style>
 
     <div class="container mt-5">
         <h1 class="mb-4">Liste des Professeurs</h1>
 
+        <!-- Afficher un message de succès -->
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <!-- Bouton Ajouter -->
         <div class="text-end">
             <a href="{{ route('admin.professeur.create') }}" class="btn btn-success mb-3">Ajouter un professeur</a>
         </div>
+        
 
         <!-- Tableau des professeurs -->
         <table class="table table-bordered table-striped">
@@ -115,9 +132,11 @@
                     <th>Prénom</th>
                     <th>Nom d'utilisateur</th>
                     <th>Email</th>
+                    <th>Genre</th>
                     <th>Type</th>
                     <th>Compétences</th>
                     <th>Rôle</th>
+                    <th>Photo</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -128,9 +147,13 @@
                         <td>{{ $prof->last_name }}</td>
                         <td>{{ $prof->username }}</td>
                         <td>{{ $prof->email }}</td>
+                        <td>{{ $prof->genre }}</td>
                         <td>{{ $prof->type }}</td>
                         <td>{{ $prof->skills }}</td>
                         <td>{{ $prof->role }}</td>
+                        <td>
+                            <img src="{{ asset($prof->photo) }}" alt="Photo " width="50" height="50">
+                        </td>
                         <td>
                         <a href="{{ route('admin.professeur.update', $prof->id) }}" class="btn btn-primary btn-sm">Modifier</a>
                         <form action="{{ route('admin.professeur.delete', $prof->id) }}" method="POST" class="d-inline">

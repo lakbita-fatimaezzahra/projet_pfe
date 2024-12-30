@@ -147,6 +147,7 @@
                         <td>
                             <!-- Modifier -->
                             <a href="{{ route('admin.departement.edit', $departement->id) }}" class="btn btn-primary btn-sm">Modifier</a>
+                            
                             <!-- Supprimer -->
                             <form action="{{ route('admin.departement.destroy', $departement->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce département ?')">
                                 @csrf
@@ -155,6 +156,8 @@
                             </form>
                             <!-- Filières -->
                             <a href="{{ route('admin.departement.filieres', $departement->id) }}" class="btn btn-success btn-sm">Filières</a>
+                            
+
                         </td>
                     </tr>
                 @endforeach

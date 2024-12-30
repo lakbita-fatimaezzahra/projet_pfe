@@ -1,4 +1,4 @@
-@extends('layouts.admin') 
+@extends('layouts.admin')
 
 @section('title', 'Ajouter un Professeur')
 
@@ -61,12 +61,21 @@
         .mt-4 {
             margin-top: 20px;
         }
+
+
+        
+        .alert-danger {
+        color: #721c24; /* Texte en rouge foncé */
+        background-color: #f8d7da; /* Fond de l'alerte en rouge pâle */
+        border-color: #f5c6cb; /* Bordure rouge pâle */
+        border-radius: 5px; /* Coins arrondis pour un aspect plus doux */
+        padding: 10px 15px; /* Padding interne pour plus de lisibilité */
+        }
     </style>
 
     <div class="container mt-5">
         <h1 class="mb-4">Ajouter un professeur</h1>
 
-        <!-- Affichage des erreurs de validation -->
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -77,8 +86,7 @@
             </div>
         @endif
 
-        <!-- Formulaire d'ajout -->
-        <form action="{{ route('admin.professeur.store') }}" method="POST">
+        <form action="{{ route('admin.professeur.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
                 <label for="name" class="form-label">Nom</label>
@@ -96,27 +104,56 @@
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
             </div>
+            @if ($errors->has('email'))
+                <div class="alert alert-danger">
+                    {{ $errors->first('email') }}
+                </div>
+            @endif
             <div class="mb-3">
                 <label for="password" class="form-label">Mot de passe</label>
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
+            @if ($errors->has('password'))
+                <div class="alert alert-danger">
+                    {{ $errors->first('password') }}
+                </div>
+            @endif
             <div class="mb-3">
                 <label for="password_confirmation" class="form-label">Confirmer le mot de passe</label>
                 <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
             </div>
             <div class="mb-3">
-                <label for="type" class="form-label">Type</label>
-                <input type="text" class="form-control" id="type" name="type" value="{{ old('type') }}" required>
+                <label for="genre" class="form-label">Genre</label>
+                <select class="form-control" id="genre" name="genre" required>
+                    <option value="Homme">Homme</option>
+                    <option value="Femme">Femme</option>
+                </select>
             </div>
             <div class="mb-3">
                 <label for="skills" class="form-label">Compétences</label>
-                <input type="text" class="form-control" id="skills" name="skills" value="{{ old('skills') }}">
+                <input type="text" class="form-control" id="skills" name="skills" value="{{ old('skills') }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="type" class="form-label">Type</label>
+                <select class="form-control" id="type" name="type" required>
+                    <option value="" disabled selected>-- Sélectionnez un type --</option>
+                    <option value="permanent" {{ old('type') == 'permanent' ? 'selected' : '' }}>Permanent</option>
+                    <option value="vacataire" {{ old('type') == 'vacataire' ? 'selected' : '' }}>Vacataire</option>
+                </select>
             </div>
             <div class="mb-3">
                 <label for="role" class="form-label">Rôle</label>
-                <input type="text" class="form-control" id="role" name="role" value="{{ old('role') }}" required>
+                <select class="form-control" id="role" name="role" required>
+                    <option value="" disabled selected>-- Sélectionnez un rôle --</option>
+                    <option value="professeur" {{ old('role') == 'professeur' ? 'selected' : '' }}>Professeur</option>
+                    <option value="responsable" {{ old('role') == 'responsable' ? 'selected' : '' }}>Responsable</option>
+                </select>
             </div>
-
+            
+            <div class="mb-3">
+                <label for="photo" class="form-label">Photo</label>
+                <input type="file" class="form-control" id="photo" name="photo">
+            </div>
             <div class="btn-group mt-4">
                 <button type="submit" class="btn btn-success">Ajouter</button>
                 <a href="{{ route('admin.professeur.read') }}" class="btn btn-danger">Annuler</a>
