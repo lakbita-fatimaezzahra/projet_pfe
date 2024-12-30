@@ -8,7 +8,8 @@ class prof extends Authenticatable
 
 {
     protected $fillable = [
-        'name', 'last_name', 'username', 'email', 'password', 'type', 'skills', 'role'
+        'name', 'last_name', 'username', 'email', 'password', 'type', 'skills', 'role','photo','genre',
+
     ];
     protected $hidden = [
         'password',

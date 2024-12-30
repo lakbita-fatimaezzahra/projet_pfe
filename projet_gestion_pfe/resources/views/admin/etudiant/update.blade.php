@@ -37,122 +37,160 @@
             box-shadow: 0 0 5px rgba(0, 112, 53, 0.5);
         }
 
-        .btn-success {
-            background-color: #28a745;
-            border-color: #28a745;
-            font-size: 1rem;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
+        .btn-success, .btn-primary {
+    background-color: #28a745; 
+    border-color: #28a745;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
 
-        .btn-success:hover {
+        .btn-success:hover, .btn-primary:hover {
             background-color: #218838;
             border-color: #1e7e34;
         }
 
-        .btn-secondary {
-            background-color: #6c757d;
-            border-color: #6c757d;
+        .btn-danger, .btn-secondary {
+            background-color: #dc3545; 
+            border-color: #dc3545;
             font-size: 1rem;
             padding: 10px 20px;
             border-radius: 5px;
         }
 
-        .btn-secondary:hover {
-            background-color: #5a6268;
-            border-color: #545b62;
+        .btn-danger:hover, .btn-secondary:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between; 
+            margin-top: 20px; 
+        }
+
+
+        img {
+            margin-top: 10px;
+            max-width: 100px;
+            border-radius: 5px;
+        }
+
+        .alert-danger {
+        color: #721c24; /* Texte en rouge foncé */
+        background-color: #f8d7da; /* Fond de l'alerte en rouge pâle */
+        border-color: #f5c6cb; /* Bordure rouge pâle */
+        border-radius: 5px; /* Coins arrondis pour un aspect plus doux */
+        padding: 10px 15px; /* Padding interne pour plus de lisibilité */
         }
     </style>
 
     <div class="container mt-5">
-        <h1 class="mb-4">Modifier un étudiant</h1>
+        <h1>Modifier un Étudiant</h1>
 
         <form action="{{ route('etudiant.update', $etudiant->id) }}" method="POST" enctype="multipart/form-data">
-        @csrf
+            @csrf
             @method('PUT')
 
             <div class="mb-3">
-                <label for="name" class="form-label">Nom</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ $etudiant->name }}" required>
+                <label for="name">Nom</label>
+                <input type="text" name="name" value="{{ $etudiant->name }}" class="form-control" required>
             </div>
 
             <div class="mb-3">
-                <label for="last_name" class="form-label">Prénom</label>
-                <input type="text" class="form-control" id="last_name" name="last_name" value="{{ $etudiant->last_name }}" required>
+                <label for="last_name">Prénom</label>
+                <input type="text" name="last_name" value="{{ $etudiant->last_name }}" class="form-control" required>
             </div>
 
             <div class="mb-3">
-                <label for="username" class="form-label">Nom d'utilisateur</label>
-                <input type="text" class="form-control" id="username" name="username" value="{{ $etudiant->username }}" required>
+                <label for="username">Nom d'utilisateur</label>
+                <input type="text" name="username" value="{{ $etudiant->username }}" class="form-control" required>
             </div>
 
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ $etudiant->email }}" required>
+                <label for="email">Email</label>
+                <input type="email" name="email" value="{{ $etudiant->email }}" class="form-control" required>
+            </div>
+            @if ($errors->has('email'))
+                <div class="alert alert-danger">
+                    {{ $errors->first('email') }}
+                </div>
+            @endif
+            <div class="mb-3">
+                <label for="password">Mot de passe</label>
+                <input type="password" name="password" class="form-control">
+            </div>
+                @if ($errors->has('password'))
+                <div class="alert alert-danger">
+                    {{ $errors->first('password') }}
+                </div>
+            @endif
+            <div class="mb-3">
+                <label for="dateN">Date de Naissance</label>
+                <input type="date" name="dateN" value="{{ $etudiant->dateN }}" class="form-control" required>
             </div>
 
             <div class="mb-3">
-                <label for="password" class="form-label">Mot de passe</label>
-                <input type="password" class="form-control" id="password" name="password">
-                <small>Si vous ne voulez pas modifier le mot de passe, laissez ce champ vide.</small>
+                <label for="CNE">CNE</label>
+                <input type="text" name="CNE" value="{{ $etudiant->CNE }}" class="form-control" required>
             </div>
 
             <div class="mb-3">
-                <label for="dateN" class="form-label">Date de naissance</label>
-                <input type="date" class="form-control" id="dateN" name="dateN" value="{{ $etudiant->dateN }}" required>
+                <label for="Cin">CIN</label>
+                <input type="text" name="Cin" value="{{ $etudiant->Cin }}" class="form-control" required>
             </div>
 
             <div class="mb-3">
-                <label for="CNE" class="form-label">CNE</label>
-                <input type="text" class="form-control" id="CNE" name="CNE" value="{{ $etudiant->CNE }}" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="Cin" class="form-label">CIN</label>
-                <input type="text" class="form-control" id="Cin" name="Cin" value="{{ $etudiant->Cin }}" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="genre" class="form-label">Genre</label>
-                <select class="form-control" id="genre" name="genre" required>
-                    <option value="masculin" {{ $etudiant->genre == 'masculin' ? 'selected' : '' }}>Masculin</option>
-                    <option value="feminin" {{ $etudiant->genre == 'feminin' ? 'selected' : '' }}>Féminin</option>
+                <label for="genre">Genre</label>
+                <select name="genre" class="form-control" required>
+                    <option value="male" {{ $etudiant->genre == 'male' ? 'selected' : '' }}>Masculin</option>
+                    <option value="female" {{ $etudiant->genre == 'female' ? 'selected' : '' }}>Féminin</option>
                 </select>
             </div>
 
             <div class="mb-3">
-                <label for="matricule" class="form-label">Matricule</label>
-                <input type="text" class="form-control" id="matricule" name="matricule" value="{{ $etudiant->matricule }}" required>
+                <label for="matricule">Matricule</label>
+                <input type="text" name="matricule" value="{{ $etudiant->matricule }}" class="form-control" required>
             </div>
 
             <div class="mb-3">
-                <label for="departement_id" class="form-label">Département</label>
-                <select class="form-control" id="departement_id" name="departement_id" required>
+                <label for="departement_id">Département</label>
+                <select name="departement_id" class="form-control" required>
                     @foreach ($departements as $departement)
-                        <option value="{{ $departement->id }}" {{ $etudiant->departement_id == $departement->id ? 'selected' : '' }}>{{ $departement->libelle }}</option>
+                        <option value="{{ $departement->id }}" {{ $etudiant->departement_id == $departement->id ? 'selected' : '' }}>
+                            {{ $departement->libelle }}
+                        </option>
                     @endforeach
                 </select>
             </div>
 
             <div class="mb-3">
-                <label for="groupe_id" class="form-label">Groupe</label>
-                <select class="form-control" id="groupe_id" name="groupe_id" required>
+                <label for="groupe_id">Groupe</label>
+                <select name="groupe_id" class="form-control" required>
                     @foreach ($groupes as $groupe)
-                        <option value="{{ $groupe->id }}" {{ $etudiant->groupe_id == $groupe->id ? 'selected' : '' }}>{{ $groupe->libelle }}</option>
+                        <option value="{{ $groupe->id }}" {{ $etudiant->groupe_id == $groupe->id ? 'selected' : '' }}>
+                            {{ $groupe->libelle }}
+                        </option>
                     @endforeach
                 </select>
             </div>
 
             <div class="mb-3">
-                <label for="photo" class="form-label">Photo</label>
-                <input type="file" class="form-control" id="photo" name="photo">
-                <small>Si vous ne souhaitez pas changer la photo, laissez ce champ vide.</small>
+                <label for="photo">Photo</label>
+                <input type="file" name="photo" class="form-control">
+                @if ($etudiant->photo)
+                    <img src="{{ asset($etudiant->photo) }}" alt="Photo de l'étudiant">
+                @endif
             </div>
 
-            <div class="text-end">
+            <div class="mt-4"></div>
+
+            <div class="btn-group">
                 <button type="submit" class="btn btn-success">Modifier</button>
                 <a href="{{ route('etudiant.index') }}" class="btn btn-danger">Annuler</a>
             </div>
+
+            
         </form>
     </div>
 @endsection

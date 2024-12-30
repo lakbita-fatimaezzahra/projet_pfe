@@ -62,6 +62,14 @@
             background-color: #5a6268;
             border-color: #545b62;
         }
+        
+        .alert-danger {
+        color: #721c24; /* Texte en rouge foncé */
+        background-color: #f8d7da; /* Fond de l'alerte en rouge pâle */
+        border-color: #f5c6cb; /* Bordure rouge pâle */
+        border-radius: 5px; /* Coins arrondis pour un aspect plus doux */
+        padding: 10px 15px; /* Padding interne pour plus de lisibilité */
+        }
     </style>
 
     <div class="container mt-5">
@@ -90,11 +98,28 @@
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" name="email" value="{{ $prof->email }}" required>
             </div>
-
+            @if ($errors->has('email'))
+                <div class="alert alert-danger">
+                    {{ $errors->first('email') }}
+                </div>
+            @endif
             <div class="mb-3">
                 <label for="password" class="form-label">Mot de passe</label>
                 <input type="password" class="form-control" id="password" name="password">
                 <small>Si vous ne voulez pas modifier le mot de passe, laissez ce champ vide.</small>
+            </div>
+            @if ($errors->has('password'))
+                <div class="alert alert-danger">
+                    {{ $errors->first('password') }}
+                </div>
+            @endif
+
+            <div class="mb-3">
+                <label for="genre">Genre</label>
+                <select name="genre" class="form-control" required>
+                    <option value="Homme" {{ $prof->genre == 'Homme' ? 'selected' : '' }}>Homme</option>
+                    <option value="Femme" {{ $prof->genre == 'Femme' ? 'selected' : '' }}>Femme</option>
+                </select>
             </div>
 
             <div class="mb-3">
@@ -111,6 +136,16 @@
                 <label for="role" class="form-label">Rôle</label>
                 <input type="text" class="form-control" id="role" name="role" value="{{ $prof->role }}" required>
             </div>
+
+            <div class="mb-3">
+                <label for="photo">Photo</label>
+                <input type="file" name="photo" class="form-control">
+                @if ($prof->photo)
+                    <img src="{{ asset($prof->photo) }}" alt="Photo du professeur">
+                @endif
+            </div>
+
+            <div class="mt-4"></div>
 
             <div class="text-end">
                 <button type="submit" class="btn btn-success">Modifier</button>

@@ -71,10 +71,28 @@
         .mt-4 {
             margin-top: 20px; /* Espace supplémentaire entre le champ de photo et les boutons */
         }
+
+        .alert-danger {
+        color: #721c24; /* Texte en rouge foncé */
+        background-color: #f8d7da; /* Fond de l'alerte en rouge pâle */
+        border-color: #f5c6cb; /* Bordure rouge pâle */
+        border-radius: 5px; /* Coins arrondis pour un aspect plus doux */
+        padding: 10px 15px; /* Padding interne pour plus de lisibilité */
+        }
     </style>
 
 <div class="container mt-5">
     <h1 class="mb-4">Ajouter un étudiant</h1>
+    @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+    
     <form action="{{ route('etudiant.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
@@ -93,10 +111,20 @@
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" name="email" required>
         </div>
+        @if ($errors->has('email'))
+            <div class="alert alert-danger">
+                {{ $errors->first('email') }}
+            </div>
+        @endif
         <div class="mb-3">
             <label for="password" class="form-label">Mot de passe</label>
             <input type="password" class="form-control" id="password" name="password" required>
         </div>
+        @if ($errors->has('password'))
+            <div class="alert alert-danger">
+                {{ $errors->first('password') }}
+            </div>
+        @endif
         <div class="mb-3">
             <label for="dateN" class="form-label">Date de naissance</label>
             <input type="date" class="form-control" id="dateN" name="dateN" required>
@@ -141,10 +169,8 @@
             <input type="file" class="form-control" id="photo" name="photo" >
         </div>
 
-        <!-- Espace ajouté avant les boutons Ajouter et Annuler -->
         <div class="mt-4"></div>
 
-        <!-- Ajout des boutons Ajouter et Annuler -->
         <div class="btn-group">
             <button type="submit" class="btn btn-success">Ajouter</button>
             <a href="{{ route('etudiant.index') }}" class="btn btn-danger">Annuler</a>

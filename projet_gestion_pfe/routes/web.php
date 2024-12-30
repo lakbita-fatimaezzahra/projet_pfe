@@ -10,9 +10,11 @@ use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\FiliereController;
+use App\Http\Controllers\GroupeController;
 use App\Http\Controllers\prof\ProfController;
 use App\Http\Controllers\prof\RespController;
 use App\Http\Controllers\studentController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -20,41 +22,54 @@ Route::get('/', function () {
 });
 
 // admin
-//etudiant
-Route::get('/readst', [EtudiantController::class, 'index'])->name('etudiants.index');
-Route::get('/etudiants', [EtudiantController::class, 'index'])->name('etudiant.index');
-Route::get('/etudiants/create', [EtudiantController::class, 'create'])->name('etudiant.create');
-Route::post('/etudiants', [EtudiantController::class, 'store'])->name('etudiant.store');
-Route::delete('/etudiants/{id}', [EtudiantController::class, 'destroy'])->name('etudiant.destroy');
-//professeur
-Route::get('/admin/professeur', [ProfesseurController::class, 'index'])->name('admin.professeur.read');
-Route::get('/admin/professeur/create', [ProfesseurController::class, 'create'])->name('admin.professeur.create');
-Route::post('/admin/professeur/store', [ProfesseurController::class, 'store'])->name('admin.professeur.store');
-Route::get('/admin/professeur/{id}/update', [ProfesseurController::class, 'edit'])->name('admin.professeur.update');
-Route::put('/admin/professeur/{id}', [ProfesseurController::class, 'update'])->name('admin.professeur.update.submit');
-Route::delete('professeurs/{id}', [ProfesseurController::class, 'destroy'])->name('admin.professeur.delete');
-//departement
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('departement', DepartementController::class);
-});
-Route::get('departements/{id}/filieres', [DepartementController::class, 'showFilieres'])->name('admin.departement.filieres');
-//filières
-Route::prefix('admin/departement/{departementId}')->group(function () {
-    // Liste des filières
-Route::get('filieres', [FiliereController::class, 'index'])->name('admin.departement.filieres');
+    //etudiant
+        Route::get('/readst', [EtudiantController::class, 'index'])->name('etudiants.index');
+        Route::get('/etudiants', [EtudiantController::class, 'index'])->name('etudiant.index');
+        Route::get('/etudiants/create', [EtudiantController::class, 'create'])->name('etudiant.create');
+        Route::post('/etudiants', [EtudiantController::class, 'store'])->name('etudiant.store');
+        Route::get('/etudiants/{id}/edit', [EtudiantController::class, 'edit'])->name('etudiant.edit');
+        Route::put('/etudiants/{id}', [EtudiantController::class, 'update'])->name('etudiant.update');
+        Route::delete('/etudiants/{id}', [EtudiantController::class, 'destroy'])->name('etudiant.destroy');
 
-    // Ajouter une filière
-Route::get('filieres/create', [FiliereController::class, 'create'])->name('admin.filiere.create');
+        //Importer fichier csv
+        Route::post('/etudiant/import', [EtudiantController::class, 'import'])->name('etudiant.import');
 
-Route::post('filieres', [FiliereController::class, 'store'])->name('admin.filiere.store');
+    //professeur
+        Route::get('/admin/professeur', [ProfesseurController::class, 'index'])->name('admin.professeur.read');
+        Route::get('/admin/professeur/create', [ProfesseurController::class, 'create'])->name('admin.professeur.create');
+        Route::post('/admin/professeur/store', [ProfesseurController::class, 'store'])->name('admin.professeur.store');
+        Route::get('/admin/professeur/{id}/update', [ProfesseurController::class, 'edit'])->name('admin.professeur.update');
+        Route::put('/admin/professeur/{id}', [ProfesseurController::class, 'update'])->name('admin.professeur.update.submit');
+        Route::delete('professeurs/{id}', [ProfesseurController::class, 'destroy'])->name('admin.professeur.delete');
+    //departement
+        Route::prefix('admin')->name('admin.')->group(function () {
+            Route::resource('departement', DepartementController::class);
+        });
+        Route::get('departements/{id}/filieres', [DepartementController::class, 'showFilieres'])->name('admin.departement.filieres');
+    //filières
+        Route::prefix('admin/departement/{departementId}')->group(function () {
+            // Liste des filières
+        Route::get('filieres', [FiliereController::class, 'index'])->name('admin.departement.filieres');
+        // Ajouter une filière
+        Route::get('filieres/create', [FiliereController::class, 'create'])->name('admin.filiere.create');
+        Route::post('filieres', [FiliereController::class, 'store'])->name('admin.filiere.store');
+        Route::post('filieres', [FiliereController::class, 'store'])->name('admin.filiere.store');
+        });
+        // Afficher le formulaire de modification
+        Route::get('admin/departement/{departementId}/filieres/{id}/edit', [FiliereController::class, 'edit'])->name('admin.filiere.edit');
+        // Mettre à jour une filière
+        Route::put('admin/departement/{departementId}/filieres/{id}', [FiliereController::class, 'update'])->name('admin.filiere.update');
 
-Route::post('filieres', [FiliereController::class, 'store'])->name('admin.filiere.store');
-
-});
-Route::delete('admin/departement/{departementId}/filieres/{id}', [FiliereController::class, 'destroy'])->name('admin.filiere.destroy');
-
-
-
+        Route::delete('admin/departement/{departementId}/filieres/{id}', [FiliereController::class, 'destroy'])->name('admin.filiere.destroy');
+    // Groupes
+        Route::prefix('admin/departement')->group(function () {
+            Route::get('/filiere/{filiereId}/groupes', [GroupeController::class, 'index'])->name('admin.groupes.index');
+            Route::get('/filiere/{filiereId}/groupes/create', [GroupeController::class, 'create'])->name('admin.groupes.create');
+            Route::post('/filiere/{filiereId}/groupes', [GroupeController::class, 'store'])->name('admin.groupes.store');
+            Route::get('/filiere/{filiereId}/groupes/{id}/edit', [GroupeController::class, 'edit'])->name('admin.groupes.edit');
+            Route::put('/filiere/{filiereId}/groupes/{id}', [GroupeController::class, 'update'])->name('admin.groupes.update');
+            Route::delete('/filiere/{filiereId}/groupes/{id}', [GroupeController::class, 'destroy'])->name('admin.groupes.destroy');
+        });
 
 
 

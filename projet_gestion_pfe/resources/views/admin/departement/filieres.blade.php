@@ -55,7 +55,7 @@
             background-color: #f8f9fa;
         }
 
-        /* Boutons Modifier et Supprimer */
+        /* Style des boutons dans le tableau */
         .btn-primary, .btn-danger {
             font-size: 0.9rem;
             padding: 8px 15px;
@@ -63,6 +63,7 @@
             transition: background-color 0.3s ease;
         }
 
+        /* Bouton modifier */
         .btn-primary {
             background-color: #007bff;
             border-color: #007bff;
@@ -73,6 +74,7 @@
             border-color: #0062cc;
         }
 
+        /* Bouton supprimer */
         .btn-danger {
             background-color: #dc3545;
             border-color: #dc3545;
@@ -82,6 +84,13 @@
             background-color: #bd2130;
             border-color: #bb2d3b;
         }
+
+        /* Marges et alignement des boutons */
+        .table tbody td form {
+            display: inline-block;
+            margin: 0;
+        }
+
 
         /* Message de succès */
         .alert-success {
@@ -139,15 +148,16 @@
                         <td>{{ $filiere->libelle }}</td>
                         <td>
                             <!-- Modifier -->
-                            <a href="" class="btn btn-primary btn-sm">Modifier</a>
-
+                            <a href="{{ route('admin.filiere.edit', ['departementId' => $departement->id, 'id' => $filiere->id]) }}" class="btn btn-primary btn-sm">Modifier</a>
+                            
                             <!-- Supprimer -->
                             <form action="{{ route('admin.filiere.destroy', ['departementId' => $departement->id, 'id' => $filiere->id]) }}" method="POST" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette filière ?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
                             </form>
-
+                            <!-- Groupes -->
+                            <a href="{{ route('admin.groupes.index', ['filiereId' => $filiere->id]) }}" class="btn btn-success btn-sm">Groupes</a>
                         </td>
                     </tr>
                 @endforeach
