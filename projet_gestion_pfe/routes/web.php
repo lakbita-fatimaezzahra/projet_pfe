@@ -99,10 +99,7 @@ Route::get('/home',[ProfController::class,'home'])->name('home');
 
 //responsable
 
-
-Route::get('responsable/affectations', [RespController::class, 'index'])->name('index');
-Route::post('responsable/assign-role', [RespController::class, 'assignRole']);
-Route::post('responsable/remove-role', [RespController::class, 'removeRole']);
-Route::get('responsable/professor-stages/{profId}/{role}', [RespController::class, 'getProfessorStages']);
-Route::get('responsable/stage-assignments/{stageId}', [RespController::class, 'getStageAssignments']);
-Route::post('responsable/update-role', [RespController::class, 'updateRole']);
+Route::get('responsable/responsable', [RespController::class, 'responsable'])->name('responsable');
+Route::get('responsable/liststage', [RespController::class, 'liststage'])->name('liststage');
+Route::get('/assign-prof/{stageId}', [RespController::class, 'showAssignForm'])->name('showAssignForm');
+Route::post('/assign-prof', [RespController::class, 'matchAndAssign'])->name('matchAndAssign');
