@@ -283,9 +283,7 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="navbar">
-            <button class="logout">Logout</button>
-        </div>
+        <x-dashnav />
         
         <div class="content">
             @yield('content')

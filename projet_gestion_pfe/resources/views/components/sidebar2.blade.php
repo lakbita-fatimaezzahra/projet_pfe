@@ -6,7 +6,7 @@
     <a href="/readst" class="{{ request()->is('readst') ? 'active' : '' }}"><i class="fas fa-chart-line"></i> Etudiant</a>
     <a href="{{ route('admin.professeur.read') }}" class="{{ request()->is('admin/professeur*') ? 'active' : '' }}"><i class="fas fa-chart-line"></i> Professeur</a>
     <a href="{{ route('admin.departement.index') }}" class="{{ request()->is('admin/departement*') ? 'active' : '' }}"><i class="fas fa-chart-line"></i> Départements</a>
-    <a href="#"><i class="fas fa-cog"></i> Paramètre</a>
+    
 </div>
 
 <script>

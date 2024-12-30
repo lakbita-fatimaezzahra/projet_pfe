@@ -29,9 +29,10 @@ class StageController extends Controller
             'idStudent' => 'required',
             'entreprise' => 'required|string|max:255',
             'sujet' => 'required|string|max:255',
+            'Skills' => 'required|string|max:255',
             'date_debut' => 'required|date',
             'date_fin' => 'required|date',
-            'type_stage' => 'required|string|max:255',
+            'type_stage' => 'PFE',
         ]);
 
         // Création d'un nouvel enregistrement dans la table stage
@@ -39,9 +40,10 @@ class StageController extends Controller
             'etudiant_id' => $validatedData['idStudent'],
             'entreprise' => $validatedData['entreprise'],
             'sujet' => $validatedData['sujet'],
+            'Skills' => $validatedData['Skills'],
             'date_debut' => $validatedData['date_debut'],
             'date_fin' => $validatedData['date_fin'],
-            'type_stage' => $validatedData['type_stage'],
+            'type_stage' => 'PFE',
         ];
 
         // Stocker dans la session
@@ -85,7 +87,7 @@ class StageController extends Controller
                 return back()->with('error', 'Fichier non valide ou échec de la création du stage.');
             }
         } catch (\Exception $e) {
-            \Log::error('Erreur : ' . $e->getMessage());
+            Log::error('Erreur : ' . $e->getMessage());
             return back()->with('error', 'Erreur lors de l\'upload du fichier : ' . $e->getMessage());
         }
     }

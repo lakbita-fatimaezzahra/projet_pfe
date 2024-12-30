@@ -160,15 +160,7 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="navbar">
-            <div class="menu">
-                <a href="#">Home</a>
-                <a href="#">About</a>
-                <a href="#">Service</a>
-                <a href="#">Contact Us</a>
-            </div>
-            <button class="logout">Logout</button>
-        </div>
+        <x-dashnav/>
 
         <div class="content-header">
             <h1>Information d'encadrement</h1>

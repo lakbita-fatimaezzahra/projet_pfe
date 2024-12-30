@@ -12,12 +12,13 @@
 
     <div id="stage-options" style="display:none;">
         <a href="/stage" class="{{ request()->is('stage') ? 'active' : '' }}"> infoStage</a>
-        <a href="/apres" class="{{ request()->is('apres') ? 'active' : '' }}">Après stage</a>
         <a href="{{route('avantStage')}}" class="{{ request()->is('avant') ? 'active' : '' }}">Avant stage</a>
+        <a href="/apres" class="{{ request()->is('apres') ? 'active' : '' }}">Après stage</a>
+       
     </div>
 
     <a href="/rapport" class="{{ request()->is('rapport') ? 'active' : '' }}"><i class="fas fa-chart-line"></i> Rapport</a>
-    <a href="#"><i class="fas fa-cog"></i> Paramètre</a>
+    
 </div>
 
 <script>

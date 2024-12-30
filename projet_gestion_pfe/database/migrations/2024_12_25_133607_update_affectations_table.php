@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('Stages', function (Blueprint $table) {
-            $table->string('document');
+        Schema::table('affectations', function (Blueprint $table) {
+            $table->enum('role',['encadrent','rapporteur','examinateur','president']); 
         });
     }
 
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('Stages', function (Blueprint $table) {
+        Schema::table('affectations', function (Blueprint $table) {
             //
         });
     }

@@ -10,8 +10,9 @@ use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\FiliereController;
+use App\Http\Controllers\prof\ProfController;
+use App\Http\Controllers\prof\RespController;
 use App\Http\Controllers\studentController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -69,7 +70,9 @@ Route::get('/etap2', function () {
     return view('etudiant/etape2', compact('id_user'));
 })->name('documents');
 Route::get('/stage', function () {
-    return view('etudiant/stage');
+    $id_user = session('user_id'); //
+
+    return view('etudiant/stage',compact('id_user'));
 });
 Route::get('/apres', function () {
     return view('etudiant/apresstage');
@@ -90,3 +93,13 @@ Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestF
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('password/reset', [ResetPasswordController::class, 'reset']);
+
+//prof
+Route::get('/home',[ProfController::class,'home'])->name('home');
+
+//responsable
+
+Route::get('responsable/responsable', [RespController::class, 'responsable'])->name('responsable');
+Route::get('responsable/liststage', [RespController::class, 'liststage'])->name('liststage');
+Route::get('/assign-prof/{stageId}', [RespController::class, 'showAssignForm'])->name('showAssignForm');
+Route::post('/assign-prof', [RespController::class, 'matchAndAssign'])->name('matchAndAssign');

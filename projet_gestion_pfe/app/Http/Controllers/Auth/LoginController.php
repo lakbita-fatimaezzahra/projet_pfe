@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\deadline;
+
 
 class LoginController extends Controller
 {
@@ -21,7 +21,7 @@ class LoginController extends Controller
         $request->validate([
             'email' => 'required',
             'password' => 'required',
-            'users' => 'required|in:etudiant,admin,professeur', // Validation du rôle
+            'users' => 'required|in:etudiant,admin,professeur,responsable', // Validation du rôle
         ]);
 
         $data = $request->all();
@@ -35,6 +35,7 @@ class LoginController extends Controller
             'etudiant' => 'etudiant',
             'admin' => 'administrateur',
             'professeur' => 'profs',
+            'responsable' => 'profs',
             default => null,
         };
 
@@ -58,6 +59,20 @@ class LoginController extends Controller
 
                 }
             }
+            elseif ($guard === 'profs' && $data['users'] === 'responsable') {
+                // Récupérer les données complètes du professeur responsable
+                $responsable = \App\Models\Prof::all()
+                ->where('id', $user->id)
+                ->where('role', 'responsable')
+                ->first();
+    
+                if ($responsable) {
+                    // Ajouter les données à la session
+                    $request->session()->put('responsable_data', $responsable);
+                } else {
+                    // Si l'utilisateur n'a pas le rôle 'responsable', rediriger vers la page de connexion avec une erreur
+                    return back()->withErrors(['login' => 'Vous n\'avez pas les autorisations nécessaires pour accéder à cette section.'])->withInput();
+                }}
 
             // Gérer les cookies si demandé
             if ($remember) {
@@ -77,7 +92,9 @@ class LoginController extends Controller
                 // Redirection selon le rôle
                 return match ($data['users']) {
                     'etudiant' => to_route('student'),
-                    'admin', 'professeur' => to_route('dashboard'),
+                    'admin'=>to_route('dashboard'),
+                    'professeur' => to_route('home'),
+                    'responsable' => to_route('responsable'),
                     default => back(),
                 };
             }

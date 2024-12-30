@@ -42,13 +42,7 @@
         <div class="logo">
             <img src={{ asset('images/navlogo.png') }} alt="EMSI Logo" style="height: 40px;">
         </div>
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#contact_us">Contact Us</a></li>
-
-        </ul>
+       
         <a href="{{ route('Showlogin') }}" class="login-btn">Login</a>
     </div>
 </body>
