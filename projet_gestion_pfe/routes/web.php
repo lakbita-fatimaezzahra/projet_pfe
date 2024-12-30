@@ -23,7 +23,10 @@ Route::get('/', function () {
 
 // admin
     //etudiant
+
         Route::get('/readst', [EtudiantController::class, 'index'])->name('etudiant.read');
+
+        Route::get('/readst', [EtudiantController::class, 'index'])->name('etudiants.read');
         Route::get('/etudiants', [EtudiantController::class, 'index'])->name('etudiant.index');
         Route::get('/etudiants/create', [EtudiantController::class, 'create'])->name('etudiant.create');
         Route::post('/etudiants', [EtudiantController::class, 'store'])->name('etudiant.store');
