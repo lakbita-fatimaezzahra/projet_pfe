@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\etudiant;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Rapport; // Assuming you have a Rapport model for storing rapports
 use App\Models\Stage;
@@ -44,10 +45,11 @@ class RapportController extends Controller
 
 
         if ($request->hasFile('contenu')) {
+            echo 'hhh.';
             $path = $request->file('contenu');
             $fileName = time() . '_rapport_files.' . $path->getClientOriginalExtension();
             $path->move(public_path('documents/rapport'), $fileName);
-            $rapport->contenu = $path;
+            $rapport->contenu =$fileName;
         }
 
         // Save the rapport to the database

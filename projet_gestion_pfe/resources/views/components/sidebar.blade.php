@@ -19,6 +19,7 @@
 
     <a href="/rapport" class="{{ request()->is('rapport') ? 'active' : '' }}"><i class="fas fa-chart-line"></i> Rapport</a>
     
+    
 </div>
 
 <script>

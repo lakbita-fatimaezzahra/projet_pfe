@@ -290,10 +290,10 @@
             </div>
         </div>
 
-        <!-- Main study button -->
+        <!-- Main study button
         <div class="button-wrapper">
             <a href="#" class="btn study-btn">Let's Study →</a>
-        </div>
+        </div> -->
     </div>
 </body>
 </html>

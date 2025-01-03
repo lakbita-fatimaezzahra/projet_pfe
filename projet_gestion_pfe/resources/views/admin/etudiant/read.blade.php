@@ -131,13 +131,13 @@
                 <a href="{{ route('etudiant.create') }}" class="btn btn-success">Ajouter un étudiant</a>
 
                 <!-- Formulaire d'importation CSV -->
-                <form action="{{ route('etudiant.import') }}" method="POST" enctype="multipart/form-data" style="display:inline-block;">
+                {{-- <form action="{{ route('etudiant.import') }}" method="POST" enctype="multipart/form-data" style="display:inline-block;">
                     @csrf
                     <div style="display: inline-block; margin-right: 10px;">
                         <input type="file" name="csv_file" accept=".csv" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Importer</button>
-                </form>
+                </form> --}}
             </div>
 
         <!-- Tableau des étudiants -->
@@ -174,7 +174,7 @@
                         <td>{{ $etudiant->groupe->libelle ?? 'Non assigné' }}</td>
                         <td>{{ $etudiant->departement->libelle ?? 'Non assigné' }}</td>
                         <td>
-                            <img src="{{ asset($etudiant->photo) }}" alt="Photo de l'étudiant" width="50" height="50">
+                            <img src="{{ asset($etudiant->photo) }}" alt="Photo de l'étudiant" width="45" height="45">
                         </td>
                         <td>
                             <a href="{{ route('etudiant.edit', $etudiant->id) }}" class="btn btn-primary btn-sm">Modifier</a>

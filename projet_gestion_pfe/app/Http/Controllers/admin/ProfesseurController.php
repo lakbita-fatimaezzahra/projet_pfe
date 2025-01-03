@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
 use App\Models\Prof;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
 
 class ProfesseurController extends Controller
 {

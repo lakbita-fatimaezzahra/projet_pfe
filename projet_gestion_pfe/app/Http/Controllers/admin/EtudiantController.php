@@ -1,11 +1,13 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
 use App\Models\Etudiant;
 use App\Models\Groupe;
 use App\Models\Departement;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
+
 
 
 class EtudiantController extends Controller

@@ -272,7 +272,7 @@
                 <div>
                     <label for="contenu">Contenu</label>
                     <div id="drag-drop-area" class="drag-drop-area">
-                        <p>Drag and drop your Word document here, or click to select a file</p>
+                        <p>Drag and drop your fichier zip here, or click to select a file</p>
                         <input type="file" name="contenu" id="contenu" class="file-input" >
                     </div>
                 </div>
