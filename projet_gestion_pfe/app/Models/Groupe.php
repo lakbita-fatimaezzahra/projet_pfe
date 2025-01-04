@@ -8,6 +8,7 @@ class Groupe extends Model
 {
     protected $fillable = [
         'libelle',
+        'filiere_id',  // Assure-toi que cette colonne existe dans la table
     ];
 
     /**
@@ -17,5 +18,14 @@ class Groupe extends Model
     public function etudiants()
     {
         return $this->hasMany(Etudiant::class);
+    }
+
+    /**
+     * Relation avec la filière.
+     * Un groupe appartient à une filière.
+     */
+    public function filiere()
+    {
+        return $this->belongsTo(Filiere::class);
     }
 }

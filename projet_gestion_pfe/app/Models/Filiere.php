@@ -19,4 +19,13 @@ class Filiere extends Model
     {
         return $this->belongsTo(Departement::class);
     }
+
+    /**
+     * Relation avec les groupes.
+     * Une filière peut avoir plusieurs groupes.
+     */
+    public function groupes()
+    {
+        return $this->hasMany(Groupe::class);
+    }
 }
