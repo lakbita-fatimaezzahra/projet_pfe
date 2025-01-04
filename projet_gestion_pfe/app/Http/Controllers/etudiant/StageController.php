@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\etudiant;
+
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Models\Stage;
@@ -57,8 +59,8 @@ class StageController extends Controller
     {
         // Validation des données
         $validatedData = $request->validate([
-            'contenu' => 'required|file|mimes:zip|max:10240', // Fichier ZIP, max 10 Mo
-            'idStudent' => 'required|exists:etudiants,id',    // Vérifie que l'étudiant existe
+            'contenu' => 'required|file|mimes:zip|max:10240', 
+            'idStudent' => 'required|exists:etudiants,id',    
         ]);
 
         try {
@@ -79,8 +81,7 @@ class StageController extends Controller
                 $stage->documentsDebut = $fileName;
 
                 if ($stage->save()) {
-                    // Supprimer les informations de la session après utilisation
-                    session()->forget('info');
+                  
                     return redirect()->route('documents')->with('success', 'Stage et document créés avec succès.');
                 } else {
                     return back()->with('error', 'Erreur lors de la sauvegarde du fichier.');
@@ -94,6 +95,45 @@ class StageController extends Controller
         }
     }
 
+    public function submitDocumentsfin(Request $request)
+{
+    $validatedData = $request->validate([
+        'contenu' => 'required|file|mimes:zip|max:10240', 
+        'idStudent' => 'required|exists:etudiants,id',    
+    ]);
 
+    try {
+        // Retrieve the stage information
+        $stage = Stage::where('etudiant_id', $request->idStudent)->first();
 
+<<<<<<< HEAD:projet_gestion_pfe/app/Http/Controllers/StageController.php
 }
+=======
+        if (!$stage) {
+            return back()->with('error', 'Aucune information de stage trouvée. Veuillez d\'abord remplir les informations.');
+        }
+
+        if ($request->hasFile('contenu')) {
+            $file = $request->file('contenu');
+            $fileName = time() . '_Stag_files.' . $file->getClientOriginalExtension();
+            $file->move(public_path('documents/stagefinal'), $fileName);
+            
+            // Update the stage record with the uploaded file name
+            $stage->documentsFin = $fileName;
+
+            if ($stage->save()) {
+               
+                return redirect()->route('documentsfinal')->with('success', 'Stage et document créés avec succès.');
+            } else {
+                return back()->with('error', 'Erreur lors de la sauvegarde du fichier.');
+            }
+        } else {
+            return back()->with('error', 'Fichier non valide ou échec de la création du stage.');
+        }
+    } catch (\Exception $e) {
+        Log::error('Erreur : ' . $e->getMessage());
+        return back()->with('error', 'Erreur lors de l\'upload du fichier : ' . $e->getMessage());
+    }
+}
+}
+>>>>>>> e60ac432b750691f8257d82a36e78964dd05cbd9:projet_gestion_pfe/app/Http/Controllers/etudiant/StageController.php

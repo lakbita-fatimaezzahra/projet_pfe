@@ -214,28 +214,29 @@
     <div class="main-content">
        <x-dashnav/>
 
+                <!-- Deadline -->
+                <div>
+                    <label for="deadline">Deadline</label>
+                    <input type="date" id="deadline" name="deadline" required>
+                </div>
         <div class="content-header">
             <h1>Document de stage</h1>
         </div>
 
         <!-- Form Container -->
         <div class="form-container">
-            <form method="POST" action="{{ route('submitRapport') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('submitDocumentsfin') }}" enctype="multipart/form-data">
                 @csrf
                 <!-- Content (File upload) -->
+                <input type="hidden"  name="idStudent" value='{{$id_user}}'>
                 <div>
                     <label for="contenu">Contenu</label>
                     <div id="drag-drop-area" class="drag-drop-area">
-                        <p>Drag and drop your Word document here, or click to select a file</p>
-                        <input type="file" name="contenu" id="contenu" class="file-input" accept=".docx,.doc">
+                        <p>Drag and drop your document zip here, or click to select a file</p>
+                        <input type="file" name="contenu" id="contenu" class="file-input" accept="">
                     </div>
                 </div>
 
-                <!-- Deadline -->
-                <div>
-                    <label for="deadline">Deadline</label>
-                    <input type="date" id="deadline" name="deadline" required>
-                </div>
 
                 <!-- Submit Button -->
                 <div>

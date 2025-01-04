@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>encadrement</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'Dashboard')</title>
     <style>
         body {
             margin: 0;
@@ -97,7 +97,7 @@
             background: white;
             color: black;
             border: none;
-            padding: 5px 10px;
+            padding: 5px 50px;
             border-radius: 5px;
             cursor: pointer;
         }
@@ -118,6 +118,86 @@
             margin: 0;
         }
 
+        .student-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid white;
+            object-fit: cover;
+        }
+
+        .details-container {
+            display: flex;
+            padding: 20px;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .details-section {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .details-section:last-child {
+            margin-right: 0;
+        }
+
+        .details-section table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .details-section table td {
+            padding: 8px 0;
+        }
+
+        .details-section table td:first-child {
+            font-weight: bold;
+        }
+
+        .button-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: center;
+            gap: 200px;
+            margin: 20px 0;
+        }
+
+        .button-row1 {
+            display: flex;
+            justify-content: center;
+            gap: 200px;
+            margin: 20px 0;
+            margin-top: 10%
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 20px 30px;
+            font-size: 25px;
+            color: #ffffff;
+            background-color:#007035 ;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #007035;
+        }
+
+        .study-btn {
+            padding: 20px 40px;
+            border-radius: 50px;
+            margin-top: 20px;
+        }
+
         .form-container {
             margin: 20px;
             padding: 20px;
@@ -127,8 +207,7 @@
         }
 
         .form-container input,
-        .form-container select,
-        .form-container textarea {
+        .form-container select {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -150,56 +229,66 @@
             background-color: #005522;
         }
 
-        /* Drag-and-Drop Area */
-        .drag-drop-area {
-            border: 2px dashed #007035;
-            border-radius: 10px;
-            padding: 30px;
-            text-align: center;
-            color: #007035;
+        /* Step Buttons */
+        .step-buttons {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
         }
 
-        .drag-drop-area.hover {
-            background-color: #e6f9e6;
-            border-color: #005522;
+        .step-button {
+            padding: 10px 30px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #007035;
+            border: none;
+            border-radius: 5px;
+            cursor: not-allowed;
+            margin: 0 10px;
         }
 
-        .drag-drop-area p {
-            font-size: 16px;
-        }
+        /* Step Buttons */
+.step-buttons {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
 
-        .file-input {
-            display: none;
-        }
-        .input-wrapper {
-            position: relative;
-            width: 300px;
-        }
+.step-button {
+    padding: 10px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: not-allowed;
+    margin: 0 10px;
+}
 
-        label {
-            font-size: 14px;
-            margin-bottom: 5px;
-            display: block;
-            color: #333;
-        }
+/* Active button (green) */
+.step-button.active {
+    background-color: #007035;
+    color: white;
+}
 
-        /* Disabled state styles */
-        .input-with-link:disabled {
-            background-color: #f1f1f1;
-            color: #bbb;
-        }
-
-        #notes-link-container {
-            display: block;
-            margin-top: 20px;
-        }
+/* Inactive button (white) */
+.step-button.inactive {
+    background-color: #ffffff;
+    color: #007035;
+    border: 1px solid #007035;
+}
 
     </style>
 </head>
 <body>
-    <x-dashnav/>
-    
-    <x-profbar/>
-    
+    <!-- Sidebar -->
+    <x-profbar />
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <x-dashnav />
+        
+        <div class="content">
+            @yield('content')
+        </div>
+    </div>
 </body>
 </html>
