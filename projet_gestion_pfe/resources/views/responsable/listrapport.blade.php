@@ -74,24 +74,26 @@
 </style>
 
 <div class="container mt-5">
-    <h1 class="mb-4">Liste des Rapports</h1>
+    <h1 class="mb-4">Liste des Stagiaires</h1>
     <table>
         <thead>
             <tr>
                 <th>Etudiant</th>
-                <th>Sujet</th>               
+                <th>Sujet</th>
+                <th>Skill</th>
                 <th>Departement</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($data as $rapport)
+            @foreach ($data as $stage)
             <tr>
-                <td>{{ $rapport->etudiant_name }}</td>
-                <td>{{ $rapport->rapport_titre }}</td>
-                <td>{{ $rapport->departements_libelle }}</td>
+                <td>{{ $stage->etudiant_name }}</td>
+                <td>{{ $stage->stage_sujet }}</td>
+                <td>{{ $stage->stage_Skills }}</td>
+                <td>{{ $stage->departements_libelle }}</td>
                 <td>
-                    <a href="{{ route('showAssignFormRapport', ['stageId' => $rapport->stage_id]) }}" class="btn btn-success btn-sm">Affecter</a>
+                    <a href="{{ route('showAssignFormRapport', ['stageId' => $stage->stage_id]) }}" class="btn btn-success btn-sm">Affecter</a>
                 </td>
             </tr>
             @endforeach

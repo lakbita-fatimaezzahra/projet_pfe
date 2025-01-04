@@ -112,13 +112,13 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset']);
 //prof
 Route::get('/prof',[ProfController::class,'home'])->name('home');
 //encadrent
-Route::get('/Encadrent',[EncadrentController::class,'ListStageEncadrent'])->name('Encadrent');
+Route::get('/Encadrent',[EncadrentController::class,'ListStageEncadrent'])->name('ListStageEncadrent');
 //rapporteur
-Route::get('/Rapporteur',[RapporteurController::class,'Rapporteur'])->name('Rapporteur');
+Route::get('/Rapporteur',[RapporteurController::class,'ListStageRapport'])->name('ListStageRapport');
 //examinateur
-Route::get('/Examinateur',[ExaminateurController::class,'Examinateur'])->name('Examinateur');
+Route::get('/Examinateur',[ExaminateurController::class,'ListStageExaminateur'])->name('ListStageExaminateur');
 //president
-Route::get('/President',[PresidentController::class,'President'])->name('President');
+Route::get('/President',[PresidentController::class,'ListStagePresident'])->name('ListStagePresident');
 //responsable
 Route::get('responsable/responsable', [RespController::class, 'responsable'])->name('responsable');
 //list des stagiaires
