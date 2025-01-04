@@ -78,11 +78,11 @@
         border-color: #bd2130;
     }
 
-    /* Disposition des boutons sur la même ligne */
     .button-container {
+        margin-top: 30px; 
         display: flex;
         justify-content: center;
-        gap: 10px; /* Espacement entre les boutons */
+        gap: 10px;
     }
 
 </style>
