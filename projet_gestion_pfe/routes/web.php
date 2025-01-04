@@ -25,7 +25,7 @@ Route::get('/', function () {
 });
 
 // admin
-Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     //etudiant
         Route::get('/readst', [EtudiantController::class, 'index'])->name('etudiants.read');
         Route::get('/etudiants', [EtudiantController::class, 'index'])->name('etudiant.index');
