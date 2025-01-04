@@ -194,7 +194,30 @@
             display: block;
             margin-top: 20px;
         }
+        .form-container {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
 
+        .form-container label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .form-container input[type="date"] {
+            margin-top: 5px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .text-danger {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -210,14 +233,24 @@
    })
     </script>
     @endif
+    @if (Session::get('success'))
+    <script>
+   swal("message", "{{Session::get('success')}}",'success',{
+    button:true,
+    button:"OK",
+    timer:3000,
+    successMode:true,
+   })
+    </script>
+    @endif
     <!-- Main Content -->
     <div class="main-content">
        <x-dashnav/>
 
                 <!-- Deadline -->
-                <div>
-                    <label for="deadline">Deadline</label>
-                    <input type="date" id="deadline" name="deadline" required>
+                <div class="form-container">
+                    <label for="deadline-rapport">Deadline - Dépôt de Rapport :</label>
+                    <input type="date" id="deadline-rapport" name="deadline_rapport" class="text-danger" value="{{ $deadline->date_deadline_rapport }}">
                 </div>
         <div class="content-header">
             <h1>Document de stage</h1>
@@ -233,11 +266,12 @@
                     <label for="contenu">Contenu</label>
                     <div id="drag-drop-area" class="drag-drop-area">
                         <p>Drag and drop your document zip here, or click to select a file</p>
-                        <input type="file" name="contenu" id="contenu" class="file-input" accept="">
+                        <input type="file" name="contenu" id="contenu" class="file-input" >
                     </div>
                 </div>
 
 
+                <br><br>
                 <!-- Submit Button -->
                 <div>
                     <button type="submit">Submit Documents</button>

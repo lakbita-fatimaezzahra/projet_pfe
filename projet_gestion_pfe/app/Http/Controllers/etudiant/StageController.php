@@ -7,9 +7,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Stage;
 use App\Models\Etudiant;
+use App\Models\deadline;
+use App\Models\Affectation;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
-
-
 class StageController extends Controller
 {
 
@@ -28,6 +29,8 @@ class StageController extends Controller
 
     public function store(Request $request)
     {
+        $deadline=deadline::all()->first();
+        if(Carbon::today()->toDateString() <= $deadline->date_deadline_stage){
         // Validate the form data
         $validatedData = $request->validate([
             'idStudent' => 'required',
@@ -54,13 +57,20 @@ class StageController extends Controller
         session(['info' => $info]);
 
         return redirect()->route('documents')->with('success', 'Informations de stage enregistrées avec succès.');
+    }else{
+        return back()->with('error', 'Delai expire');
+
+    }
+
     }
     public function submitDocuments(Request $request)
     {
+
+
         // Validation des données
         $validatedData = $request->validate([
-            'contenu' => 'required|file|mimes:zip|max:10240', 
-            'idStudent' => 'required|exists:etudiants,id',    
+            'contenu' => 'required|file|mimes:zip|max:10240',
+            'idStudent' => 'required|exists:etudiants,id',
         ]);
 
         try {
@@ -81,8 +91,8 @@ class StageController extends Controller
                 $stage->documentsDebut = $fileName;
 
                 if ($stage->save()) {
-                  
-                    return redirect()->route('documents')->with('success', 'Stage et document créés avec succès.');
+
+                    return redirect()->route('Stage')->with('success', 'Stage et document créés avec succès.');
                 } else {
                     return back()->with('error', 'Erreur lors de la sauvegarde du fichier.');
                 }
@@ -95,40 +105,87 @@ class StageController extends Controller
         }
     }
 
+public function readStage(){
+    $deadline = Deadline::all()->first();
+    $id_etudiant = session('user_data')->id;
+    $stage = stage::where('etudiant_id', $id_etudiant)->get()->first();
+
+
+    if ($stage) {
+    // Récupérer les noms des professeurs selon leur rôle
+    $id_stage=$stage->id;
+    $encadrent = Affectation::where('stage_id', $id_stage)
+                            ->where('role', 'encadrent')
+                            ->with('prof')
+                            ->first()?->prof?->name;
+
+    $rapporteur = Affectation::where('stage_id', $id_stage)
+                             ->where('role', 'rapporteur')
+                             ->with('prof')
+                             ->first()?->prof?->name;
+
+    $examinateur = Affectation::where('stage_id', $id_stage)
+                              ->where('role', 'examinateur')
+                              ->with('prof')
+                              ->first()?->prof?->name;
+
+    $president = Affectation::where('stage_id', $id_stage)
+                            ->where('role', 'president')
+                            ->with('prof')
+                            ->first()?->prof?->name;
+
+    return view('etudiant/stage',compact('stage','encadrent','rapporteur','examinateur','president','deadline'));
+}else {
+return back()->with("error","vous n avez pas enregistrer votre stage");
+}
+
+}
+function finStage() {
+    $deadline = Deadline::all()->first();
+    $id_user = session('user_id');
+    return view('etudiant/apresstage',compact('id_user','deadline'));
+
+}
     public function submitDocumentsfin(Request $request)
 {
     $validatedData = $request->validate([
-        'contenu' => 'required|file|mimes:zip|max:10240', 
-        'idStudent' => 'required|exists:etudiants,id',    
+        'contenu' => 'required|file|mimes:zip|max:10240',
+        'idStudent' => 'required|exists:etudiants,id',
     ]);
 
-    try {
-        // Retrieve the stage information
+
+
         $stage = Stage::where('etudiant_id', $request->idStudent)->first();
 
+<<<<<<< HEAD
 <<<<<<< HEAD:projet_gestion_pfe/app/Http/Controllers/StageController.php
 }
 =======
+=======
+
+
+>>>>>>> dd0de42cfee8ccda61eb6e087128993385897ba6
         if (!$stage) {
             return back()->with('error', 'Aucune information de stage trouvée. Veuillez d\'abord remplir les informations.');
         }
-
+        try{
+        $id_stage = $stage->id;
         if ($request->hasFile('contenu')) {
             $file = $request->file('contenu');
             $fileName = time() . '_Stag_files.' . $file->getClientOriginalExtension();
             $file->move(public_path('documents/stagefinal'), $fileName);
-            
+
             // Update the stage record with the uploaded file name
             $stage->documentsFin = $fileName;
 
             if ($stage->save()) {
-               
-                return redirect()->route('documentsfinal')->with('success', 'Stage et document créés avec succès.');
+
+                return redirect()->route('documentsfinal')->with('success', 'document de fin de stage créés avec succès.');
             } else {
                 return back()->with('error', 'Erreur lors de la sauvegarde du fichier.');
             }
         } else {
-            return back()->with('error', 'Fichier non valide ou échec de la création du stage.');
+            return back()->with('error', 'Fichier non valide .');
         }
     } catch (\Exception $e) {
         Log::error('Erreur : ' . $e->getMessage());
@@ -136,4 +193,9 @@ class StageController extends Controller
     }
 }
 }
+<<<<<<< HEAD
 >>>>>>> e60ac432b750691f8257d82a36e78964dd05cbd9:projet_gestion_pfe/app/Http/Controllers/etudiant/StageController.php
+=======
+
+
+>>>>>>> dd0de42cfee8ccda61eb6e087128993385897ba6

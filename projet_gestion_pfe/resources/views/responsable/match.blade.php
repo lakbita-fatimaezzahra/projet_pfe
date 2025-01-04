@@ -92,11 +92,12 @@
 
             <label for="prof_id">Choisir un professeur:</label>
             <select name="prof_id" id="prof_id" class="form-control" required>
-                @foreach ($matchingProfs as $prof)
+            @foreach ($matchingProfs as $prof)
                 <option value="{{ $prof->id }}">
                     {{ $prof->name }} ({{ $prof->skills }})
                 </option>
             @endforeach
+            
             
             </select>
 

@@ -19,6 +19,11 @@ class ProfesseurController extends Controller
     {
         return view('admin.professeur.create');
     }
+    public function dashboard()
+    {
+        
+        return view('admin.dashboard.read');
+    }
 
 
     

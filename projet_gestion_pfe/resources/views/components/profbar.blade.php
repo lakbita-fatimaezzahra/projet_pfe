@@ -3,16 +3,16 @@
         <img src="{{ asset('images/navlogo.png') }}" alt="Logo">
     </div>
     <a href="/prof" class="{{ request()->is('/') ? 'active' : '' }}"><i class="fas fa-home"></i> Acceuille</a>
-    <a href="{{ route('Encadrent') }}" class="{{ request()->routeIs('Encadrent') ? 'active' : '' }}">
+    <a href="{{ route('ListStageEncadrent') }}" class="{{ request()->routeIs('ListStageEncadrent') ? 'active' : '' }}">
         <i class="fas fa-chart-line"></i> Encadrent
     </a>
-    <a href="{{ route('Rapporteur') }}" class="{{ request()->routeIs('Rapporteur') ? 'active' : '' }}">
+    <a href="{{ route('ListStageRapport') }}" class="{{ request()->routeIs('ListStageRapport') ? 'active' : '' }}">
         <i class="fas fa-chart-line"></i> Rapporteur
     </a>
-    <a href="{{ route('Examinateur') }}" class="{{ request()->routeIs('Examinateur') ? 'active' : '' }}">
+    <a href="{{ route('ListStageExaminateur') }}" class="{{ request()->routeIs('ListStageExaminateur') ? 'active' : '' }}">
         <i class="fas fa-chart-line"></i> Examinateur
     </a>
-    <a href="{{ route('President') }}" class="{{ request()->routeIs('President') ? 'active' : '' }}">
+    <a href="{{ route('ListStagePresident') }}" class="{{ request()->routeIs('ListStagePresident') ? 'active' : '' }}">
         <i class="fas fa-chart-line"></i> President
     </a>
     

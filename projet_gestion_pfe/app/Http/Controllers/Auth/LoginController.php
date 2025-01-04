@@ -65,7 +65,7 @@ class LoginController extends Controller
                 ->where('id', $user->id)
                 ->where('role', 'responsable')
                 ->first();
-    
+
                 if ($responsable) {
                     // Ajouter les données à la session
                     $request->session()->put('responsable_data', $responsable);

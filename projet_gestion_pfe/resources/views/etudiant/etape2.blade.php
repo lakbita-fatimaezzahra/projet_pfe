@@ -272,16 +272,11 @@
                 <div>
                     <label for="contenu">Contenu</label>
                     <div id="drag-drop-area" class="drag-drop-area">
-                        <p>Drag and drop your fichier zip here, or click to select a file</p>
-                        <input type="file" name="contenu" id="contenu" class="file-input" >
+                        <input type="file" name="contenu" id="contenu" class="file-input" placeholder="Drag and drop your fichier zip here, or click to select a file">
                     </div>
                 </div>
 
-                <!-- Deadline -->
-                <div>
-                    <label for="deadline">Deadline</label>
-                    <input type="date" id="deadline" name="deadline" disabled>
-                </div>
+
 
                 <!-- Submit Button -->
                 <div>

@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <title>Student Dashboard - Stage</title>
     <style>
         body {
             margin: 0;
@@ -16,6 +16,7 @@
             height: 100vh;
         }
 
+        /* Sidebar */
         .sidebar {
             width: 250px;
             background-color: #007035;
@@ -47,6 +48,10 @@
             color: #007035;
         }
 
+        .sidebar a i {
+            margin-right: 10px;
+        }
+
         .sidebar .nouveau-btn {
             margin: 20px auto;
             background-color: #ffffff;
@@ -63,6 +68,7 @@
             background-color: #005522;
         }
 
+        /* Main Content */
         .main-content {
             flex: 1;
             display: flex;
@@ -112,59 +118,129 @@
             margin: 0;
         }
 
-        .form-container {
-            margin: 20px;
+        .student-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid white;
+            object-fit: cover;
+        }
+
+        .details-container {
+            display: flex;
             padding: 20px;
-            background-color: #ffffff;
-            color: black;
-            border-radius: 10px;
-        }
-
-        .form-container input,
-        .form-container select {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .form-container button {
-            padding: 15px;
-            background-color: #007035;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .form-container button:hover {
-            background-color: #005522;
-        }
-
-        .custom-label {
-            font-weight: bold;
+            justify-content: space-between;
             margin-top: 20px;
         }
 
-        #sall-container {
-            display: none;
+        .details-section {
+            flex: 1;
+            margin-right: 20px;
         }
 
+        .details-section:last-child {
+            margin-right: 0;
+        }
+
+        .details-section table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .details-section table td {
+            padding: 8px 0;
+        }
+
+        .details-section table td:first-child {
+            font-weight: bold;
+        }
+        .button-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: center;
+            gap: 200px;
+            margin: 20px 0;
+        }
+        .button-row1 {
+            display: flex;
+            justify-content: center;
+            gap: 200px;
+            margin: 20px 0;
+            margin-top: 10%
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 20px 30px;
+            font-size: 25px;
+            color: #ffffff;
+            background-color:#007035 ;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #007035;
+        }
+
+        .study-btn {
+            padding: 20px 40px;
+            border-radius: 50px;
+            margin-top: 20px;
+        }
+        .form-container {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .form-container label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .form-container input[type="date"] {
+            margin-top: 5px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .text-danger {
+            color: red;
+            font-weight: bold;
+        }
+        .expired-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none; /* Caché par défaut */
+        }
+        .swal-modal {
+        width: 300px !important; /* Largeur de la boîte */
+        padding: 20px !important; /* Ajout de padding */
+        font-size: 16px;
+        height: 350px !important;
+    }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
     <x-sidebar />
 
     <!-- Main Content -->
     <div class="main-content">
         <x-dashnav/>
 
-        <div class="content-header">
-            <h1>Information d'encadrement</h1>
-        </div>
         @if (Session::get('error'))
         <script>
        swal("message", "{{Session::get('error')}}",'error',{
@@ -172,56 +248,86 @@
         button:"OK",
         timer:3000,
         dangerMode:true,
+        className:"swal-modal",
        })
         </script>
         @endif
-        <!-- Form Container -->
-        <div class="form-container">
-            <form method="POST" action="">
-                @csrf
-                <!-- Rapport Deadline -->
-                <div>
-                    <label for="rapport-deadline" class="custom-label">Rapport Deadline</label>
-                    <input type="text" id="rapport-deadline" value="12 décembre 2024" disabled />
-                </div>
+        @if (Session::get('success'))
+        <script>
+       swal("message", "{{Session::get('success')}}",'success',{
+        button:true,
+        button:"OK",
+        timer:3000,
+        dangerMode:true,
+        className:"swal-modal ",
+       })
+    </script>
+        @endif
+ <!-- Deadline -->
 
-                <!-- Mode de Stage -->
-                <div>
-                    <label for="mode" class="custom-label">Mode d'encadrement</label>
-                    <select id="mode" name="mode" onchange="toggleSala()" required>
-                        <option value="distance">Distance</option>
-                        <option value="presentiel">Présentiel</option>
-                    </select>
-                </div>
+        <div class="content-header">
 
-                <!-- Sala Input, shown only if Présentiel is selected -->
-                <div id="sall-container">
-                    <label for="sall" class="custom-label">Sall</label>
-                    <input type="text" id="sall" name="sall" disabled />
-                </div>
+            <div>
+                <h1>  <p>Données de stages</p></h1>
+            </div>
+            <div class="form-container">
+                <label for="deadline-rapport">Deadline - Dépôt de Rapport :</label>
+                <input type="date" id="deadline-rapport" name="deadline_rapport" class="text-danger" value="{{ $deadline->date_deadline_rapport }}">
+            </div>
+              </div>
 
-                <!-- Encadrent -->
-                <div>
-                    <label for="encadrent" class="custom-label">Encadrent</label>
-                    <input type="text" id="encadrent" name="encadrent" disabled />
-                </div>
+        <div class="details-container">
+            <div class="details-section">
+                <table>
 
+                    <tr>
+                        <td>Nom D'entreprise :  {{$stage->entreprise}}</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Projet :  {{$stage->sujet}}</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Date debut :  {{$stage->date_debut}}</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Date fin :  {{$stage->date_fin}}</td>
+                        <td></td>
+                    </tr>
 
+                </table>
 
-            </form>
         </div>
+        <div class="details-section">
+            <table>
+
+                <tr>
+                    <td>Encadrant : {{$encadrent}}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Rapporteur : {{$rapporteur}}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Examinateur : {{$examinateur}}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>President : {{$president}}</td>
+                    <td></td>
+                </tr>
+
+            </table>
+
     </div>
 
-    <script>
-        function toggleSala() {
-            var mode = document.getElementById('mode').value;
-            var sallContainer = document.getElementById('sall-container');
-            if (mode === 'presentiel') {
-                sallContainer.style.display = 'block';
-            } else {
-                sallContainer.style.display = 'none';
-            }
-        }
-    </script>
+        <!-- Main study button
+        <div class="button-wrapper">
+            <a href="#" class="btn study-btn">Let's Study →</a>
+        </div> -->
+    </div>
 </body>
 </html>

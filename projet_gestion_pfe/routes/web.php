@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -25,6 +25,7 @@ Route::get('/', function () {
 });
 
 // admin
+Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     //etudiant
         Route::get('/readst', [EtudiantController::class, 'index'])->name('etudiants.read');
         Route::get('/etudiants', [EtudiantController::class, 'index'])->name('etudiant.index');
@@ -87,15 +88,9 @@ Route::get('/etap2', function () {
     $id_user = session('user_id'); // Récupération de l'id de l'utilisateur
     return view('etudiant/etape2', compact('id_user'));
 })->name('documents');
-Route::get('/stage', function () {
-    $id_user = session('user_id'); //
+Route::get('/stage',[StageController::class, 'readStage'])->name('Stage');
 
-    return view('etudiant/stage',compact('id_user'));
-});
-Route::get('/apres', function () {
-    $id_user = session('user_id');
-    return view('etudiant/apresstage',compact('id_user'));
-})->name('documentsfinal');
+Route::get('/apres', [StageController::class,'finStage'])->name('documentsfinal');
 Route::match(['get', 'post'],'/submit-stage', [StageController::class, 'store'])->name('submitStage');
 Route::get('/avantstage', [StageController::class, 'insertstage'])->name('avantStage');
 Route::get('/rapport', [RapportController::class, 'create'])->name('rapport.create');
@@ -118,12 +113,13 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset']);
 Route::get('/prof',[ProfController::class,'home'])->name('home');
 //encadrent
 Route::get('/Encadrent',[EncadrentController::class,'ListStageEncadrent'])->name('Encadrent');
+Route::get('/Encadrent',[EncadrentController::class,'ListStageEncadrent'])->name('ListStageEncadrent');
 //rapporteur
-Route::get('/Rapporteur',[RapporteurController::class,'Rapporteur'])->name('Rapporteur');
+Route::get('/Rapporteur',[RapporteurController::class,'ListStageRapport'])->name('ListStageRapport');
 //examinateur
-Route::get('/Examinateur',[ExaminateurController::class,'Examinateur'])->name('Examinateur');
+Route::get('/Examinateur',[ExaminateurController::class,'ListStageExaminateur'])->name('ListStageExaminateur');
 //president
-Route::get('/President',[PresidentController::class,'President'])->name('President');
+Route::get('/President',[PresidentController::class,'ListStagePresident'])->name('ListStagePresident');
 //responsable
 Route::get('responsable/responsable', [RespController::class, 'responsable'])->name('responsable');
 //list des stagiaires
