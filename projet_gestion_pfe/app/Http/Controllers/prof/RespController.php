@@ -51,7 +51,7 @@ class RespController extends Controller
             ->join('departements', 'etudiants.departement_id', '=', 'departements.id')
             ->select(
                 'stages.id as stage_id',
-                'rapports.titre as rapport_titre', 
+                'rapports.titre as rapport_titre',
                 'stages.sujet as stage_sujet',
                 'stages.Skills as stage_Skills', // Rapport subject (titre)
                 'etudiants.name as etudiant_name', // Student name
@@ -70,38 +70,38 @@ class RespController extends Controller
     {
         try {
             // Fetch the stage with its required skills
-            $stage = Stage::findOrFail($stageId)
-            ->select('stages.sujet as stage_sujet');
-    
+            $stage = Stage::findOrFail($stageId);
+
+
             // Retrieve matching professors based on skills
-            $matchingProfs = Prof::where('skills', 'LIKE', "%{$stage->skills}%")->get();
-    
+            $matchingProfs = Prof::where('skills', 'LIKE', "%{$stage->Skills}%")->get();
+
             // Pass data to the view
             return view('responsable.match', compact('stage', 'matchingProfs'));
         } catch (\Exception $e) {
             // Log the error
             Log::error("Error in showAssignForm: " . $e->getMessage());
-    
+
             // Return a user-friendly JSON response
             return response()->json(['message' => 'An error occurred while retrieving data.', 'error' => $e->getMessage()], 500);
         }
     }
-    
+
     public function showAssignFormRapport($stageId)
     {
         try {
             // Fetch the stage with its required skills
             $stage = Stage::findOrFail($stageId);
-    
+
             // Retrieve matching professors based on skills
             $matchingProfs = Prof::where('skills', 'LIKE', "%{$stage->skills}%")->get();
-    
+
             // Pass data to the view
             return view('responsable.rappmatch', compact('stage', 'matchingProfs'));
         } catch (\Exception $e) {
             // Log the error
             Log::error("Error in showAssignForm: " . $e->getMessage());
-    
+
             // Return a user-friendly JSON response
             return response()->json(['message' => 'An error occurred while retrieving data.', 'error' => $e->getMessage()], 500);
         }

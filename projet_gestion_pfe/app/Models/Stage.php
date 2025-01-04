@@ -8,7 +8,7 @@ class Stage extends Model
 {
     protected $fillable = [
         'entreprise', 'sujet', 'date_debut', 'date_fin', 'type_stage',
-         'etudiant_id','documentsDebut','documentsfin','Skills'
+         'etudiant_id','documentsDebut','documentsfin','skills'
     ];
 
     public function etudiant()
