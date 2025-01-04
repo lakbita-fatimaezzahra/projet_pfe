@@ -87,8 +87,7 @@
             @foreach ($data as $stage)
             <tr>
                 <td>{{ $stage->etudiant_name }}</td>
-                <td>{{ $stage->stage_Skills }}</td>
-                <td>{{ $stage->departements_libelle }}</td>
+                <td>{{ $stage->departement_libelle }}</td>
                 <td>
                     <a href="{{ route('ListStageEncadrent', ['stageId' => $stage->stage_id]) }}" class="btn btn-success btn-sm">Suivre</a>
                 </td>
