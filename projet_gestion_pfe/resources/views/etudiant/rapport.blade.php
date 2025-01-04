@@ -316,6 +316,16 @@
    })
     </script>
     @endif
+    @if (Session::get('success'))
+    <script>
+   swal("message", "{{Session::get('success')}}",'success',{
+    button:true,
+    button:"OK",
+    timer:3000,
+    dangerMode:true,
+   })
+    </script>
+    @endif
     <!-- Main Content -->
     <div class="main-content">
         <x-dashnav/>
@@ -340,6 +350,7 @@
                 <div>
                     <label for="status">Status</label>
                     <select id="status" name="status" required>
+                        <option value="valid">initial</option>
                         <option value="valid">valid</option>
                         <option value="non_valid">non valid</option>
                     </select>
@@ -363,7 +374,7 @@
                 </div>
                 <div>
                     <label for="deadline">Deadline</label>
-                    <input type="date" id="deadline" name="deadline" required>
+                    <input type="date" id="deadline" name="deadline" >
                 </div>
                 <div>
                     <button type="submit">Submit Rapport</button>

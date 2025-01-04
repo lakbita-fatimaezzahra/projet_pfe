@@ -203,7 +203,7 @@
                 <!-- Encadrent -->
                 <div>
                     <label for="encadrent" class="custom-label">Encadrent</label>
-                    <input type="text" id="encadrent" name="encadrent" disabled />
+                    <input type="text" id="encadrent" name="encadrent" disabled value={{$affectation->role}}/>
                 </div>
 
 

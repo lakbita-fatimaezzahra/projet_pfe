@@ -44,7 +44,7 @@ class LoginController extends Controller
           // Récupérer l'utilisateur authentifié
             $user = Auth::guard($guard)->user();
 
-        /*    if ($guard === 'etudiant') {
+            if ($guard === 'etudiant') {
 
                 // Récupérer les données complètes de l'étudiant
                 $etudiant = \App\Models\Etudiant::with(['groupe', 'departement','departement.filieres'])
@@ -73,7 +73,7 @@ class LoginController extends Controller
                     // Si l'utilisateur n'a pas le rôle 'responsable', rediriger vers la page de connexion avec une erreur
                     return back()->withErrors(['login' => 'Vous n\'avez pas les autorisations nécessaires pour accéder à cette section.'])->withInput();
                 }}
-*/
+
             // Gérer les cookies si demandé
             if ($remember) {
                 setcookie("mail", $data['email'], time() + 3600);

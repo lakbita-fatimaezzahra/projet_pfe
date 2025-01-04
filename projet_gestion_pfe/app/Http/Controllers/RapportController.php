@@ -25,12 +25,11 @@ class RapportController extends Controller
             'titre' => 'required|string',
             'date' => 'required|date',
             'status' => 'required|string',
-            'contenu' => 'required|file|mimes:doc,docx|max:10240', // Validating Word files
+            'contenu' => 'required|file|mimes:doc,docx', // Validating Word files
 
 
         ]);
         $stage = Stage::where('etudiant_id', $request->idStudent)->first();
-
         if (!$stage) {
             return back()->with('error', 'Stage introuvable pour cet étudiant.');
         }else{
@@ -47,7 +46,7 @@ class RapportController extends Controller
             $path = $request->file('contenu');
             $fileName = time() . '_rapport_files.' . $path->getClientOriginalExtension();
             $path->move(public_path('documents/rapport'), $fileName);
-            $rapport->contenu = $path;
+            $rapport->contenu = $fileName;
         }
 
         // Save the rapport to the database

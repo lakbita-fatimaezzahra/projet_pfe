@@ -84,11 +84,8 @@ Route::get('/etap2', function () {
     $id_user = session('user_id'); // Récupération de l'id de l'utilisateur
     return view('etudiant/etape2', compact('id_user'));
 })->name('documents');
-Route::get('/stage', function () {
-    $id_user = session('user_id'); //
+Route::get('/stage',[StageController::class, 'readStage'])->name('Stage');
 
-    return view('etudiant/stage',compact('id_user'));
-});
 Route::get('/apres', function () {
     return view('etudiant/apresstage');
 });

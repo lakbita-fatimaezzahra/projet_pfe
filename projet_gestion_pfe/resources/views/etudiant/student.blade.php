@@ -205,7 +205,7 @@
     <!-- Main Content -->
     <div class="main-content">
         <x-dashnav/>
-        
+
         @if (Session::get('error'))
         <script>
        swal("message", "{{Session::get('error')}}",'error',{
@@ -224,10 +224,10 @@
         <div class="content-header">
             <div>
 
-                <h1>Hi, {{ session('etudiant_data')->last_name ." ".session('etudiant_data')->name }}!</h1>
+                <h1>Hi, {{ $etudiant->last_name ." ".$etudiant->name }}!</h1>
                 <p>Données Personnelles Administratives</p>
             </div>
-            <img src="{{ asset(session('etudiant_data')->photo)}}" alt="Student Photo" class="student-photo">
+            <img src="{{ asset($etudiant->photo)}}" alt="Student Photo" class="student-photo">
         </div>
 
         <div class="details-container">
@@ -235,23 +235,23 @@
                 <table>
                     <tr>
                         <td>Matricule</td>
-                        <td>{{ session('etudiant_data')->matricule }}</td>
+                        <td>{{ $etudiant->matricule }}</td>
                     </tr>
                     <tr>
                         <td>Nom et Prénom</td>
-                        <td>{{ session('etudiant_data')->last_name ." ".session('etudiant_data')->name }} </td>
+                        <td>{{ $etudiant->last_name ." ".$etudiant->name }} </td>
                     </tr>
                     <tr>
                         <td>Filiere</td>
-                        <td>{{ session('etudiant_data')->departement->filieres->first()->libelle}}</td>
+                        <td>{{ $etudiant->departement->filieres->first()->libelle}}</td>
                     </tr>
                     <tr>
                         <td>Groupe</td>
-                        <td>{{ session('etudiant_data')->groupe->libelle }}</td>
+                        <td>{{ $etudiant->groupe->libelle }}</td>
                     </tr>
                     <tr>
                         <td>E-mail EMSI</td>
-                        <td>{{ session('etudiant_data')->email }}</td>
+                        <td>{{ $etudiant->email }}</td>
                     </tr>
 
                 </table>
@@ -266,19 +266,19 @@
                 <table>
                     <tr>
                         <td>N° CNE</td>
-                        <td>{{ session('etudiant_data')->CNE }}</td>
+                        <td>{{ $etudiant->CNE }}</td>
                     </tr>
                     <tr>
                         <td>N° CIN</td>
-                        <td>{{ session('etudiant_data')->Cin}}</td>
+                        <td>{{ $etudiant->Cin}}</td>
                     </tr>
                     <tr>
                         <td>Genre</td>
-                        <td>{{ session('etudiant_data')->genre }}</td>
+                        <td>{{ $etudiant->genre }}</td>
                     </tr>
                     <tr>
                         <td>Date de naissance</td>
-                        <td>{{ session('etudiant_data')->dateN }}</td>
+                        <td>{{ $etudiant->dateN }}</td>
                     </tr>
 
                 </table>

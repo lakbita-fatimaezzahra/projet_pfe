@@ -234,7 +234,7 @@
                 <!-- Deadline -->
                 <div>
                     <label for="deadline">Deadline</label>
-                    <input type="date" id="deadline" name="deadline" required>
+                    <input type="date" id="deadline" name="deadline" >
                 </div>
 
                 <!-- Submit Button -->

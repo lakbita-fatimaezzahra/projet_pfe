@@ -4,13 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Etudiant;
-use App\Models\deadline;
-class studentController extends Controller
+use App\Models\Deadline;
+use App\Models\Stage;
+
+class StudentController extends Controller
 {
     public function index()
     {
- $deadline=deadline::all()->first();
-        return view('etudiant/student',compact('deadline'));
-    }
+        $deadline = Deadline::all()->first();
+        $id_etudiant = session('user_data')->id;
 
+        // Récupérer l'étudiant avec son stage
+        $etudiant = Etudiant::where('id', $id_etudiant)->get()->first();
+
+
+
+        return view('etudiant.student', compact('deadline','etudiant'));
+    }
 }

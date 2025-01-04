@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Stage;
 use App\Models\Etudiant;
-
+use App\Models\deadline;
 class StageController extends Controller
 {
 
@@ -92,6 +92,38 @@ class StageController extends Controller
         }
     }
 
+public function readStage(){
+    $deadline = Deadline::all()->first();
+    $id_etudiant = session('user_data')->id;
 
 
+    // Récupérer l'étudiant avec son stage
+    $etudiant = Etudiant::with('stages')->where('id', $id_etudiant)->first();
+
+    if ($etudiant && $etudiant->stage) {
+        $id_stage = $etudiant->stage->id;
+
+        // Récupérer le stage avec les affectations ayant le rôle 'encadrent'
+        $stage = Stage::with(['affectations' => function ($query) {
+            $query->where('role', 'encadrent');
+        }, 'affectations.prof'])->find($id_stage);
+dd( $stage);
+        if ($stage) {
+            echo "Titre du stage : " . $stage->titre . "<br>";
+            foreach ($stage->affectations as $affectation) {
+                $professeur = $affectation->prof;
+                echo "Nom du professeur : " . $professeur->last_name . "<br>";
+                echo "Rôle dans l'affectation : " . $affectation->role . "<br>";
+            }
+        } else {
+            echo "Aucune affectation trouvée avec le rôle 'encadrent'.";
+        }
+    } else {
+        echo "Étudiant ou stage introuvable.";
+    }
+
+
+    return view('etudiant.student', compact('etudiant','stage'));
 }
+}
+
