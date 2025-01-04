@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -25,6 +25,7 @@ Route::get('/', function () {
 });
 
 // admin
+Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     //etudiant
         Route::get('/readst', [EtudiantController::class, 'index'])->name('etudiants.read');
         Route::get('/etudiants', [EtudiantController::class, 'index'])->name('etudiant.index');
@@ -117,7 +118,7 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset']);
 //prof
 Route::get('/prof',[ProfController::class,'home'])->name('home');
 //encadrent
-Route::get('/Encadrent',[EncadrentController::class,'Encadrent'])->name('Encadrent');
+Route::get('/Encadrent',[EncadrentController::class,'ListStageEncadrent'])->name('Encadrent');
 //rapporteur
 Route::get('/Rapporteur',[RapporteurController::class,'Rapporteur'])->name('Rapporteur');
 //examinateur
