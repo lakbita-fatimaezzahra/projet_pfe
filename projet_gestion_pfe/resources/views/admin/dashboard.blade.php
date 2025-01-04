@@ -6,17 +6,14 @@
     <div class="content-header">
         <div>
             <h1>Hi, {{ session('user_data')->last_name ." ".session('user_data')->name }}!</h1>
-            <p>Données Personnelles Administratives</p>
+            <p>Données Personnelles du administrateur</p>
         </div>
     </div>
 
     <div class="details-container">
         <div class="details-section">
             <table>
-                <tr>
-                    <td>Matricule</td>
-                    <td>M-2025-000654</td>
-                </tr>
+                
                 <tr>
                     <td>Nom et Prénom</td>
                     <td>{{ session('user_data')->last_name ." ".session('user_data')->name }}</td>

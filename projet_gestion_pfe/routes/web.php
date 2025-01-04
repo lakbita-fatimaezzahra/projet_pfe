@@ -1,20 +1,23 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\StageController;
-use App\Http\Controllers\RapportController;
-use App\Http\Controllers\EtudiantController;
-use App\Http\Controllers\ProfesseurController;
-use App\Http\Controllers\DepartementController;
-use App\Http\Controllers\FiliereController;
-use App\Http\Controllers\GroupeController;
+use App\Http\Controllers\etudiant\StageController;
+use App\Http\Controllers\etudiant\RapportController;
+use App\Http\Controllers\etudiant\studentController;
+use App\Http\Controllers\admin\EtudiantController;
+use App\Http\Controllers\admin\ProfesseurController;
+use App\Http\Controllers\admin\DepartementController;
+use App\Http\Controllers\admin\FiliereController;
+use App\Http\Controllers\admin\GroupeController;
 use App\Http\Controllers\prof\ProfController;
+use App\Http\Controllers\prof\EncadrentController;
+use App\Http\Controllers\prof\ExaminateurController;
+use App\Http\Controllers\prof\RapporteurController;
+use App\Http\Controllers\prof\PresidentController;
 use App\Http\Controllers\prof\RespController;
-use App\Http\Controllers\studentController;
-
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,8 +25,9 @@ Route::get('/', function () {
 });
 
 // admin
+Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     //etudiant
-        Route::get('/readst', [EtudiantController::class, 'index'])->name('etudiants.index');
+        Route::get('/readst', [EtudiantController::class, 'index'])->name('etudiants.read');
         Route::get('/etudiants', [EtudiantController::class, 'index'])->name('etudiant.index');
         Route::get('/etudiants/create', [EtudiantController::class, 'create'])->name('etudiant.create');
         Route::post('/etudiants', [EtudiantController::class, 'store'])->name('etudiant.store');
@@ -86,15 +90,14 @@ Route::get('/etap2', function () {
 })->name('documents');
 Route::get('/stage',[StageController::class, 'readStage'])->name('Stage');
 
-Route::get('/apres', function () {
-    return view('etudiant/apresstage');
-});
+Route::get('/apres', [StageController::class,'finStage'])->name('documentsfinal');
 Route::match(['get', 'post'],'/submit-stage', [StageController::class, 'store'])->name('submitStage');
 Route::get('/avantstage', [StageController::class, 'insertstage'])->name('avantStage');
 Route::get('/rapport', [RapportController::class, 'create'])->name('rapport.create');
 Route::post('/rapport', [RapportController::class, 'submitRapport'])->name('submitRapport');
 Route::post('/Stage_documents', [StageController::class, 'submitDocuments'])->name('submitDocuments');
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::match(['get', 'post'],'/Stage_documents_fin', [StageController::class, 'submitDocumentsfin'])->name('submitDocumentsfin');
+
 Route::get('/student', [studentController::class, 'index'])->name('student');
 // Login Routes
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('Showlogin');
@@ -107,11 +110,24 @@ Route::get('password/reset/{token}', [ResetPasswordController::class, 'showReset
 Route::post('password/reset', [ResetPasswordController::class, 'reset']);
 
 //prof
-Route::get('/home',[ProfController::class,'home'])->name('home');
-
+Route::get('/prof',[ProfController::class,'home'])->name('home');
+//encadrent
+Route::get('/Encadrent',[EncadrentController::class,'ListStageEncadrent'])->name('Encadrent');
+//rapporteur
+Route::get('/Rapporteur',[RapporteurController::class,'Rapporteur'])->name('Rapporteur');
+//examinateur
+Route::get('/Examinateur',[ExaminateurController::class,'Examinateur'])->name('Examinateur');
+//president
+Route::get('/President',[PresidentController::class,'President'])->name('President');
 //responsable
-
 Route::get('responsable/responsable', [RespController::class, 'responsable'])->name('responsable');
+//list des stagiaires
 Route::get('responsable/liststage', [RespController::class, 'liststage'])->name('liststage');
-Route::get('/assign-prof/{stageId}', [RespController::class, 'showAssignForm'])->name('showAssignForm');
-Route::post('/assign-prof', [RespController::class, 'matchAndAssign'])->name('matchAndAssign');
+Route::get('/assign-stage/{stageId}', [RespController::class, 'showAssignForm'])->name('showAssignForm');
+Route::post('/assign-stage', [RespController::class, 'matchAndAssign'])->name('matchAndAssign');
+Route::get('responsable/listrapport', [RespController::class, 'listrapport'])->name('listrapport');
+//list des rapports
+Route::get('/assign-rapport/{stageId}', [RespController::class, 'showAssignFormRapport'])->name('showAssignFormRapport');
+Route::match(['get', 'post'],'/assign-rapport', [RespController::class, 'matchAndAssignRapport'])->name('matchAndAssignRapport');
+Route::get('responsable/listrapport', [RespController::class, 'listrapport'])->name('listrapport');
+

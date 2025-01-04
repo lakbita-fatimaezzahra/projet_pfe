@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
     <title>Student Dashboard - Avant stage</title>
     <style>
         body {
@@ -274,7 +277,12 @@
     color: #007035;
     border: 1px solid #007035;
 }
-
+.swal-modal {
+        width: 300px !important; /* Largeur de la boîte */
+        padding: 20px !important; /* Ajout de padding */
+        font-size: 16px;
+        height: 350px !important;
+    }
     </style>
 </head>
 <body>
@@ -284,7 +292,17 @@
 
     <!-- Main Content -->
     <div class="main-content">
-
+        @if (Session::get('error'))
+        <script>
+       swal("message", "{{Session::get('error')}}",'error',{
+        button:true,
+        button:"OK",
+        timer:3000,
+        dangerMode:true,
+        className:"swal-modal",
+       })
+        </script>
+        @endif
 
         <x-dashnav/>
 
@@ -303,19 +321,19 @@
         <!-- Form Container -->
         <div class="form-container">
             @if(session('error'))
-    <div style="color: red; font-weight: bold;">
-        {{ session('error') }}
-    </div>
-@endif
-@if($errors->any())
-    <div style="color: red; font-weight: bold;">
-        <ul>
-            @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+            <div style="color: red; font-weight: bold;">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if($errors->any())
+            <div style="color: red; font-weight: bold;">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
             <form method="POST" action="{{ route('submitStage') }}">
                 @csrf
                 <input type="hidden"  name="idStudent" value='{{$id_user}}'>
@@ -343,7 +361,7 @@
                     <label for="type_stage">Type de stage</label>
                     <select id="type_stage" name="type_stage" disabled>
                         <option value="PFE">PFE</option>
-                     
+
                     </select>
                 </div>
 

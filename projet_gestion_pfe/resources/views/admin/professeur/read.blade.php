@@ -152,7 +152,7 @@
                         <td>{{ $prof->skills }}</td>
                         <td>{{ $prof->role }}</td>
                         <td>
-                            <img src="{{ asset($prof->photo) }}" alt="Photo " width="50" height="50">
+                            <img src="{{ asset($prof->photo) }}" alt="Photo " width="45" height="45">
                         </td>
                         <td>
                         <a href="{{ route('admin.professeur.update', $prof->id) }}" class="btn btn-primary btn-sm">Modifier</a>

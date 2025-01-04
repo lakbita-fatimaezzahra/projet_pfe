@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
 use App\Models\Prof;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
 
 class ProfesseurController extends Controller
 {
@@ -17,6 +18,11 @@ class ProfesseurController extends Controller
     public function create()
     {
         return view('admin.professeur.create');
+    }
+    public function dashboard()
+    {
+        
+        return view('admin.dashboard.read');
     }
 
 

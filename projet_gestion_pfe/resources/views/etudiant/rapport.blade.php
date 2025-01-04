@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-    <title>Student Dashboard - Rapport</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <title>Student Dashboard - Rapport</title>
     <style>
          body {
             margin: 0;
@@ -112,7 +113,7 @@
             justify-content: space-between;
             padding: 20px;
             align-items: center;
-            margin-top: 20px;
+
         }
 
         .content-header h1 {
@@ -300,41 +301,85 @@
             display: block;
             margin-top: 20px;
         }
+        .form-container {
+            font-family: Arial, sans-serif;
+
+        }
+
+        .form-container label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .form-container input[name="deadline-rapport"] {
+            margin-top: 5px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .text-danger {
+            color: red;
+            font-weight: bold;
+        }
+        .expired-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none; /* Caché par défaut */
+        }
+        .swal-modal {
+        width: 300px !important; /* Largeur de la boîte */
+        padding: 20px !important; /* Ajout de padding */
+        font-size: 16px;
+        height: 350px !important;
+    }
     </style>
 </head>
 <body>
     <!-- Sidebar -->
     <x-sidebar />
 
-    @if (Session::get('error'))
-    <script>
-   swal("message", "{{Session::get('error')}}",'error',{
-    button:true,
-    button:"OK",
-    timer:3000,
-    dangerMode:true,
-   })
-    </script>
-    @endif
-    @if (Session::get('success'))
-    <script>
-   swal("message", "{{Session::get('success')}}",'success',{
-    button:true,
-    button:"OK",
-    timer:3000,
-    dangerMode:true,
-   })
-    </script>
-    @endif
+
     <!-- Main Content -->
     <div class="main-content">
         <x-dashnav/>
 
         <div class="content-header">
             <h1>Rapport Information</h1>
+            <div class="form-container">
+                <label for="deadline-rapport">Deadline - Dépôt de Rapport :</label>
+                <input type="date" id="deadline-rapport" name="deadline_rapport" class="text-danger" value="{{ $deadline->date_deadline_rapport }}">
+            </div>
         </div>
+        @if (Session::has('error'))
+    <script>
+        swal("Message", "{{ Session::get('error') }}", 'error', {
+            button: true,
+            button: "OK",
+            timer: 3000,
+            dangerMode: true,
+            className: "swal-modal",
+        });
+    </script>
+@endif
 
-        <!-- Form Container -->
+@if (Session::has('success'))
+    <script>
+        swal("Message", "{{ Session::get('success') }}", 'success', {
+            button: true,
+            button: "OK",
+            timer: 3000,
+            dangerMode: true,
+            className: "swal-modal",
+        });
+    </script>
+@endif
+
+<!-- Form Container -->
         <div class="form-container">
             <form method="POST" action="{{ route('submitRapport') }}" enctype="multipart/form-data">
                 @csrf
@@ -345,14 +390,14 @@
                 </div>
                 <div>
                     <label for="date">Date</label>
-                    <input type="date" id="date" name="date" required>
+                    <input type="date" id="date" name="date" required >
                 </div>
                 <div>
                     <label for="status">Status</label>
-                    <select id="status" name="status" required>
-                        <option value="valid">initial</option>
-                        <option value="valid">valid</option>
-                        <option value="non_valid">non valid</option>
+                    <select id="status" name="status"  disabled>
+                        <option value="En cours">En cours</option>
+                        <option value="Correger">Correger</option>
+                        <option value="valider">Valider</option>
                     </select>
                 </div>
                 <!-- Notes Link -->
@@ -372,17 +417,24 @@
                         <input type="file" name="contenu" id="contenu" class="file-input" accept=".docx,.doc">
                     </div>
                 </div>
-                <div>
-                    <label for="deadline">Deadline</label>
-                    <input type="date" id="deadline" name="deadline" >
-                </div>
+<br><br>
+
                 <div>
                     <button type="submit">Submit Rapport</button>
                 </div>
             </form>
         </div>
     </div>
+    <script>
+        // Obtenir la date actuelle
+        const today = new Date();
 
+        // Formater la date en 'YYYY-MM-DD'
+        const formattedDate = today.toISOString().split('T')[0];
+        document.getElementById('date').value = formattedDate;
+
+
+    </script>
     <script>
         // Drag-and-drop functionality
         const dropArea = document.getElementById('drag-drop-area');

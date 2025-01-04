@@ -16,6 +16,36 @@
             height: 100vh;
         }
 
+        .form-container {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .form-container label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .form-container input[type="date"] {
+            margin-top: 5px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .text-danger {
+            color: red;
+            font-weight: bold;
+        }
+        .expired-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none; /* Caché par défaut */
+        }
         /* Sidebar */
         .sidebar {
             width: 250px;
@@ -196,7 +226,12 @@
             border-radius: 50px;
             margin-top: 20px;
         }
-
+        .swal-modal {
+        width: 300px !important; /* Largeur de la boîte */
+        padding: 20px !important; /* Ajout de padding */
+        font-size: 16px;
+        height: 350px !important;
+    }
     </style>
 </head>
 <body>
@@ -213,20 +248,26 @@
         button:"OK",
         timer:3000,
         dangerMode:true,
+        className:"swal-modal",
        })
         </script>
         @endif
-        <div>
-            <h2>Deadlines :</h2>
-                {{-- <p>Deadline de dépôt du stage : {{ $deadline->date_deadline_stage}}</p> --}}
-                {{-- <p>Deadline de dépôt du rapport : {{ $deadline->date_deadline_rapport }}</p> --}}
-           </div>
+
         <div class="content-header">
             <div>
+                <div class="form-container">
+                    <label for="deadline-stage">Deadline - Dépôt de Stage :</label>
+                    <input type="date" id="deadline-stage" name="deadline_stage" class="text-danger" value="{{ $deadline->date_deadline_stage }}">
+                    <span id="expired-stage" class="expired-message">Délai expiré</span>
+                    <label for="deadline-rapport">Deadline - Dépôt de Rapport :</label>
+                    <input type="date" id="deadline-rapport" name="deadline_rapport" class="text-danger" value="{{ $deadline->date_deadline_rapport }}">
+                    <span id="expired-rapport" class="expired-message">Délai expiré</span>
+                </div>
 
                 <h1>Hi, {{ $etudiant->last_name ." ".$etudiant->name }}!</h1>
                 <p>Données Personnelles Administratives</p>
             </div>
+
             <img src="{{ asset($etudiant->photo)}}" alt="Student Photo" class="student-photo">
         </div>
 
@@ -290,10 +331,29 @@
             </div>
         </div>
 
-        <!-- Main study button -->
+        <!-- Main study button
         <div class="button-wrapper">
             <a href="#" class="btn study-btn">Let's Study →</a>
-        </div>
+        </div> -->
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Obtenir les valeurs des deadlines
+            const deadlineStage = document.getElementById('deadline-stage').value;
+            const deadlineRapport = document.getElementById('deadline-rapport').value;
+
+            // Obtenir la date actuelle
+            const today = new Date().toISOString().split('T')[0];
+
+            // Vérifier les deadlines et afficher le message si nécessaire
+            if (today == deadlineStage) {
+                document.getElementById('expired-stage').style.display = 'block';
+            }
+
+            if (today == deadlineRapport) {
+                document.getElementById('expired-rapport').style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>

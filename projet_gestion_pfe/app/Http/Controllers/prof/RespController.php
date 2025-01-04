@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\affectation;
 use App\Models\Stage;
 use App\Models\Prof;
+use App\Models\Rapport;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -27,73 +28,147 @@ class RespController extends Controller
     {
         // Fetch stages with joins using Eloquent
         $data = Stage::join('etudiants', 'stages.etudiant_id', '=', 'etudiants.id')
-                    ->join('departements', 'etudiants.departement_id', '=', 'departements.id')
-                    ->select(
-                        'stages.id as stage_id',   // Select stage id
-                        'stages.sujet as stage_sujet',
-                        'stages.Skills as stage_Skills',
-                        'etudiants.name as etudiant_name',
-                        'departements.libelle as departements_libelle'
-                    )
-                    ->get();  // Get the results as Eloquent models
-    
+            ->join('departements', 'etudiants.departement_id', '=', 'departements.id')
+            ->select(
+                'stages.id as stage_id',   // Select stage id
+                'stages.sujet as stage_sujet',
+                'stages.Skills as stage_Skills',
+                'etudiants.name as etudiant_name',
+                'departements.libelle as departements_libelle'
+            )
+            ->get();  // Get the results as Eloquent models
+
         // Fetch professors using Eloquent
         $profs = Prof::all();
-    
+
         // Pass data to view
         return view('responsable.liststage', compact('data', 'profs'));
     }
+    public function listrapport()
+    {
+        $data = Rapport::join('stages', 'rapports.stage_id', '=', 'stages.id')
+            ->join('etudiants', 'stages.etudiant_id', '=', 'etudiants.id')
+            ->join('departements', 'etudiants.departement_id', '=', 'departements.id')
+            ->select(
+                'stages.id as stage_id',
+                'rapports.titre as rapport_titre',  // Rapport subject (titre)
+                'etudiants.name as etudiant_name', // Student name
+                'departements.libelle as departements_libelle' // Department name
+            )
+            ->get(); // Get the results as Eloquent models
+
+        // Fetch professors using Eloquent
+        $profs = Prof::all();
+
+        // Pass data to view
+        return view('responsable.listrapport', compact('data', 'profs'));
+    }
 
     public function showAssignForm($stageId)
-{
-    try {
-        $stage = Stage::find($stageId);
+    {
+        try {
+            $stage = Stage::find($stageId);
 
-        $matchingProfs = Prof::where('skills', 'LIKE', "%{$stage->Skills}%")->get();
+            $matchingProfs = Prof::where('skills', 'LIKE', "%{$stage->Skills}%")->get();
 
-        return view('responsable.match', compact('stage', 'matchingProfs'));
-    } catch (\Exception $e) {
-        Log::error("Error in showAssignForm: " . $e->getMessage());
-        return response()->json(['message' => 'An error occurred.', 'error' => $e->getMessage()], 500);
+            return view('responsable.match', compact('stage', 'matchingProfs'));
+        } catch (\Exception $e) {
+            Log::error("Error in showAssignForm: " . $e->getMessage());
+            return response()->json(['message' => 'An error occurred.', 'error' => $e->getMessage()], 500);
+        }
+    }
+    public function showAssignFormRapport($stageId)
+    {
+        try {
+            $stage = Stage::find($stageId);
+
+            $matchingProfs = Prof::where('skills', 'LIKE', "%{$stage->Skills}%")->get();
+
+            return view('responsable.rappmatch', compact('stage', 'matchingProfs'));
+        } catch (\Exception $e) {
+            Log::error("Error in showAssignForm: " . $e->getMessage());
+            return response()->json(['message' => 'An error occurred.', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function matchAndAssign(Request $request)
+    {
+        try {
+            // Validate the incoming request
+            $request->validate([
+                'prof_id' => 'required|exists:profs,id',
+                'role' => 'required|in:encadrent',
+                'stage_id' => 'required|exists:stages,id',
+            ]);
+
+            $profId = $request->input('prof_id');
+            $role = $request->input('role');
+            $stageId = $request->input('stage_id');
+
+            // Check if a record already exists for this stage_id and role
+            $existingAffectation = Affectation::where('stage_id', $stageId)
+                ->where('role', $role)
+                ->first();
+
+            if ($existingAffectation) {
+                return view('responsable.assignError', compact('role'));
+            }
+
+            // Proceed to create the new affectation
+            Affectation::create([
+                'prof_id' => $profId,
+                'stage_id' => $stageId,
+                'role' => $role,
+            ]);
+
+            return view('responsable.assignSuccess');
+        } catch (\Exception $e) {
+            // Log and handle the exception
+            Log::error("Error in matchAndAssign: " . $e->getMessage());
+            return response()->json([
+                'message' => 'An error occurred.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function matchAndAssignRapport(Request $request)
+    {
+        try {
+            // Validate the incoming request
+            $request->validate([
+                'prof_id' => 'required|exists:profs,id',
+                'role' => 'required|in:rapporteur,examinateur,president',
+                'stage_id' => 'required|exists:stages,id',
+            ]);
+
+            $profId = $request->input('prof_id');
+            $role = $request->input('role');
+            $stageId = $request->input('stage_id');
+
+            // Check if a record already exists for this stage_id and role
+            $existingAffectation = Affectation::where('stage_id', $stageId)
+                ->where('role', $role)
+                ->first();
+
+            if ($existingAffectation) {
+                return view('responsable.assignErrorrapport', compact('role'));
+            }
+
+            // Proceed to create the new affectation
+            Affectation::create([
+                'prof_id' => $profId,
+                'stage_id' => $stageId,
+                'role' => $role,
+            ]);
+
+            return view('responsable.assignSuccessrapport');
+        } catch (\Exception $e) {
+            // Log and handle the exception
+            Log::error("Error in matchAndAssign: " . $e->getMessage());
+            return response()->json([
+                'message' => 'An error occurred.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }
-
-public function matchAndAssign(Request $request)
-{
-    try {
-        $request->validate([
-            'prof_id' => 'required|exists:profs,id',
-            'role' => 'required|in:encadrent,rapporteur,examinateur,president',
-            'stage_id' => 'required|exists:stages,id',
-        ]);
-
-        
-        $prof = Prof::find($request->input('prof_id'));
-        $stage = Stage::find($request->input('stage_id'));
-
-        
-        Affectation::create([
-            'prof_id' => $prof->id,
-            'stage_id' => $stage->id,
-            'role' => $request->input('role'),
-        ]);
-
-        return view('responsable.assignSuccess');
-
-    } catch (\Exception $e) {
-        
-        Log::error("Error in matchAndAssign: " . $e->getMessage());
-        return response()->json(['message' => 'An error occurred.', 'error' => $e->getMessage()], 500);
-    }
-}
-
-
-    
-    }
-    
-    
-    
-    
-
-   
-
