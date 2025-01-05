@@ -1,4 +1,4 @@
-@extends('layouts.admin') 
+@extends('layouts.admin')
 
 @section('title', 'Liste des Étudiants')
 
@@ -33,6 +33,19 @@
             border-color: #1e7e34;
         }
 
+        .btn-primary {
+            background-color: #007bff; /* Couleur bleue */
+            border-color: #007bff;
+            font-size: 1rem;
+            padding: 8px 20px;
+            border-radius: 5px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
         .table {
             width: 100%;
             background-color: #ffffff;
@@ -61,42 +74,6 @@
             background-color: #f8f9fa;
         }
 
-        .btn-primary, .btn-danger {
-            font-size: 0.9rem;
-            padding: 8px 15px;
-            border-radius: 5px;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-
-        .btn-primary:hover {
-            background-color: #0069d9;
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-            border-color: #dc3545;
-        }
-
-        .btn-danger:hover {
-            background-color: #bd2130;
-        }
-
-        .text-end {
-            text-align: end;
-        }
-
-        form {
-            display: inline-block;
-            margin: 0;
-        }
-
-        .text-end {
-            margin-bottom: 30px;
-        }
         /* Message de succès */
         .alert-success {
             color: #155724;
@@ -106,7 +83,9 @@
             margin-bottom: 20px;
             border-radius: 5px;
         }
+
     </style>
+
     @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -116,6 +95,7 @@
         </ul>
     </div>
     @endif
+
     <div class="container mt-5">
         <h1 class="mb-4">Liste des étudiants</h1>
 
@@ -126,19 +106,18 @@
             </div>
         @endif
 
-            <!-- Bouton Ajouter et Importer -->
-            <div class="text-end mb-3">
-                <a href="{{ route('etudiant.create') }}" class="btn btn-success">Ajouter un étudiant</a>
-
-                <!-- Formulaire d'importation CSV -->
-                {{-- <form action="{{ route('etudiant.import') }}" method="POST" enctype="multipart/form-data" style="display:inline-block;">
-                    @csrf
-                    <div style="display: inline-block; margin-right: 10px;">
-                        <input type="file" name="csv_file" accept=".csv" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Importer</button>
-                </form> --}}
-            </div>
+        <!-- Bouton Ajouter et Importer -->
+        <div class="text-end mb-3">
+            <a href="{{ route('etudiant.create') }}" class="btn btn-success">Ajouter un étudiant</a>
+            <!-- Bouton Importer -->
+            <form action="{{ route('etudiant.import') }}" method="POST" enctype="multipart/form-data" class="d-inline">
+                @csrf
+                <label for="csvFile" class="btn btn-primary" style="cursor: pointer;">
+                    <i class="fas fa-file-import"></i> Importer un fichier CSV
+                </label>
+                <input type="file" id="csvFile" name="csvFile" accept=".csv" onchange="this.form.submit()" style="display: none;">
+            </form>
+        </div>
 
         <!-- Tableau des étudiants -->
         <table class="table table-bordered table-striped">
@@ -176,18 +155,23 @@
                         <td>
                             <img src="{{ asset($etudiant->photo) }}" alt="Photo de l'étudiant" width="45" height="45">
                         </td>
-                        <td>
-                            <a href="{{ route('etudiant.edit', $etudiant->id) }}" class="btn btn-primary btn-sm">Modifier</a>
+                        <td class="text-center">
+                            <!-- Lien pour modifier avec tooltip -->
+                            <a href="{{ route('etudiant.edit', $etudiant->id) }}" class="text-decoration-none text-primary action-icon" 
+                            title="Modifier" data-bs-toggle="tooltip" data-bs-placement="top">
+                                <i class="fas fa-pen"></i>
+                            </a>
+
+                            <!-- Formulaire pour supprimer avec tooltip -->
                             <form action="{{ route('etudiant.destroy', $etudiant->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?')">
-                                    Supprimer
+                                <button type="submit" class="border-0 bg-transparent text-danger action-icon" title="Supprimer" data-bs-toggle="tooltip" 
+                                data-bs-placement="top"  onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?')">
+                                    <i class="fas fa-trash"></i>
                                 </button>
                             </form>
                         </td>
-
 
                     </tr>
                 @endforeach

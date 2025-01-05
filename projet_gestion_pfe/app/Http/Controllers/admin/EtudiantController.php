@@ -7,6 +7,8 @@ use App\Models\Departement;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -35,8 +37,8 @@ class EtudiantController extends Controller
         'username' => 'required|string|max:255|unique:etudiants',
         'email' => ['required', 'email', 'max:255', 'unique:etudiants', 'regex:/^[a-zA-Z0-9._%+-]+@emsi-uca\.ma$/'],  // Email avec l'extension @emsi-uca.ma
         'dateN' => 'required|date',
-        'CNE' => 'required|string|max:255',
-        'Cin' => 'required|string|max:255',
+        'CNE' => 'required|string|max:255|unique:etudiants',
+        'Cin' => 'required|string|max:255|unique:etudiants',
         'genre' => 'required|in:male,female',
         'matricule' => 'required|string|max:255|unique:etudiants',
         'departement_id' => 'required|exists:departements,id',
@@ -64,45 +66,82 @@ class EtudiantController extends Controller
     return redirect()->route('admin.etudiant.read')->with('success', 'Étudiant ajouté avec succès.');
 }
 
+//importation de fichiers csv
 
-
-public function import(Request $request)
+    public function import(Request $request)
     {
-        // Validation du fichier CSV
+        // Validation du fichier
         $request->validate([
-            'csv_file' => 'required|mimes:csv,txt|max:2048', // Limiter la taille et le type de fichier
+            'csvFile' => 'required|file|mimes:csv,txt|max:2048',
         ]);
 
-        // Récupération du fichier CSV
-        $file = $request->file('csv_file');
-        
-        // Ouvrir le fichier et le lire ligne par ligne
-        $csvData = array_map('str_getcsv', file($file));
-        
-        // On suppose que le CSV a des en-têtes, vous pouvez ajuster les indices en fonction de votre CSV
-        foreach ($csvData as $row) {
-            if ($row[0] == 'Nom') continue; // Ignorer les en-têtes (si nécessaire)
-            
-            // Création de l'étudiant à partir des données CSV
-            Etudiant::create([
-                'name' => $row[0],
-                'last_name' => $row[1],
-                'username' => $row[2],
-                'email' => $row[3],
-                'dateN' => $row[4],
-                'CNE' => $row[5],
-                'Cin' => $row[6],
-                'genre' => $row[7],
-                'matricule' => $row[8],
-                'departement_id' => $row[9],
-                'groupe_id' => $row[10],
-                // Vous devrez gérer l'importation des photos selon votre logique
-                'photo' => 'default-photo.jpg', // Par défaut ou logique spécifique pour les photos
-                'password' => Hash::make('defaultpassword'), // Mot de passe par défaut ou spécifique
-            ]);
+        // Lire le fichier CSV
+        if ($request->hasFile('csvFile')) {
+            $file = $request->file('csvFile');
+            $filePath = $file->getRealPath();
+            $data = array_map('str_getcsv', file($filePath));
+
+            // Vérifier si le fichier contient des données
+            if (count($data) > 1) {
+                // La première ligne contient les en-têtes
+                $header = $data[0];
+                unset($data[0]);
+
+                DB::beginTransaction();
+
+                try {
+                    foreach ($data as $row) {
+                        $row = array_combine($header, $row);
+
+                        // Validation des données
+                        $validator = Validator::make($row, [
+                            'name' => 'required|string|max:255',
+                            'last_name' => 'required|string|max:255',
+                            'username' => 'required|string|max:255|unique:etudiants',
+                            'email' => 'required|email|max:255|unique:etudiants',
+                            'dateN' => 'required|date',
+                            'CNE' => 'required|string|max:255|unique:etudiants',
+                            'Cin' => 'required|string|max:255|unique:etudiants',
+                            'genre' => 'required|in:male,female',
+                            'matricule' => 'required|string|max:255|unique:etudiants',
+                            'departement_id' => 'required|exists:departements,id',
+                            'groupe_id' => 'required|exists:groupes,id',
+                        ]);
+
+                        if ($validator->fails()) {
+                            throw new \Exception('Erreur de validation des données : ' . implode(', ', $validator->errors()->all()));
+                        }
+
+                        // Insérer les données dans la base
+                        Etudiant::create([
+                            'name' => $row['name'],
+                            'last_name' => $row['last_name'],
+                            'username' => $row['username'],
+                            'email' => $row['email'],
+                            'dateN' => $row['dateN'],
+                            'CNE' => $row['CNE'],
+                            'Cin' => $row['Cin'],
+                            'genre' => $row['genre'],
+                            'matricule' => $row['matricule'],
+                            'departement_id' => $row['departement_id'],
+                            'groupe_id' => $row['groupe_id'],
+                            'photo' => 'default.png', // Par défaut
+                        ]);
+                    }
+
+                    DB::commit();
+                    return redirect()->route('etudiant.index')->with('success', 'Données importées avec succès !');
+
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                    return redirect()->back()->withErrors('Erreur : ' . $e->getMessage());
+                }
+            } else {
+                return redirect()->back()->withErrors('Le fichier CSV est vide.');
+            }
         }
 
-        return redirect()->route('etudiant.index')->with('success', 'Les étudiants ont été importés avec succès.');
+        return redirect()->back()->withErrors('Erreur lors de l\'importation.');
     }
 
 

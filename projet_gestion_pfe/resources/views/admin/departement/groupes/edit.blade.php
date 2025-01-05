@@ -68,6 +68,9 @@
         width: 10%;
         transition: background-color 0.3s ease;
     }
+    .mt-4 {
+            margin-top: 20px; /* Espace supplémentaire entre le champ de photo et les boutons */
+        }
 </style>
 
 <div class="container mt-5">
@@ -80,6 +83,9 @@
             <label for="libelle" class="form-label">Nom du Groupe</label>
             <input type="text" name="libelle" class="form-control" value="{{ $groupe->libelle }}" required>
         </div>
+        
+        <div class="mt-4"></div>
+
         <div class="button-container mt-3">
             <button type="submit" class="btn btn-success">Modifier</button>
             <a href="{{ route('admin.groupes.index', $filiere->id) }}" class="btn btn-danger">Annuler</a>

@@ -32,6 +32,19 @@
             background-color: #218838;
             border-color: #1e7e34;
         }
+        
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            font-size: 1rem;
+            padding: 8px 20px;
+            border-radius: 5px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
 
         .table {
             width: 100%;
@@ -61,42 +74,6 @@
             background-color: #f8f9fa;
         }
 
-        .btn-primary, .btn-danger {
-            font-size: 0.9rem;
-            padding: 8px 15px;
-            border-radius: 5px;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-
-        .btn-primary:hover {
-            background-color: #0069d9;
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-            border-color: #dc3545;
-        }
-
-        .btn-danger:hover {
-            background-color: #bd2130;
-        }
-
-        .text-end {
-            text-align: end;
-        }
-
-        form {
-            display: inline-block;
-            margin: 0;
-        }
-
-        .text-end {
-            margin-bottom: 30px;
-        }
         /* Message de succès */
         .alert-success {
             color: #155724;
@@ -119,10 +96,17 @@
         @endif
 
         <!-- Bouton Ajouter -->
-        <div class="text-end">
-            <a href="{{ route('admin.professeur.create') }}" class="btn btn-success mb-3">Ajouter un professeur</a>
+        <div class="text-end mb-3" >
+           <a href="{{ route('admin.professeur.create') }}" class="btn btn-success ">Ajouter un professeur</a>
+            <!-- Bouton Importer -->
+            <form action="{{ route('admin.professeur.import') }}" method="POST" enctype="multipart/form-data" class="d-inline">
+                @csrf
+                <label for="csvFile" class="btn btn-primary" style="cursor: pointer;">
+                    <i class="fas fa-file-import"></i> Importer un fichier CSV
+                </label>
+                <input type="file" id="csvFile" name="csvFile" accept=".csv" onchange="this.form.submit()" style="display: none;">
+            </form>
         </div>
-        
 
         <!-- Tableau des professeurs -->
         <table class="table table-bordered table-striped">
@@ -152,16 +136,31 @@
                         <td>{{ $prof->skills }}</td>
                         <td>{{ $prof->role }}</td>
                         <td>
-                            <img src="{{ asset($prof->photo) }}" alt="Photo " width="45" height="45">
+                            <img src="{{ asset($prof->photo) }}" alt="Photo de {{ $prof->name }}" width="45" height="45">
                         </td>
-                        <td>
-                        <a href="{{ route('admin.professeur.update', $prof->id) }}" class="btn btn-primary btn-sm">Modifier</a>
-                        <form action="{{ route('admin.professeur.delete', $prof->id) }}" method="POST" class="d-inline">
+                        <td class="text-center">
+                            <!-- Lien pour modifier avec tooltip -->
+                            <a href="{{ route('admin.professeur.update', $prof->id) }}" 
+                            class="text-decoration-none text-primary action-icon" 
+                            title="Modifier" 
+                            data-bs-toggle="tooltip" 
+                            data-bs-placement="top">
+                                <i class="fas fa-pen"></i>
+                            </a>
+
+                            <!-- Formulaire pour supprimer avec tooltip -->
+                            <form action="{{ route('admin.professeur.delete', $prof->id) }}" 
+                                method="POST" 
+                                class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce professeur ?')">
-                                    Supprimer
+                                <button type="submit" 
+                                        class="border-0 bg-transparent text-danger action-icon" 
+                                        title="Supprimer" 
+                                        data-bs-toggle="tooltip" 
+                                        data-bs-placement="top" 
+                                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce professeur ?')">
+                                    <i class="fas fa-trash"></i>
                                 </button>
                             </form>
                         </td>

@@ -69,7 +69,7 @@
         font-size: 1rem;
         padding: 10px 20px;
         border-radius: 5px;
-        width: 5%; /* Assurez-vous que les boutons ont la même taille */
+        width: 10%; /* Assurez-vous que les boutons ont la même taille */
         transition: background-color 0.3s ease;
     }
 
@@ -78,12 +78,15 @@
         border-color: #bd2130;
     }
 
+    /* Disposition des boutons sur la même ligne */
     .button-container {
-        margin-top: 30px; 
         display: flex;
         justify-content: center;
-        gap: 10px;
+        gap: 10px; /* Espacement entre les boutons */
     }
+    .mt-4 {
+            margin-top: 20px; /* Espace supplémentaire entre le champ de photo et les boutons */
+        }
 
 </style>
 
@@ -96,6 +99,9 @@
             <label for="libelle" class="form-label">Nom du Groupe</label>
             <input type="text" name="libelle" class="form-control" placeholder="Nom du Groupe" required>
         </div>
+
+        <div class="mt-4"></div>
+
         <div class="button-container mt-3">
             <button type="submit" class="btn btn-success">Ajouter</button>
             <a href="{{ route('admin.groupes.index', $filiere->id) }}" class="btn btn-danger">Annuler</a>

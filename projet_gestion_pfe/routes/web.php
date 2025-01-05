@@ -45,6 +45,9 @@ Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard
         Route::get('/admin/professeur/{id}/update', [ProfesseurController::class, 'edit'])->name('admin.professeur.update');
         Route::put('/admin/professeur/{id}', [ProfesseurController::class, 'update'])->name('admin.professeur.update.submit');
         Route::delete('professeurs/{id}', [ProfesseurController::class, 'destroy'])->name('admin.professeur.delete');
+
+        //Importer fichier csv
+        Route::post('admin/professeur/import', [ProfesseurController::class, 'import'])->name('admin.professeur.import');
     //departement
         Route::prefix('admin')->name('admin.')->group(function () {
             Route::resource('departement', DepartementController::class);
