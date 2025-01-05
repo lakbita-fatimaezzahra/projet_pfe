@@ -264,8 +264,8 @@
                     <span id="expired-rapport" class="expired-message">Délai expiré</span>
                 </div>
 
-                <h1>Hi, {{ $etudiant->last_name ." ".$etudiant->name }}!</h1>
-                <p>Données Personnelles Administratives</p>
+                <h1>Salut, {{ $etudiant->last_name ." ".$etudiant->name }}!</h1>
+                <p>Données Personnelles</p>
             </div>
 
             <img src="{{ asset($etudiant->photo)}}" alt="Student Photo" class="student-photo">
