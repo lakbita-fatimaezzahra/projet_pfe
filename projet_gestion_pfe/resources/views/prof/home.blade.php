@@ -5,7 +5,7 @@
 @section('content')
     <div class="content-header">
         <div>
-            <h1>Hi, {{ session('user_data')->last_name ." ".session('user_data')->name }}!</h1>
+            <h1>Salut, {{ session('user_data')->last_name ." ".session('user_data')->name }}!</h1>
             <p>Données Personnelles du Professeur</p>
         </div>
     </div>
