@@ -307,18 +307,7 @@
                     <td>Encadrant : {{$encadrent}}</td>
                     <td></td>
                 </tr>
-                <tr>
-                    <td>Rapporteur : {{$rapporteur}}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Examinateur : {{$examinateur}}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>President : {{$president}}</td>
-                    <td></td>
-                </tr>
+            
 
             </table>
 

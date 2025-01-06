@@ -118,7 +118,7 @@
             margin: 0;
         }
 
-        .student-photo {
+        .prof-photo {
             width: 120px;
             height: 120px;
             border-radius: 50%;
@@ -285,7 +285,7 @@
     <!-- Main Content -->
     <div class="main-content">
         <x-dashnav />
-        
+
         <div class="content">
             @yield('content')
         </div>

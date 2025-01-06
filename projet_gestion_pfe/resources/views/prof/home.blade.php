@@ -8,12 +8,14 @@
             <h1>Salut, {{ session('user_data')->last_name ." ".session('user_data')->name }}!</h1>
             <p>Données Personnelles du Professeur</p>
         </div>
+        <img src="{{ asset(session('user_data')->photo)}}" alt="prof Photo" class="prof-photo">
+
     </div>
 
     <div class="details-container">
         <div class="details-section">
             <table>
-                
+
                 <tr>
                     <td>Nom et Prénom</td>
                     <td>{{ session('user_data')->last_name ." ".session('user_data')->name }}</td>

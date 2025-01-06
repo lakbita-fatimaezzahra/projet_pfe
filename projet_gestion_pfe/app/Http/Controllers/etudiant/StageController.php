@@ -119,22 +119,10 @@ public function readStage(){
                             ->with('prof')
                             ->first()?->prof?->name;
 
-    $rapporteur = Affectation::where('stage_id', $id_stage)
-                             ->where('role', 'rapporteur')
-                             ->with('prof')
-                             ->first()?->prof?->name;
 
-    $examinateur = Affectation::where('stage_id', $id_stage)
-                              ->where('role', 'examinateur')
-                              ->with('prof')
-                              ->first()?->prof?->name;
 
-    $president = Affectation::where('stage_id', $id_stage)
-                            ->where('role', 'president')
-                            ->with('prof')
-                            ->first()?->prof?->name;
 
-    return view('etudiant/stage',compact('stage','encadrent','rapporteur','examinateur','president','deadline'));
+    return view('etudiant/stage',compact('stage','encadrent','deadline'));
 }else {
 return back()->with("error","vous n avez pas enregistrer votre stage");
 }
@@ -157,17 +145,9 @@ function finStage() {
 
         $stage = Stage::where('etudiant_id', $request->idStudent)->first();
 
-<<<<<<< HEAD
-<<<<<<< HEAD:projet_gestion_pfe/app/Http/Controllers/StageController.php
-}
-=======
-=======
-
-
->>>>>>> dd0de42cfee8ccda61eb6e087128993385897ba6
         if (!$stage) {
             return back()->with('error', 'Aucune information de stage trouvée. Veuillez d\'abord remplir les informations.');
-        }
+        }else{
         try{
         $id_stage = $stage->id;
         if ($request->hasFile('contenu')) {
@@ -190,12 +170,6 @@ function finStage() {
     } catch (\Exception $e) {
         Log::error('Erreur : ' . $e->getMessage());
         return back()->with('error', 'Erreur lors de l\'upload du fichier : ' . $e->getMessage());
-    }
+    }}
 }
 }
-<<<<<<< HEAD
->>>>>>> e60ac432b750691f8257d82a36e78964dd05cbd9:projet_gestion_pfe/app/Http/Controllers/etudiant/StageController.php
-=======
-
-
->>>>>>> dd0de42cfee8ccda61eb6e087128993385897ba6
