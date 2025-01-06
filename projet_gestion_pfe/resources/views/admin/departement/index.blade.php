@@ -95,9 +95,9 @@
 
         <!-- Bouton Ajouter -->
         <div class="text-end mb-3">
-            <a href="{{ route('admin.departement.create') }}" class="btn btn-success">Ajouter un Département</a>
+            <a href="{{ route('admin.departement.create') }}" class="btn btn-success"><i class="fas fa-plus-circle"></i> Ajouter un Département</a>
         </div>
-
+     
         <!-- Tableau des départements -->
         <table class="table table-bordered table-striped">
             <thead>

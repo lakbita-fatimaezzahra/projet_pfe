@@ -97,7 +97,8 @@
 
         <!-- Bouton Ajouter une filière -->
         <div class="text-end mb-3">
-            <a href="{{ route('admin.filiere.create', $departement->id) }}" class="btn btn-success">Ajouter une Filière</a>
+            <a href="{{ route('admin.filiere.create', $departement->id) }}" class="btn btn-success"><i class="fas fa-plus-circle"></i>
+            Ajouter une Filière</a>
         </div>
 
         <!-- Tableau des filières -->

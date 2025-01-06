@@ -97,7 +97,9 @@
 
         <!-- Bouton Ajouter -->
         <div class="text-end mb-3" >
-           <a href="{{ route('admin.professeur.create') }}" class="btn btn-success ">Ajouter un professeur</a>
+        <a href="{{ route('admin.professeur.create') }}" class="btn btn-success">
+            <i class="fas fa-chalkboard-teacher"></i>  Ajouter un professeur
+        </a>
             <!-- Bouton Importer -->
             <form action="{{ route('admin.professeur.import') }}" method="POST" enctype="multipart/form-data" class="d-inline">
                 @csrf

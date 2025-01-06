@@ -97,7 +97,7 @@
     @endif
 
     <div class="text-end mb-3">
-        <a href="{{ route('admin.groupes.create', $filiere->id) }}" class="btn btn-success">Ajouter un Groupe</a>
+        <a href="{{ route('admin.groupes.create', $filiere->id) }}" class="btn btn-success"><i class="fas fa-plus-circle"></i> Ajouter un Groupe</a>
     </div>
 
     <table class="table table-bordered">

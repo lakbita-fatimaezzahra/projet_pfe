@@ -108,7 +108,9 @@
 
         <!-- Bouton Ajouter et Importer -->
         <div class="text-end mb-3">
-            <a href="{{ route('etudiant.create') }}" class="btn btn-success">Ajouter un étudiant</a>
+        <a href="{{ route('etudiant.create') }}" class="btn btn-success">
+           <i class="fas fa-user-plus"></i> Ajouter un étudiant
+        </a>
             <!-- Bouton Importer -->
             <form action="{{ route('etudiant.import') }}" method="POST" enctype="multipart/form-data" class="d-inline">
                 @csrf
