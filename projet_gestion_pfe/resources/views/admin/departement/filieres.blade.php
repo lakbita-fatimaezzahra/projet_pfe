@@ -55,41 +55,7 @@
             background-color: #f8f9fa;
         }
 
-        /* Style des boutons dans le tableau */
-        .btn-primary, .btn-danger {
-            font-size: 0.9rem;
-            padding: 8px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        /* Bouton modifier */
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-
-        .btn-primary:hover {
-            background-color: #0069d9;
-            border-color: #0062cc;
-        }
-
-        /* Bouton supprimer */
-        .btn-danger {
-            background-color: #dc3545;
-            border-color: #dc3545;
-        }
-
-        .btn-danger:hover {
-            background-color: #bd2130;
-            border-color: #bb2d3b;
-        }
-
-        /* Marges et alignement des boutons */
-        .table tbody td form {
-            display: inline-block;
-            margin: 0;
-        }
+       
 
 
         /* Message de succès */
@@ -131,7 +97,8 @@
 
         <!-- Bouton Ajouter une filière -->
         <div class="text-end mb-3">
-            <a href="{{ route('admin.filiere.create', $departement->id) }}" class="btn btn-success">Ajouter une Filière</a>
+            <a href="{{ route('admin.filiere.create', $departement->id) }}" class="btn btn-success"><i class="fas fa-plus-circle"></i>
+            Ajouter une Filière</a>
         </div>
 
         <!-- Tableau des filières -->
@@ -146,19 +113,42 @@
                 @foreach ($filieres as $filiere)
                     <tr>
                         <td>{{ $filiere->libelle }}</td>
-                        <td>
-                            <!-- Modifier -->
-                            <a href="{{ route('admin.filiere.edit', ['departementId' => $departement->id, 'id' => $filiere->id]) }}" class="btn btn-primary btn-sm">Modifier</a>
-                            
-                            <!-- Supprimer -->
-                            <form action="{{ route('admin.filiere.destroy', ['departementId' => $departement->id, 'id' => $filiere->id]) }}" method="POST" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette filière ?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
-                            </form>
-                            <!-- Groupes -->
-                            <a href="{{ route('admin.groupes.index', ['filiereId' => $filiere->id]) }}" class="btn btn-success btn-sm">Groupes</a>
-                        </td>
+                        <td class="text-center">
+                                <!-- Modifier avec tooltip -->
+                                <a href="{{ route('admin.filiere.edit', ['departementId' => $departement->id, 'id' => $filiere->id]) }}" 
+                                class="text-decoration-none text-primary action-icon mx-2" 
+                                title="Modifier" 
+                                data-bs-toggle="tooltip" 
+                                data-bs-placement="top">
+                                    <i class="fas fa-pen fa-lg"></i> <!-- Icône de modification -->
+                                </a>
+                                
+                                <!-- Supprimer avec tooltip -->
+                                <form action="{{ route('admin.filiere.destroy', ['departementId' => $departement->id, 'id' => $filiere->id]) }}" 
+                                    method="POST" 
+                                    class="d-inline" 
+                                    onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette filière ?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" 
+                                            class="border-0 bg-transparent text-danger action-icon mx-2" 
+                                            title="Supprimer" 
+                                            data-bs-toggle="tooltip" 
+                                            data-bs-placement="top">
+                                        <i class="fas fa-trash fa-lg"></i> <!-- Icône de suppression -->
+                                    </button>
+                                </form>
+                                
+                                <!-- Groupes avec tooltip -->
+                                <a href="{{ route('admin.groupes.index', ['filiereId' => $filiere->id]) }}" 
+                                class="text-decoration-none text-success action-icon mx-2" 
+                                title="Groupes" 
+                                data-bs-toggle="tooltip" 
+                                data-bs-placement="top">
+                                    <i class="fas fa-users fa-lg"></i> <!-- Icône pour les groupes -->
+                                </a>
+                            </td>
+
                     </tr>
                 @endforeach
             </tbody>

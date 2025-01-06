@@ -45,6 +45,9 @@ Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard
         Route::get('/admin/professeur/{id}/update', [ProfesseurController::class, 'edit'])->name('admin.professeur.update');
         Route::put('/admin/professeur/{id}', [ProfesseurController::class, 'update'])->name('admin.professeur.update.submit');
         Route::delete('professeurs/{id}', [ProfesseurController::class, 'destroy'])->name('admin.professeur.delete');
+
+        //Importer fichier csv
+        Route::post('admin/professeur/import', [ProfesseurController::class, 'import'])->name('admin.professeur.import');
     //departement
         Route::prefix('admin')->name('admin.')->group(function () {
             Route::resource('departement', DepartementController::class);
@@ -112,6 +115,7 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset']);
 //prof
 Route::get('/prof',[ProfController::class,'home'])->name('home');
 //encadrent
+Route::get('/Encadrent',[EncadrentController::class,'ListStageEncadrent'])->name('Encadrent');
 Route::get('/Encadrent',[EncadrentController::class,'ListStageEncadrent'])->name('ListStageEncadrent');
 //rapporteur
 Route::get('/Rapporteur',[RapporteurController::class,'ListStageRapport'])->name('ListStageRapport');
@@ -130,4 +134,3 @@ Route::get('responsable/listrapport', [RespController::class, 'listrapport'])->n
 Route::get('/assign-rapport/{stageId}', [RespController::class, 'showAssignFormRapport'])->name('showAssignFormRapport');
 Route::match(['get', 'post'],'/assign-rapport', [RespController::class, 'matchAndAssignRapport'])->name('matchAndAssignRapport');
 Route::get('responsable/listrapport', [RespController::class, 'listrapport'])->name('listrapport');
-

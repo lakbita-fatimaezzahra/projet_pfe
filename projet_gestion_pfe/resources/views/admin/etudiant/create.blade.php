@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.admin') 
 
 @section('title', 'Ajouter un Étudiant')
 
@@ -43,6 +43,8 @@
             font-size: 1rem;
             padding: 10px 20px;
             border-radius: 5px;
+            width: 5%;
+
         }
 
         .btn-success:hover {
@@ -56,6 +58,7 @@
             font-size: 1rem;
             padding: 10px 20px;
             border-radius: 5px;
+            width: 5%;
         }
 
         .btn-danger:hover {
@@ -65,8 +68,10 @@
 
         .btn-group {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;            
         }
+
+        
 
         .mt-4 {
             margin-top: 20px; /* Espace supplémentaire entre le champ de photo et les boutons */

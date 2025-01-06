@@ -69,7 +69,7 @@
         font-size: 1rem;
         padding: 10px 20px;
         border-radius: 5px;
-        width: 5%; /* Assurez-vous que les boutons ont la même taille */
+        width: 10%; /* Assurez-vous que les boutons ont la même taille */
         transition: background-color 0.3s ease;
     }
 

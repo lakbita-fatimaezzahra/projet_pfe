@@ -3,6 +3,92 @@
 @section('title', 'Groupes de la Filière')
 
 @section('content')
+<style>
+        /* Conteneur principal */
+        .container {
+            max-width: 90%;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Titre principal */
+        h1 {
+            color: #007035;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Tableau des filières */
+        .table {
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        /* En-têtes du tableau */
+        .table thead {
+            background-color: #007035;
+            color: white;
+            text-align: center;
+        }
+
+        .table thead th {
+            padding: 12px;
+            font-weight: bold;
+        }
+
+        /* Corps du tableau */
+        .table tbody td {
+            padding: 12px;
+            text-align: center;
+            border-top: 1px solid #ddd;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Bouton Ajouter une filière */
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+            font-size: 1rem;
+            padding: 8px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        
+        
+
+
+        /* Message de succès */
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+
+        
+
+        
+    </style>
 <div class="container mt-5">
     <h1 class="mb-4">Groupes de la filière {{ $filiere->libelle }}</h1>
 
@@ -11,7 +97,7 @@
     @endif
 
     <div class="text-end mb-3">
-        <a href="{{ route('admin.groupes.create', $filiere->id) }}" class="btn btn-success">Ajouter un Groupe</a>
+        <a href="{{ route('admin.groupes.create', $filiere->id) }}" class="btn btn-success"><i class="fas fa-plus-circle"></i> Ajouter un Groupe</a>
     </div>
 
     <table class="table table-bordered">
@@ -25,14 +111,32 @@
             @foreach ($groupes as $groupe)
                 <tr>
                     <td>{{ $groupe->libelle }}</td>
-                    <td>
-                        <a href="{{ route('admin.groupes.edit', [$filiere->id, $groupe->id]) }}" class="btn btn-primary btn-sm">Modifier</a>
-                        <form action="{{ route('admin.groupes.destroy', [$filiere->id, $groupe->id]) }}" method="POST" class="d-inline" onsubmit="return confirm('Supprimer ce groupe ?')">
+                    <td class="text-center">
+                        <!-- Modifier avec tooltip -->
+                        <a href="{{ route('admin.groupes.edit', [$filiere->id, $groupe->id]) }}" 
+                        class="text-decoration-none text-primary action-icon mx-2" 
+                        title="Modifier" 
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="top">
+                            <i class="fas fa-pen fa-lg"></i> 
+
+                        <!-- Supprimer avec tooltip -->
+                        <form action="{{ route('admin.groupes.destroy', [$filiere->id, $groupe->id]) }}" 
+                            method="POST" 
+                            class="d-inline" 
+                            onsubmit="return confirm('Supprimer ce groupe ?')">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                            <button type="submit" 
+                                    class="border-0 bg-transparent text-danger action-icon mx-2" 
+                                    title="Supprimer" 
+                                    data-bs-toggle="tooltip" 
+                                    data-bs-placement="top">
+                                <i class="fas fa-trash fa-lg"></i> 
+                            </button>
                         </form>
                     </td>
+
                 </tr>
             @endforeach
         </tbody>

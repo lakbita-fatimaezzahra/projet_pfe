@@ -157,8 +157,14 @@ function finStage() {
 
         $stage = Stage::where('etudiant_id', $request->idStudent)->first();
 
+<<<<<<< HEAD
+<<<<<<< HEAD:projet_gestion_pfe/app/Http/Controllers/StageController.php
+}
+=======
+=======
 
 
+>>>>>>> dd0de42cfee8ccda61eb6e087128993385897ba6
         if (!$stage) {
             return back()->with('error', 'Aucune information de stage trouvée. Veuillez d\'abord remplir les informations.');
         }
@@ -187,5 +193,9 @@ function finStage() {
     }
 }
 }
+<<<<<<< HEAD
+>>>>>>> e60ac432b750691f8257d82a36e78964dd05cbd9:projet_gestion_pfe/app/Http/Controllers/etudiant/StageController.php
+=======
 
 
+>>>>>>> dd0de42cfee8ccda61eb6e087128993385897ba6
