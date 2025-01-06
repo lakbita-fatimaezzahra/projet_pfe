@@ -36,7 +36,7 @@ class StageController extends Controller
             'idStudent' => 'required',
             'entreprise' => 'required|string|max:255',
             'sujet' => 'required|string|max:255',
-            'Skills' => 'required|string|max:255',
+            'skills' => 'required|string|max:255',
             'date_debut' => 'required|date',
             'date_fin' => 'required|date',
             'type_stage' => 'PFE',
