@@ -10,15 +10,14 @@ use App\Models\Etudiant;
 use App\Models\deadline;
 use App\Models\Affectation;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 class StageController extends Controller
 {
 
     public function insertStage(){
-        $existingStage = \App\Models\Stage::where('etudiant_id',  session('user_data')->id )->exists();
+        $existingStage =Stage::where('etudiant_id',  session('user_data')->id )->exists();
 
         if (!$existingStage) {
-            $id_user = session('user_id'); // Récupération de l'ID utilisateur depuis la session
+            $id_user = session('user_id');
             return view('etudiant/avantstage',compact('id_user'));
         }
         else{
@@ -31,7 +30,7 @@ class StageController extends Controller
     {
         $deadline=deadline::all()->first();
         if(Carbon::today()->toDateString() <= $deadline->date_deadline_stage){
-        // Validate the form data
+
         $validatedData = $request->validate([
             'idStudent' => 'required',
             'entreprise' => 'required|string|max:255',
@@ -53,7 +52,7 @@ class StageController extends Controller
             'type_stage' => 'PFE',
         ];
 
-        // Stocker dans la session
+
         session(['info' => $info]);
 
         return redirect()->route('documents')->with('success', 'Informations de stage enregistrées avec succès.');
@@ -74,14 +73,14 @@ class StageController extends Controller
         ]);
 
         try {
-            // Récupérer les informations de la session
+
             $info = session('info');
 
             if (!$info) {
                 return back()->with('error', 'Aucune information de stage trouvée. Veuillez d\'abord remplir les informations.');
             }
 
-            // Créer un nouvel enregistrement de stage
+
             $stage = Stage::create($info);
 
             if ($stage && $request->hasFile('contenu')) {
@@ -100,8 +99,7 @@ class StageController extends Controller
                 return back()->with('error', 'Fichier non valide ou échec de la création du stage.');
             }
         } catch (\Exception $e) {
-            Log::error('Erreur : ' . $e->getMessage());
-            return back()->with('error', 'Erreur lors de l\'upload du fichier : ' . $e->getMessage());
+               return back()->with('error', 'Erreur lors de l\'upload du fichier : ' . $e->getMessage());
         }
     }
 
@@ -112,15 +110,12 @@ public function readStage(){
 
 
     if ($stage) {
-    // Récupérer les noms des professeurs selon leur rôle
+   
     $id_stage=$stage->id;
     $encadrent = Affectation::where('stage_id', $id_stage)
                             ->where('role', 'encadrent')
                             ->with('prof')
                             ->first()?->prof?->name;
-
-
-
 
     return view('etudiant/stage',compact('stage','encadrent','deadline'));
 }else {
@@ -145,9 +140,11 @@ function finStage() {
 
         $stage = Stage::where('etudiant_id', $request->idStudent)->first();
 
+
+
         if (!$stage) {
             return back()->with('error', 'Aucune information de stage trouvée. Veuillez d\'abord remplir les informations.');
-        }else{
+        }
         try{
         $id_stage = $stage->id;
         if ($request->hasFile('contenu')) {
@@ -168,8 +165,10 @@ function finStage() {
             return back()->with('error', 'Fichier non valide .');
         }
     } catch (\Exception $e) {
-        Log::error('Erreur : ' . $e->getMessage());
+
         return back()->with('error', 'Erreur lors de l\'upload du fichier : ' . $e->getMessage());
-    }}
+    }
 }
 }
+
+

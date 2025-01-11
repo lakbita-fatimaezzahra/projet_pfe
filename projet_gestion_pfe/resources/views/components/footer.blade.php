@@ -36,6 +36,6 @@
             <a href="#" style="margin: 0 10px; color: #000;"><i class="fab fa-twitter"></i> Twitter</a>
         </div>
         <p style="margin: 0;">A product of EMSI</p>
-        <p style="margin: 0;">© 2024 EMSI. All rights reserved</p>
+        <p style="margin: 0;">© 2024 . All rights reserved</p>
     </div>
 </footer>

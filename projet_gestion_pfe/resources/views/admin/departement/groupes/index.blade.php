@@ -16,7 +16,7 @@
 
         /* Titre principal */
         h1 {
-            color: #007035;
+            color: #134B70;
             font-weight: bold;
             text-align: center;
             margin-bottom: 30px;
@@ -34,7 +34,7 @@
 
         /* En-têtes du tableau */
         .table thead {
-            background-color: #007035;
+            background-color: #134B70;
             color: white;
             text-align: center;
         }

@@ -39,7 +39,7 @@ class LoginController extends Controller
             default => null,
         };
 
-        // Tentative d'authentification
+
         if ($guard && Auth::guard($guard)->attempt([$fieldType => $data['email'], 'password' => $data['password']], $remember)) {
           // Récupérer l'utilisateur authentifié
             $user = Auth::guard($guard)->user();
@@ -52,26 +52,20 @@ class LoginController extends Controller
                 ->first();
 
                 if ($etudiant) {
-
-
-                    // Ajouter les données à la session
                     $request->session()->put('etudiant_data', $etudiant);
-
                 }
             }
             elseif ($guard === 'profs' && $data['users'] === 'responsable') {
-                // Récupérer les données complètes du professeur responsable
                 $responsable = \App\Models\Prof::all()
                 ->where('id', $user->id)
                 ->where('role', 'responsable')
                 ->first();
 
                 if ($responsable) {
-                    // Ajouter les données à la session
+
                     $request->session()->put('responsable_data', $responsable);
                 } else {
-                    // Si l'utilisateur n'a pas le rôle 'responsable', rediriger vers la page de connexion avec une erreur
-                    return back()->withErrors(['login' => 'Vous n\'avez pas les autorisations nécessaires pour accéder à cette section.'])->withInput();
+                              return back()->withErrors(['login' => 'Vous n\'avez pas les autorisations nécessaires pour accéder à cette section.'])->withInput();
                 }}
 
             // Gérer les cookies si demandé
@@ -106,16 +100,9 @@ class LoginController extends Controller
 
 public function logout(Request $request)
 {
-    // Déconnexion de l'utilisateur
     Auth::logout();
-
-    // Invalidation de la session
     $request->session()->invalidate();
-
-    // Régénération du token CSRF
     $request->session()->regenerateToken();
-
-    // Rediriger l'utilisateur vers la page de connexion après la déconnexion
-    return redirect()->route('login');  // Ou une autre route de votre choix
+    return redirect()->route('login');
 }
 }

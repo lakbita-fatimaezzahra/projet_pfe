@@ -14,7 +14,7 @@
     }
 
     h1 {
-        color: #007035;
+        color: #134B70;
         font-weight: bold;
         text-align: center;
         margin-bottom: 20px;
@@ -32,7 +32,7 @@
     }
 
     th {
-        background-color: #007035;
+        background-color: #134B70;
         color: white;
     }
 
@@ -79,6 +79,6 @@
 <div class="container mt-5">
     <h1>Assignation error</h1>
     <p class="paragraph">"A {{ $role }} is already assigned to this stage."</p>
-    <a href="{{ route('liststage') }}" class="btn btn-success">Retour à la liste des stagiaires</a>
+    <a href="{{ route('liststage') }}" class="btn btn-blue">Retour à la liste des stagiaires</a>
 </div>
 @endsection

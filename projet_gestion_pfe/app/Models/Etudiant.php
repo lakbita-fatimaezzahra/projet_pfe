@@ -21,7 +21,7 @@ class Etudiant extends Authenticatable
         'groupe_id',
         'departement_id',
         'photo',
-        
+
     ];
 
     /**

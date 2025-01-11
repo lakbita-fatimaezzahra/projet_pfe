@@ -14,7 +14,7 @@
     }
 
     h1 {
-        color: #007035;
+        color: #134B70;
         font-weight: bold;
         text-align: center;
         margin-bottom: 20px;
@@ -32,7 +32,7 @@
     }
 
     th {
-        background-color: #007035;
+        background-color: #134B70;
         color: white;
     }
 
@@ -41,16 +41,16 @@
     }
 
     .btn-success {
-        background-color: #28a745;
-        border-color: #28a745;
+        background-color: #134B70;
+        border-color: #134B70;
         font-size: 1rem;
         padding: 8px 20px;
         border-radius: 5px;
     }
 
     .btn-success:hover {
-        background-color: #218838;
-        border-color: #1e7e34;
+        background-color: #508C9B;
+        border-color: #508C9B;
     }
 
     .modal {

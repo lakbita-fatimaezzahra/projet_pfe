@@ -1,12 +1,12 @@
 <div class="sidebar">
     <div class="logo">
-        <img src="{{ asset('images/navlogo.png') }}" alt="Logo">
+        <img src="{{ asset('images/PFElogo2.svg') }}" alt="Logo">
     </div>
     <a href="{{ route('dashboard') }}" class="{{ request()->is('dashboard*') ? 'active' : '' }}">
-        <i class="fas fa-home"></i> Acceuille
+        <i class="fas fa-home"></i> Acceuil
     </a>
 
-    <a href="/readst" class="{{ request()->is('readst') ? 'active' : '' }}">
+    <a href="/etudiants" class="{{ request()->is('readst') ? 'active' : '' }}">
         <i class="fas fa-user-graduate"></i> Etudiants
     </a>
     <a href="{{ route('admin.professeur.read') }}" class="{{ request()->is('admin/professeur*') ? 'active' : '' }}">

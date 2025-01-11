@@ -30,12 +30,21 @@ class EncadrentController extends Controller
     }
     public function ListStageEncadrent()
 {
-    // Fetch stages with the role of 'encadrent' in affectations
+    // Get the logged-in professor's ID
+    $profId = session('user_id'); // Retrieve the professor's ID from the session
+
+    if (!$profId) {
+        // Redirect if no professor is logged in
+        return redirect()->route('login')->with('error', 'Professor not authenticated.');
+    }
+
+    // Fetch stages where the logged-in professor is assigned as 'encadrent'
     $data = Stage::join('affectations', 'stages.id', '=', 'affectations.stage_id')
         ->join('profs', 'affectations.prof_id', '=', 'profs.id')
         ->join('etudiants', 'stages.etudiant_id', '=', 'etudiants.id')
         ->join('departements', 'etudiants.departement_id', '=', 'departements.id')
         ->where('affectations.role', 'encadrent') // Filter for role 'encadrent'
+        ->where('profs.id', $profId) // Filter by the logged-in professor's ID
         ->select(
             'stages.id as stage_id',           // Stage ID
             'stages.sujet as stage_sujet',     // Stage subject
@@ -46,9 +55,11 @@ class EncadrentController extends Controller
         )
         ->get(); // Get the results as Eloquent models
 
-    // Pass data to view
+    // Pass data to the view
     return view('prof.encadrent', compact('data'));
 }
+
+    
 
 
 

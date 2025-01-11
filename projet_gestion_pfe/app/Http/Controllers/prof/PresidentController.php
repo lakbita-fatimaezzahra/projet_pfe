@@ -4,7 +4,9 @@ namespace App\Http\Controllers\prof;
 
 use App\Http\Controllers\Controller;
 use App\Models\prof;
+use App\Models\Rapport;
 use App\Models\Stage;
+
 class PresidentController extends Controller
 {
     public function President()
@@ -23,23 +25,31 @@ class PresidentController extends Controller
     }
     public function ListStagePresident()
     {
-        // Fetch stages with the role of 'encadrent' in affectations
-        $data = Stage::join('affectations', 'stages.id', '=', 'affectations.stage_id')
-            ->join('profs', 'affectations.prof_id', '=', 'profs.id')
-            ->join('etudiants', 'stages.etudiant_id', '=', 'etudiants.id')
-            ->join('departements', 'etudiants.departement_id', '=', 'departements.id')
-            ->where('affectations.role', 'president') // Filter for role 'encadrent'
-            ->select(
-                'stages.id as stage_id',           // Stage ID
-                'stages.sujet as stage_sujet',     // Stage subject
-                'stages.Skills as stage_Skills',   // Stage skills
-                'etudiants.name as etudiant_name', // Student name
-                'departements.libelle as departement_libelle', // Department label
-                'profs.name as encadrent_name'     // Encadrent professor name
-            )
-            ->get(); // Get the results as Eloquent models
+        // Retrieve the currently logged-in professor using session('user_id')
+        $profId = session('user_id');
     
-        // Pass data to view
+        if (!$profId) {
+            // Redirect if no logged-in professor
+            return redirect()->route('login')->with('error', 'Professor not authenticated.');
+        }
+    
+        // Fetch rapports linked to the logged-in professor
+        $data = Rapport::join('stages', 'rapports.stage_id', '=', 'stages.id') // Join rapports with stages
+            ->join('etudiants', 'stages.etudiant_id', '=', 'etudiants.id')    // Join stages with etudiants
+            ->join('departements', 'etudiants.departement_id', '=', 'departements.id') // Join etudiants with departements
+            ->join('affectations', 'stages.id', '=', 'affectations.stage_id') // Link stages with affectations
+            ->where('affectations.prof_id', $profId)
+            ->where('affectations.role', 'president') // Filter by the professor ID
+            ->select(
+                'rapports.id as rapport_id',           // Rapport ID
+                'rapports.titre as rapport_titre',     // Rapport title
+                'rapports.contenu as rapport_contenu', // Rapport content
+                'etudiants.name as etudiant_name',     // Student name
+                'departements.libelle as departement_libelle' // Department label
+            )
+            ->get(); // Retrieve the results
+    
+        // Pass the filtered data to the view
         return view('prof.president', compact('data'));
     }
 }

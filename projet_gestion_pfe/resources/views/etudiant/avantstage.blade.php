@@ -21,7 +21,7 @@
         .sidebar {
             width: 250px;
             height: 1000px;
-            background-color: #007035;
+            background-color: #134B70;
             color: rgb(255, 255, 255);
             display: flex;
             flex-direction: column;
@@ -34,7 +34,7 @@
         }
 
         .sidebar .logo img {
-            width: 150px;
+            width: 100px;
         }
 
         .sidebar a {
@@ -47,7 +47,7 @@
 
         .sidebar a:hover, .sidebar a.active {
             background-color: #ffffff;
-            color: #007035;
+            color: #134B70;
         }
 
         .sidebar a i {
@@ -57,7 +57,7 @@
         .sidebar .nouveau-btn {
             margin: 20px auto;
             background-color: #ffffff;
-            color: #007035;
+            color: #134B70;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
@@ -183,7 +183,7 @@
             padding: 20px 30px;
             font-size: 25px;
             color: #ffffff;
-            background-color:#007035 ;
+            background-color:#134B70 ;
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -191,7 +191,7 @@
         }
 
         .btn:hover {
-            background-color: #007035;
+            background-color: #134B70;
         }
 
         .study-btn {
@@ -219,7 +219,7 @@
 
         .form-container button {
             padding: 15px;
-            background-color: #007035;
+            background-color: #134B70;
             color: white;
             border: none;
             border-radius: 5px;
@@ -242,7 +242,7 @@
             padding: 10px 30px;
             font-size: 18px;
             color: #fff;
-            background-color: #007035;
+            background-color: #134B70;
             border: none;
             border-radius: 5px;
             cursor: not-allowed;
@@ -267,15 +267,15 @@
 
 /* Active button (green) */
 .step-button.active {
-    background-color: #007035;
+    background-color: #134B70;
     color: white;
 }
 
 /* Inactive button (white) */
 .step-button.inactive {
     background-color: #ffffff;
-    color: #007035;
-    border: 1px solid #007035;
+    color: #134B70;
+    border: 1px solid #134B70;
 }
 .swal-modal {
         width: 300px !important; /* Largeur de la boîte */

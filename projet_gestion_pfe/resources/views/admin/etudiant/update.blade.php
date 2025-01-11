@@ -14,7 +14,7 @@
         }
 
         h1 {
-            color: #007035;
+            color: #134B70;
             font-weight: bold;
             text-align: center;
             margin-bottom: 20px;
@@ -33,17 +33,17 @@
         }
 
         .form-control:focus {
-            border-color: #007035;
+            border-color: #134B70;
             box-shadow: 0 0 5px rgba(0, 112, 53, 0.5);
         }
 
         .btn-success, .btn-primary {
-    background-color: #28a745; 
-    border-color: #28a745;
-    font-size: 1rem;
-    padding: 10px 20px;
-    border-radius: 5px;
-}
+            background-color: #28a745; 
+            border-color: #28a745;
+            font-size: 1rem;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
 
         .btn-success:hover, .btn-primary:hover {
             background-color: #218838;
@@ -187,7 +187,7 @@
 
             <div class="btn-group">
                 <button type="submit" class="btn btn-success">Modifier</button>
-                <a href="{{ route('etudiant.index') }}" class="btn btn-danger">Annuler</a>
+                <a href="{{ route('etudiant.read') }}" class="btn btn-danger">Annuler</a>
             </div>
 
             

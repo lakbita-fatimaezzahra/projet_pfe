@@ -14,7 +14,7 @@
     }
 
     h1 {
-        color: #007035;
+        color: #134B70;
         font-weight: bold;
         text-align: center;
         margin-bottom: 20px;
@@ -32,7 +32,7 @@
     }
 
     th {
-        background-color: #007035;
+        background-color: #134B70;
         color: white;
     }
 
@@ -41,16 +41,16 @@
     }
 
     .btn-success {
-        background-color: #28a745;
-        border-color: #28a745;
+        background-color: #134B70;
+        border-color: #134B70;
         font-size: 1rem;
         padding: 8px 20px;
         border-radius: 5px;
     }
 
     .btn-success:hover {
-        background-color: #218838;
-        border-color: #1e7e34;
+        background-color: #134B70;
+        border-color: #134B70;
     }
 
     .modal {
@@ -75,23 +75,29 @@
 
 <div class="container mt-5">
     <h1 class="mb-4">Liste des Rapports</h1>
-    <table>
-        <thead>
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
             <tr>
-                <th>Etudiant</th>
-                <th>Departement</th>
-                <th>Action</th>
+                <th>Étudiant</th>
+                <th>Titre</th>
+                <th>Contenu</th>
+                
             </tr>
         </thead>
         <tbody>
             @foreach ($data as $stage)
-            <tr>
-                <td>{{ $stage->etudiant_name }}</td>
-                <td>{{ $stage->departement_libelle }}</td>
-                <td>
-                    <a href="{{ route('ListStageEncadrent', ['stageId' => $stage->stage_id]) }}" class="btn btn-success btn-sm">Suivre</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>{{ $stage->etudiant_name }}</td>
+                    <td>{{ $stage->rapport_titre }}</td>
+                    
+                    <td>
+                        <a href="{{ route('download.rapport', $stage->rapport_id) }}" class="btn btn-success btn-sm">
+                            {{ $stage->rapport_contenu }}
+                        </a>
+                    </td>
+                    
+                    
+                </tr>
             @endforeach
         </tbody>
     </table>

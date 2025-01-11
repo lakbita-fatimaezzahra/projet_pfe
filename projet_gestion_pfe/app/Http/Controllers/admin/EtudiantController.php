@@ -9,12 +9,17 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use App\Imports\etudiantsImport;
+use Maatwebsite\Excel\Facades\Excel;
+
+
+
 
 
 
 class EtudiantController extends Controller
 {
-    
+
     public function index()
     {
         $etudiants = Etudiant::with(['groupe', 'departement'])->get();
@@ -63,97 +68,24 @@ class EtudiantController extends Controller
     Etudiant::create(array_merge($validated, ['photo' =>  $imagePath]));
 
     // Redirection avec message de succès
-    return redirect()->route('admin.etudiant.read')->with('success', 'Étudiant ajouté avec succès.');
+    return redirect()->route('etudiant.read')->with('success', 'Étudiant ajouté avec succès.');
 }
 
-//importation de fichiers csv
 
-    public function import(Request $request)
-    {
-        // Validation du fichier
-        $request->validate([
-            'csvFile' => 'required|file|mimes:csv,txt|max:2048',
-        ]);
 
-        // Lire le fichier CSV
-        if ($request->hasFile('csvFile')) {
-            $file = $request->file('csvFile');
-            $filePath = $file->getRealPath();
-            $data = array_map('str_getcsv', file($filePath));
-
-            // Vérifier si le fichier contient des données
-            if (count($data) > 1) {
-                // La première ligne contient les en-têtes
-                $header = $data[0];
-                unset($data[0]);
-
-                DB::beginTransaction();
-
-                try {
-                    foreach ($data as $row) {
-                        $row = array_combine($header, $row);
-
-                        // Validation des données
-                        $validator = Validator::make($row, [
-                            'name' => 'required|string|max:255',
-                            'last_name' => 'required|string|max:255',
-                            'username' => 'required|string|max:255|unique:etudiants',
-                            'email' => 'required|email|max:255|unique:etudiants',
-                            'dateN' => 'required|date',
-                            'CNE' => 'required|string|max:255|unique:etudiants',
-                            'Cin' => 'required|string|max:255|unique:etudiants',
-                            'genre' => 'required|in:male,female',
-                            'matricule' => 'required|string|max:255|unique:etudiants',
-                            'departement_id' => 'required|exists:departements,id',
-                            'groupe_id' => 'required|exists:groupes,id',
-                        ]);
-
-                        if ($validator->fails()) {
-                            throw new \Exception('Erreur de validation des données : ' . implode(', ', $validator->errors()->all()));
-                        }
-
-                        // Insérer les données dans la base
-                        Etudiant::create([
-                            'name' => $row['name'],
-                            'last_name' => $row['last_name'],
-                            'username' => $row['username'],
-                            'email' => $row['email'],
-                            'dateN' => $row['dateN'],
-                            'CNE' => $row['CNE'],
-                            'Cin' => $row['Cin'],
-                            'genre' => $row['genre'],
-                            'matricule' => $row['matricule'],
-                            'departement_id' => $row['departement_id'],
-                            'groupe_id' => $row['groupe_id'],
-                            'photo' => 'default.png', // Par défaut
-                        ]);
-                    }
-
-                    DB::commit();
-                    return redirect()->route('etudiant.index')->with('success', 'Données importées avec succès !');
-
-                } catch (\Exception $e) {
-                    DB::rollBack();
-                    return redirect()->back()->withErrors('Erreur : ' . $e->getMessage());
-                }
-            } else {
-                return redirect()->back()->withErrors('Le fichier CSV est vide.');
-            }
-        }
-
-        return redirect()->back()->withErrors('Erreur lors de l\'importation.');
+public function import(){
+    Excel::import(new etudiantsImport,request()->file('file'));
+    return back()->with(['seccess' => 'les donnees importes avec succe.']);
     }
-
-
     public function edit($id)
     {
         $etudiant = Etudiant::findOrFail($id); // Trouver l'étudiant par son ID
         $departements = Departement::all(); // Récupérer tous les départements
         $groupes = Groupe::all(); // Récupérer tous les groupes
-    
+
         return view('admin.etudiant.update', compact('etudiant', 'departements', 'groupes'));
     }
-    
+
 
     public function update(Request $request, $id)
 {
@@ -201,7 +133,7 @@ class EtudiantController extends Controller
     $etudiant->update($validated);
 
     // Redirection avec message de succès
-    return redirect()->route('etudiant.index')->with('success', 'Étudiant mis à jour avec succès.');
+    return redirect()->route('etudiant.read')->with('success', 'Étudiant mis à jour avec succès.');
 }
 
 
@@ -214,7 +146,7 @@ public function destroy($id)
     $etudiant->delete();
 
     // Rediriger vers la liste des étudiants avec un message de succès
-    return redirect()->route('etudiant.index')->with('success', 'L\'étudiant a été supprimé avec succès.');
+    return redirect()->route('etudiant.read')->with('success', 'L\'étudiant a été supprimé avec succès.');
 }
 
 
