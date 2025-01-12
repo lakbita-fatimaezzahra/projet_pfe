@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\prof;
 use App\Models\Rapport;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
-use Illuminate\Support\Facades\Storage;
+
+
 class RapporteurController extends Controller
 {
     public function Rapporteur()
@@ -48,7 +48,7 @@ class RapporteurController extends Controller
             'rapports.contenu as rapport_contenu', // Rapport content
             'etudiants.name as etudiant_name',     // Student name
             'departements.libelle as departement_libelle',
-            'rapports.status as rapport_status'
+            'rapports.status as rapport_status' 
         )
         ->get(); // Retrieve the results
 
@@ -100,62 +100,30 @@ public function updateStatus(Request $request)
     return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
 }
 
-
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-use App\Models\Rapport;
-
 public function uploadDocument(Request $request)
 {
-    try {
-        // Validation de la requête
-        $request->validate([
-            'rapport_id' => 'required|exists:rapports,id',
-            'document' => 'required|file|mimes:pdf,doc,docx|max:5120', // Limite à 5MB
-        ]);
+    $request->validate([
+        'rapport_id' => 'required|exists:rapports,id',
+        'document' => 'required|file|mimes:pdf,doc,docx|max:2048',
+    ]);
 
-        // Récupérer le rapport et ses relations
-        $rapport = Rapport::with('stage.etudiant')->findOrFail($request->input('rapport_id'));
+    $rapport = Rapport::findOrFail($request->input('rapport_id'));
+    $file = $request->file('document');
 
-        // Vérifier si l'étudiant est bien récupéré
-        $etudiant = $rapport->stage->etudiant;
-        alert($etudiant );
-        if (!$etudiant) {
+    // Save the file with a unique name
+    $fileName = time() . '_' . $file->getClientOriginalName();
+    $filePath = $file->storeAs('documents', $fileName, 'public');
 
-            return response()->json(['error' => 'Étudiant non trouvé.'], 404);
-        }
+    // Update the rapport's document field
+    $rapport->documentsDebut = $filePath;
+    $rapport->save();
 
-        // Récupérer le fichier téléchargé
-        $file = $request->file('document');
-
-        // Enregistrer le fichier avec un nom unique
-        $fileName = time() . '_' . $file->getClientOriginalName();
-        $filePath = $file->storeAs('documents', $fileName, 'public'); // Le fichier sera stocké dans le dossier "storage/app/public/documents"
-
-        // Mettre à jour le rapport avec le chemin du fichier
-        $rapport->documentsDebut = $filePath;
-        $rapport->save();
-
-        // Préparer les données pour l'email
-        $emailData = [
-            'title' => 'Correction de votre rapport',
-            'body' => 'Veuillez trouver ci-joint la correction de votre rapport.',
-        ];
-
-        Mail::send([], $emailData, function ($message) use ($etudiant, $filePath, $fileName) {
-            $fileFullPath = storage_path('app/public/' . $filePath);
-
-            $message->to($etudiant->email)
-                    ->subject('Correction de votre rapport')
-                    ->attach($fileFullPath, [
-                        'as' => $fileName,
-                        'mime' => mime_content_type($fileFullPath),
-                    ]);
-        });
-        return response()->json(['success' => true, 'message' => 'Document uploaded and email sent successfully.']);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
-    }
+    return response()->json(['success' => true, 'message' => 'Document uploaded successfully.']);
 }
+
+    
+    
+
+
+    
 }

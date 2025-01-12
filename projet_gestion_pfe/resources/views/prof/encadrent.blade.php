@@ -1,6 +1,6 @@
 @extends('layouts.prof')
 
-@section('title', 'Liste des Stagiaire')
+@section('title', 'Liste des Stagiaires')
 
 @section('content')
 <style>
@@ -41,26 +41,40 @@
     }
 
     .btn-success {
-        background-color: #28a745;
-        border-color: #28a745;
+        background-color: #134b70;
+        border-color: #134b70;
         font-size: 1rem;
         padding: 8px 20px;
         border-radius: 5px;
     }
+    .btn-info {
+        background-color: #134b70;
+        border-color: #134b70;
+        font-size: 1rem;
+        padding: 8px 20px;
+        border-radius: 5px;
 
-    .btn-success:hover {
-        background-color: #218838;
-        border-color: #1e7e34;
+    }
+    .btn-info:hover {
+        background-color: #1a6ba0;
+        border-color: #1a6ba0;
     }
 
+    .btn-success:hover {
+        background-color: #1a6ba0;
+        border-color: #1a6ba0;
+    }
+
+    /* Center Modal */
     .modal {
         display: none;
         position: fixed;
-        top: 0;
-        left: 0;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.5);
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.5);
         justify-content: center;
         align-items: center;
     }
@@ -70,16 +84,27 @@
         padding: 20px;
         border-radius: 10px;
         width: 50%;
+        position: relative;
+    }
+
+    .modal-header .close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 1.5rem;
+        border: none;
+        background: transparent;
     }
 </style>
 
 <div class="container mt-5">
     <h1 class="mb-4">Liste des Stagiaires</h1>
+    @include('components.flashbag')
     <table>
         <thead>
             <tr>
-                <th>Etudiant</th>
-                <th>Departement</th>
+                <th>Étudiant</th>
+                <th>Département</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -89,12 +114,167 @@
                 <td>{{ $stage->etudiant_name }}</td>
                 <td>{{ $stage->departement_libelle }}</td>
                 <td>
-                    <a href="{{ route('ListStageEncadrent', ['stageId' => $stage->stage_id]) }}" class="btn btn-success btn-sm">Suivre</a>
+                    <button class="btn btn-success btn-sm open-planning-modal" 
+                            data-stage-id="{{ $stage->stage_id }}" 
+                            data-stage-name="{{ $stage->etudiant_name }}">
+                        Planning
+                    </button>
+        
+                    <a href="{{ url('/showplannings/' . $stage->stage_id) }}" class="btn btn-info">
+                        Commentaire
+                    </a>
+        
+                    <!-- 'Afficher' button to show plannings with comments -->
+                    <a href="{{ route('prof.showPlanningsWithComments', $stage->stage_id) }}" class="btn btn-success btn-sm">
+                        Afficher
+                    </a>
                 </td>
             </tr>
             @endforeach
         </tbody>
+        
     </table>
 </div>
+
+<!-- Modal for Adding Planning -->
+<div class="modal" id="planningModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Ajouter Planning pour <span id="stageName"></span></h5>
+            <button type="button" class="close" onclick="closeModal()">&times;</button>
+        </div>
+        <form action="" method="POST" id="planningForm">
+            @csrf
+            <input type="hidden" id="stageId" name="stage_id">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" class="form-control" id="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="duree">Durée (en heures)</label>
+                    <input type="number" class="form-control" id="duree" name="duree" required>
+                </div>
+                <div class="form-group">
+                    <label for="emplacement">Emplacement</label>
+                    <select class="form-control" id="emplacement" name="emplacement" required>
+                        <option value="à distance">À distance</option>
+                        <option value="présentiel">Présentiel</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Fermer</button>
+                <button type="submit" class="btn btn-primary">Ajouter Planning</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.open-planning-modal').on('click', function () {
+            let stageId = $(this).data('stage-id');
+            let stageName = $(this).data('stage-name');
+            $('#stageId').val(stageId);
+            $('#stageName').text(stageName);
+            $('#planningModal').fadeIn();
+
+            // Set the form action URL dynamically with the stage_id
+            let formAction = '/stages/' + stageId + '/planning';
+            $('#planningForm').attr('action', formAction);
+        });
+
+        $('.close, .btn-secondary').on('click', function () {
+            $('#planningModal').fadeOut();
+        });
+    });
+
+    function closeModal() {
+        $('#planningModal').fadeOut();
+    }
+</script>
+<!-- Add the modal HTML to the bottom of the Blade file -->
+<div class="modal fade" id="planningModal" tabindex="-1" aria-labelledby="planningModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="planningModalLabel">Liste des Plannings pour : <span id="stageName"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Planning ID</th>
+                            <th>Date Début</th>
+                            <th>Date Fin</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="planningTableBody">
+                        <!-- Rows will be populated dynamically via AJAX -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modify the button to trigger the modal -->
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.open-upload-comment-modal').forEach(button => {
+        button.addEventListener('click', function () {
+            const stageId = this.getAttribute('data-stage-id');
+            const stageName = this.getAttribute('data-stage-name');
+
+            // Set stage name in modal
+            document.getElementById('stageName').textContent = stageName;
+
+            // Clear previous table content
+            const tableBody = document.getElementById('planningTableBody');
+            tableBody.innerHTML = '<tr><td colspan="4">Chargement...</td></tr>';
+
+            // Fetch plannings for the stage
+            fetch(`/api/plannings/${stageId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        tableBody.innerHTML = ''; // Clear loading message
+                        data.plannings.forEach(planning => {
+                            const row = `
+                                <tr>
+                                    <td>${planning.id}</td>
+                                    <td>${planning.date_debut}</td>
+                                    <td>${planning.date_fin}</td>
+                                    <td>${planning.description}</td>
+                                </tr>`;
+                            tableBody.insertAdjacentHTML('beforeend', row);
+                        });
+                    } else {
+                        tableBody.innerHTML = '<tr><td colspan="4">Aucun planning trouvé.</td></tr>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    tableBody.innerHTML = '<tr><td colspan="4">Erreur lors de la récupération des données.</td></tr>';
+                });
+
+            // Show the modal
+            const modal = new bootstrap.Modal(document.getElementById('planningModal'));
+            modal.show();
+        });
+    });
+});
+
+</script>
+
+
 
 @endsection

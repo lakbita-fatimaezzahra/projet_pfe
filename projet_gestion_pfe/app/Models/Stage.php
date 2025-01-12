@@ -7,8 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Stage extends Model
 {
     protected $fillable = [
-        'entreprise', 'sujet', 'date_debut', 'date_fin', 'type_stage',
-         'etudiant_id','documentsDebut','documentsfin','skills'
+        'entreprise',
+        'sujet',
+        'date_debut',
+        'date_fin',
+        'type_stage',
+        'etudiant_id',
+        'documentsDebut',
+        'documentsfin',
+        'skills'
     ];
 
     public function etudiant()
@@ -16,18 +23,17 @@ class Stage extends Model
         return $this->belongsTo(Etudiant::class);
     }
 
-    public function cahierEncadrement()
+    public function plannings()
     {
-        return $this->hasOne(cahiers_encadrement::class);
+        return $this->hasMany(Cahiers_encadrements::class);
     }
 
     public function affectations()
     {
         return $this->hasMany(Affectation::class);
-}
-public function rapports()
-{
-    return $this->hasOne(Rapport::class);
-}
-
+    }
+    public function rapports()
+    {
+        return $this->hasOne(Rapport::class);
+    }
 }

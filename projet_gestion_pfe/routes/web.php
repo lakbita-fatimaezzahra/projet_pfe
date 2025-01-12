@@ -115,6 +115,15 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset']);
 Route::get('/prof',[ProfController::class,'home'])->name('home');
 //encadrent
 Route::get('/Encadrent',[EncadrentController::class,'ListStageEncadrent'])->name('ListStageEncadrent');
+Route::match(['get', 'post'], '/stages/{stage_id}/planning', [EncadrentController::class, 'addPlanningToStage'])->name('addPlanning');
+Route::post('/stages/{stage_id}/plannings/{planning_id}/commentaire', [EncadrentController::class, 'uploadCommentaire']);
+Route::get('/showplannings/{stage_id}', [EncadrentController::class, 'getPlanningsForStage'])->name('showplannings');
+Route::post('/planning/{planning_id}/comment', [EncadrentController::class, 'addCommentToPlanning'])->name('prof.addComment');
+Route::get('/showplannings/{stage_id}', [EncadrentController::class, 'showPlanningsWithComments'])->name('prof.showPlanningsWithComments');
+
+
+
+
 //rapporteur
 Route::get('/Rapporteur',[RapporteurController::class,'ListStageRapport'])->name('ListStageRapport');
 Route::post('/rapport/update-status', [RapporteurController::class, 'updateStatus'])->name('rapport.updateStatus');
