@@ -40,6 +40,7 @@ class ExaminateurController extends Controller
             ->join('affectations', 'stages.id', '=', 'affectations.stage_id')
             ->where('affectations.role', 'examinateur') // Link stages with affectations
             ->where('affectations.prof_id', $profId) // Filter by the professor ID
+            ->where('rapports.status', 'validé')
             ->select(
                 'rapports.id as rapport_id',           // Rapport ID
                 'rapports.titre as rapport_titre',     // Rapport title

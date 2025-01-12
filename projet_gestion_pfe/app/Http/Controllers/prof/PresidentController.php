@@ -40,6 +40,7 @@ class PresidentController extends Controller
             ->join('affectations', 'stages.id', '=', 'affectations.stage_id') // Link stages with affectations
             ->where('affectations.prof_id', $profId)
             ->where('affectations.role', 'president') // Filter by the professor ID
+            ->where('rapports.status', 'validé')
             ->select(
                 'rapports.id as rapport_id',           // Rapport ID
                 'rapports.titre as rapport_titre',     // Rapport title
