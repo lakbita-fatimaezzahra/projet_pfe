@@ -3,7 +3,7 @@
         <img src="{{ asset('images/navlogo.png') }}" alt="Logo">
     </div>
     <a href="{{ route('dashboard') }}" class="{{ request()->is('dashboard*') ? 'active' : '' }}">
-        <i class="fas fa-home"></i> Acceuille
+        <i class="fas fa-home"></i> Acceuil
     </a>
 
     <a href="/readst" class="{{ request()->is('readst') ? 'active' : '' }}">

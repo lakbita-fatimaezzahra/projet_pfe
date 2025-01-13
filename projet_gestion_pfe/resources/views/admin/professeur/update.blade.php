@@ -141,7 +141,7 @@
                 <label for="photo">Photo</label>
                 <input type="file" name="photo" class="form-control">
                 @if ($prof->photo)
-                    <img src="{{ asset($prof->photo) }}" alt="Photo du professeur">
+                    <img src="{{ asset($prof->photo) }}" alt="Photo du professeur" style="max-width: 150px; max-height: 100px; margin-top: 10px;">
                 @endif
             </div>
 
