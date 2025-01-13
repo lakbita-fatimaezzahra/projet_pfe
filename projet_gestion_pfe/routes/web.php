@@ -27,8 +27,7 @@ Route::get('/', function () {
 // admin
 Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     //etudiant
-        Route::get('/readst', [EtudiantController::class, 'index'])->name('etudiants.read');
-        Route::get('/etudiants', [EtudiantController::class, 'index'])->name('etudiant.index');
+        Route::get('/etudiants', [EtudiantController::class, 'index'])->name('etudiant.read');
         Route::get('/etudiants/create', [EtudiantController::class, 'create'])->name('etudiant.create');
         Route::post('/etudiants', [EtudiantController::class, 'store'])->name('etudiant.store');
         Route::get('/etudiants/{id}/edit', [EtudiantController::class, 'edit'])->name('etudiant.edit');
@@ -47,7 +46,7 @@ Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard
         Route::delete('professeurs/{id}', [ProfesseurController::class, 'destroy'])->name('admin.professeur.delete');
 
         //Importer fichier csv
-        Route::post('admin/professeur/import', [ProfesseurController::class, 'import'])->name('admin.professeur.import');
+        Route::match(['get', 'post'],'admin/professeur/import', [ProfesseurController::class, 'import'])->name('admin.professeur.import');
     //departement
         Route::prefix('admin')->name('admin.')->group(function () {
             Route::resource('departement', DepartementController::class);
@@ -115,10 +114,25 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset']);
 //prof
 Route::get('/prof',[ProfController::class,'home'])->name('home');
 //encadrent
-Route::get('/Encadrent',[EncadrentController::class,'ListStageEncadrent'])->name('Encadrent');
 Route::get('/Encadrent',[EncadrentController::class,'ListStageEncadrent'])->name('ListStageEncadrent');
+Route::match(['get', 'post'], '/stages/{stage_id}/planning', [EncadrentController::class, 'addPlanningToStage'])->name('addPlanning');
+Route::post('/stages/{stage_id}/plannings/{planning_id}/commentaire', [EncadrentController::class, 'uploadCommentaire']);
+Route::get('/showplannings/{stage_id}', [EncadrentController::class, 'getPlanningsForStage'])->name('showplannings');
+Route::post('/planning/{planning_id}/comment', [EncadrentController::class, 'addCommentToPlanning'])->name('prof.addComment');
+Route::get('/showplannings/{stage_id}', [EncadrentController::class, 'showPlanningsWithComments'])->name('prof.showPlanningsWithComments');
+
+
+
+
 //rapporteur
 Route::get('/Rapporteur',[RapporteurController::class,'ListStageRapport'])->name('ListStageRapport');
+Route::post('/rapport/update-status', [RapporteurController::class, 'updateStatus'])->name('rapport.updateStatus');
+
+Route::get('/rapport/download/{id}', [RapporteurController::class, 'downloadRapport'])->name('download.rapport');
+Route::post('/rapport/upload/', [RapporteurController::class, 'addComment'])->name('rapport.addComment');
+Route::post('/rapport/upload-document', [RapporteurController::class, 'uploadDocument'])->name('rapport.uploadDocument');
+
+
 //examinateur
 Route::get('/Examinateur',[ExaminateurController::class,'ListStageExaminateur'])->name('ListStageExaminateur');
 //president
@@ -134,3 +148,5 @@ Route::get('responsable/listrapport', [RespController::class, 'listrapport'])->n
 Route::get('/assign-rapport/{stageId}', [RespController::class, 'showAssignFormRapport'])->name('showAssignFormRapport');
 Route::match(['get', 'post'],'/assign-rapport', [RespController::class, 'matchAndAssignRapport'])->name('matchAndAssignRapport');
 Route::get('responsable/listrapport', [RespController::class, 'listrapport'])->name('listrapport');
+//deadline
+Route::get('responsable/deadline',[RespController::class,'createDeadline'])->name('deadline');

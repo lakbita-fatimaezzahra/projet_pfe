@@ -1,6 +1,6 @@
 <div class="sidebar">
     <div class="logo">
-        <img src="{{ asset('images/navlogo.png') }}" alt="Logo">
+        <img src="{{ asset('images/PFElogo2.svg') }}" alt="Logo">
     </div>
     <a href="/prof" class="{{ request()->is('/') ? 'active' : '' }}"><i class="fas fa-home"></i> Acceuille</a>
     <a href="{{ route('ListStageEncadrent') }}" class="{{ request()->routeIs('ListStageEncadrent') ? 'active' : '' }}">

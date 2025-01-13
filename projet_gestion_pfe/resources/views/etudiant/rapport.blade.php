@@ -21,7 +21,7 @@
         .sidebar {
             width: 250px;
             height: 1000px;
-            background-color: #007035;
+            background-color: #134B70;
             color: rgb(255, 255, 255);
             display: flex;
             flex-direction: column;
@@ -34,7 +34,7 @@
         }
 
         .sidebar .logo img {
-            width: 150px;
+            width: 100px;
         }
 
         .sidebar a {
@@ -47,7 +47,7 @@
 
         .sidebar a:hover, .sidebar a.active {
             background-color: #ffffff;
-            color: #007035;
+            color: #134B70;
         }
 
         .sidebar a i {
@@ -57,7 +57,7 @@
         .sidebar .nouveau-btn {
             margin: 20px auto;
             background-color: #ffffff;
-            color: #007035;
+            color: #134B70;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
@@ -182,7 +182,7 @@
             padding: 20px 30px;
             font-size: 25px;
             color: #ffffff;
-            background-color:#007035 ;
+            background-color:#134B70 ;
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -190,7 +190,7 @@
         }
 
         .btn:hover {
-            background-color: #007035;
+            background-color: #134B70;
         }
 
         .study-btn {
@@ -219,7 +219,7 @@
 
         .form-container button {
             padding: 15px;
-            background-color: #007035;
+            background-color: #134B70;
             color: white;
             border: none;
             border-radius: 5px;
@@ -233,11 +233,11 @@
 
         /* Drag-and-Drop Area */
         .drag-drop-area {
-            border: 2px dashed #007035;
+            border: 2px dashed #134B70;
             border-radius: 10px;
             padding: 30px;
             text-align: center;
-            color: #007035;
+            color: #134B70;
         }
 
         .drag-drop-area.hover {
@@ -281,7 +281,7 @@
             top: 50%;
             right: 10px;
             transform: translateY(-50%);
-            color: #007035;
+            color: #134B70;
             text-decoration: none;
             font-size: 16px;
             pointer-events: auto; /* Makes the link clickable even with input disabled */
@@ -352,8 +352,8 @@
             <h1>Rapport Information</h1>
             <div class="form-container">
                 <label for="deadline-rapport">Deadline - Dépôt de Rapport :</label>
-                <input type="date" id="deadline-rapport" name="deadline_rapport" class="text-danger" value="{{ $deadline->date_deadline_rapport }}">
-            </div>
+                <input type="text" id="deadline-rapport" name="deadline_rapport" class="text-danger" value="{{ $deadline->date_deadline_rapport }}" disabled>
+             </div>
         </div>
         @if (Session::has('error'))
     <script>
@@ -392,14 +392,7 @@
                     <label for="date">Date</label>
                     <input type="date" id="date" name="date" required >
                 </div>
-                <div>
-                    <label for="status">Status</label>
-                    <select id="status" name="status"  disabled>
-                        <option value="En cours">En cours</option>
-                        <option value="Correger">Correger</option>
-                        <option value="valider">Valider</option>
-                    </select>
-                </div>
+
                 <!-- Notes Link -->
                 <div id="notes-link-container" style="display: none;">
                     <label for="disabled-input">Remarque:</label>

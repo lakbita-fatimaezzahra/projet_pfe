@@ -14,7 +14,7 @@
         }
 
         h1 {
-            color: #007035;
+            color: #134B70;
             font-weight: bold;
             text-align: center;
             margin-bottom: 20px;
@@ -55,7 +55,7 @@
         }
 
         .table thead {
-            background-color: #007035;
+            background-color:  #134B70;
             color: white;
             text-align: center;
         }
@@ -159,7 +159,7 @@
                         </td>
                         <td class="text-center">
                             <!-- Lien pour modifier avec tooltip -->
-                            <a href="{{ route('etudiant.edit', $etudiant->id) }}" class="text-decoration-none text-primary action-icon" 
+                            <a href="{{ route('etudiant.edit', $etudiant->id) }}" class="text-decoration-none text-primary action-icon"
                             title="Modifier" data-bs-toggle="tooltip" data-bs-placement="top">
                                 <i class="fas fa-pen"></i>
                             </a>
@@ -168,7 +168,7 @@
                             <form action="{{ route('etudiant.destroy', $etudiant->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="border-0 bg-transparent text-danger action-icon" title="Supprimer" data-bs-toggle="tooltip" 
+                                <button type="submit" class="border-0 bg-transparent text-danger action-icon" title="Supprimer" data-bs-toggle="tooltip"
                                 data-bs-placement="top"  onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?')">
                                     <i class="fas fa-trash"></i>
                                 </button>

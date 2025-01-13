@@ -14,7 +14,7 @@
         }
 
         h1 {
-            color: #007035; /* Couleur principale */
+            color:  #134B70; /* Couleur principale */
             font-weight: bold;
             text-align: center;
             margin-bottom: 20px;
@@ -33,7 +33,7 @@
         }
 
         .form-control:focus {
-            border-color: #007035;
+            border-color:  #134B70;
             box-shadow: 0 0 5px rgba(0, 112, 53, 0.5);
         }
 
@@ -178,7 +178,7 @@
 
         <div class="btn-group">
             <button type="submit" class="btn btn-success">Ajouter</button>
-            <a href="{{ route('etudiant.index') }}" class="btn btn-danger">Annuler</a>
+            <a href="{{ route('etudiant.read') }}" class="btn btn-danger">Annuler</a>
         </div>
     </form>
 </div>

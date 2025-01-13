@@ -4,7 +4,10 @@ namespace App\Http\Controllers\prof;
 
 use App\Http\Controllers\Controller;
 use App\Models\prof;
-use App\Models\Stage;
+use App\Models\Rapport;
+use Illuminate\Http\Request;
+
+
 
 class RapporteurController extends Controller
 {
@@ -23,25 +26,104 @@ class RapporteurController extends Controller
         return view('prof/Rapporteur', ['prof' => $prof]);
     }
     public function ListStageRapport()
-    {
-        // Fetch stages with the role of 'encadrent' in affectations
-        $data = Stage::join('affectations', 'stages.id', '=', 'affectations.stage_id')
-            ->join('profs', 'affectations.prof_id', '=', 'profs.id')
-            ->join('etudiants', 'stages.etudiant_id', '=', 'etudiants.id')
-            ->join('departements', 'etudiants.departement_id', '=', 'departements.id')
-            ->where('affectations.role', 'rapporteur') // Filter for role 'encadrent'
-            ->select(
-                'stages.id as stage_id',           // Stage ID
-                'stages.sujet as stage_sujet',     // Stage subject
-                'stages.Skills as stage_Skills',   // Stage skills
-                'etudiants.name as etudiant_name', // Student name
-                'departements.libelle as departement_libelle', // Department label
-                'profs.name as encadrent_name'     // Encadrent professor name
-            )
-            ->get(); // Get the results as Eloquent models
-    
-        // Pass data to view
-        return view('prof.rapporteur', compact('data'));
+{
+    // Retrieve the currently logged-in professor using session('user_id')
+    $profId = session('user_id');
+
+    if (!$profId) {
+        // Redirect if no logged-in professor
+        return redirect()->route('login')->with('error', 'Professor not authenticated.');
     }
+
+    // Fetch rapports linked to the logged-in professor
+    $data = Rapport::join('stages', 'rapports.stage_id', '=', 'stages.id') // Join rapports with stages
+        ->join('etudiants', 'stages.etudiant_id', '=', 'etudiants.id')    // Join stages with etudiants
+        ->join('departements', 'etudiants.departement_id', '=', 'departements.id') // Join etudiants with departements
+        ->join('affectations', 'stages.id', '=', 'affectations.stage_id') // Link stages with affectations
+        ->where('affectations.prof_id', $profId) // Filter by the professor ID
+        ->where('affectations.role', 'rapporteur')
+        ->select(
+            'rapports.id as rapport_id',           // Rapport ID
+            'rapports.titre as rapport_titre',     // Rapport title
+            'rapports.contenu as rapport_contenu', // Rapport content
+            'etudiants.name as etudiant_name',     // Student name
+            'departements.libelle as departement_libelle',
+            'rapports.status as rapport_status' 
+        )
+        ->get(); // Retrieve the results
+
+    // Pass the filtered data to the view
+    return view('prof.rapporteur', compact('data'));
+}
+
+public function downloadRapport($id)
+{
+    // Fetch the rapport by ID
+    $rapport = Rapport::join('stages', 'rapports.stage_id', '=', 'stages.id')
+        ->join('etudiants', 'stages.etudiant_id', '=', 'etudiants.id')
+        ->join('departements', 'etudiants.departement_id', '=', 'departements.id')
+        ->select(
+            'rapports.titre as rapport_titre',
+            'rapports.contenu as rapport_contenu',
+        )
+        ->where('rapports.id', $id)
+        ->firstOrFail();
+
+    // Create file content
+    $content = "Title: {$rapport->rapport_titre}\n";
+
+    $content .= "Content:\n{$rapport->rapport_contenu}";
+
+    // Return as a downloadable response
+    $fileName = 'Rapport_' . $rapport->rapport_titre . '.txt';
+    return response($content)
+        ->header('Content-Type', 'text/plain')
+        ->header('Content-Disposition', "attachment; filename={$fileName}");
+}
+
+public function updateStatus(Request $request)
+{
+    $rapportId = $request->input('rapport_id');
+    $status = $request->input('status');
+
+    // Validate the input
+    $request->validate([
+        'rapport_id' => 'required|exists:rapports,id',
+        'status' => 'required|in:validé,corrigé,en cours',
+    ]);
+
+    // Update the rapport's status
+    $rapport = Rapport::find($rapportId);
+    $rapport->status = $status;
+    $rapport->save();
+
+    return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
+}
+
+public function uploadDocument(Request $request)
+{
+    $request->validate([
+        'rapport_id' => 'required|exists:rapports,id',
+        'document' => 'required|file|mimes:pdf,doc,docx|max:2048',
+    ]);
+
+    $rapport = Rapport::findOrFail($request->input('rapport_id'));
+    $file = $request->file('document');
+
+    // Save the file with a unique name
+    $fileName = time() . '_' . $file->getClientOriginalName();
+    $filePath = $file->storeAs('documents', $fileName, 'public');
+
+    // Update the rapport's document field
+    $rapport->documentsDebut = $filePath;
+    $rapport->save();
+
+    return response()->json(['success' => true, 'message' => 'Document uploaded successfully.']);
+}
+
+    
+    
+
+
     
 }

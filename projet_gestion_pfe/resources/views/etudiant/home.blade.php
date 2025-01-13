@@ -28,7 +28,7 @@
             display: flex;
             /* align-items: center;
             justify-content: space-between; */
-            background-color: #0B8E36;
+            background-color: #134B70;
             color: white;
             padding: 50px 20px;
         }
@@ -141,7 +141,7 @@
     <div class="body">
         <img src={{ asset('images/home.png') }} width="1500" alt="home">
     </div>
-  
+
 
     <!-- Services Section -->
     <div class="services-section" id="services">
@@ -160,9 +160,6 @@
                 <p>Complete your digital work with custom and innovative illustrations.</p>
             </div>
         </div>
-    </div>
-    <div class="body2">
-        <img src={{ asset('images/home2.png') }} width="1500" alt="home">
     </div>
 
     <!-- Footer -->

@@ -20,7 +20,7 @@
         .sidebar {
             width: 250px;
             height: 1000px;
-            background-color: #007035;
+            background-color: #134B70;
             color: rgb(255, 255, 255);
             display: flex;
             flex-direction: column;
@@ -33,7 +33,7 @@
         }
 
         .sidebar .logo img {
-            width: 150px;
+            width: 100px;
         }
 
         .sidebar a {
@@ -46,7 +46,7 @@
 
         .sidebar a:hover, .sidebar a.active {
             background-color: #ffffff;
-            color: #007035;
+            color: #134B70;
         }
 
         .sidebar a i {
@@ -56,7 +56,7 @@
         .sidebar .nouveau-btn {
             margin: 20px auto;
             background-color: #ffffff;
-            color: #007035;
+            color: #134B70;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
@@ -139,7 +139,7 @@
 
         .form-container button {
             padding: 15px;
-            background-color: #007035;
+            background-color: #134B70;
             color: white;
             border: none;
             border-radius: 5px;
@@ -153,11 +153,11 @@
 
         /* Drag-and-Drop Area */
         .drag-drop-area {
-            border: 2px dashed #007035;
+            border: 2px dashed #134B70;
             border-radius: 10px;
             padding: 30px;
             text-align: center;
-            color: #007035;
+            color: #134B70;
         }
 
         .drag-drop-area.hover {
@@ -205,7 +205,7 @@
             margin-top: 10px;
         }
 
-        .form-container input[type="date"] {
+        .form-container input[name='deadline_rapport'] {
             margin-top: 5px;
             padding: 5px;
             border: 1px solid #ccc;
@@ -249,11 +249,11 @@
 
                 <!-- Deadline -->
                 <div class="form-container">
-                    <label for="deadline-rapport">Deadline - Dépôt de Rapport :</label>
-                    <input type="date" id="deadline-rapport" name="deadline_rapport" class="text-danger" value="{{ $deadline->date_deadline_rapport }}">
-                </div>
+                    <label for="deadline-rapport">Deadline - Dépôt de documents:</label>
+                    <input type="text" id="deadline-rapport" name="deadline_rapport" class="text-danger" value="{{ $deadline->date_deadline_rapport }}" disabled>
+           </div>
         <div class="content-header">
-            <h1>Document de stage</h1>
+            <h1>Documents de stage</h1>
         </div>
 
         <!-- Form Container -->

@@ -14,7 +14,7 @@
     }
 
     h1 {
-        color: #007035;
+        color: #134B70;
         font-weight: bold;
         text-align: center;
         margin-bottom: 20px;
@@ -32,7 +32,7 @@
     }
 
     th {
-        background-color: #007035;
+        background-color: #134B70;
         color: white;
     }
 

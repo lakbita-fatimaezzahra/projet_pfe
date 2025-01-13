@@ -13,7 +13,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         h1 {
-            color: #007035;
+            color:  #134B70;
             font-weight: bold;
             text-align: center;
             margin-bottom: 20px;
@@ -29,7 +29,7 @@
             width: 100%;
         }
         .form-control:focus {
-            border-color: #007035;
+            border-color:  #134B70;
             box-shadow: 0 0 5px rgba(0, 112, 53, 0.5);
         }
         .btn-success {

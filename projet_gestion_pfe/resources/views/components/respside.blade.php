@@ -1,6 +1,6 @@
 <div class="sidebar">
     <div class="logo">
-        <img src="{{ asset('images/navlogo.png') }}" alt="Logo">
+        <img src="{{ asset('images/PFElogo2.svg') }}" alt="Logo">
     </div>
     <a href="{{ route('responsable') }}" class="{{ request()->is('responsable/responsable') ? 'active' : '' }}">
         <i class="fas fa-home"></i> Acceuille
@@ -11,7 +11,9 @@
     <a href="{{ route('listrapport') }}" class="{{ request()->is('responsable/listrapport') ? 'active' : '' }}">
         <i class="fas fa-chart-line"></i> List rapport
     </a>
-    
+    <a href="{{ route('deadline') }}" class="{{ request()->is('responsable/listrapport') ? 'active' : '' }}">
+        <i class="fas fa-chart-line"></i> deadline
+    </a>
 
 </div>
 

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class cahiers_encadrement extends Model
+class cahiers_encadrements extends Model
 {
     protected $fillable = ['date', 'commentaire', 'emplacement', 'duree', 'stage_id'];
 
@@ -12,4 +12,5 @@ class cahiers_encadrement extends Model
     {
         return $this->belongsTo(Stage::class);
 }
+
 }

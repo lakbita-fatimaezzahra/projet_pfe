@@ -14,7 +14,7 @@
     }
 
     h1 {
-        color: #007035;
+        color: #134B70;
         font-weight: bold;
         text-align: center;
         margin-bottom: 20px;
@@ -32,7 +32,7 @@
     }
 
     th {
-        background-color: #007035;
+        background-color: #134B70;
         color: white;
     }
 
@@ -41,16 +41,16 @@
     }
 
     .btn-success {
-        background-color: #28a745;
-        border-color: #28a745;
+        background-color: #134B70;
+        border-color: #134B70;
         font-size: 1rem;
         padding: 8px 20px;
         border-radius: 5px;
     }
 
     .btn-success:hover {
-        background-color: #218838;
-        border-color: #1e7e34;
+        background-color: #508C9B;
+        border-color: #508C9B;
     }
 
     .modal {
@@ -92,21 +92,18 @@
 
             <label for="prof_id">Choisir un professeur:</label>
             <select name="prof_id" id="prof_id" class="form-control" required>
-            @foreach ($matchingProfs as $prof)
+                @foreach ($matchingProfs as $prof)
                 <option value="{{ $prof->id }}">
                     {{ $prof->name }} ({{ $prof->skills }})
                 </option>
             @endforeach
             
-            
             </select>
 
             <label for="role" class="mt-3">Rôle:</label>
+            {{-- <input type="text" value="encadrent" disabled></input> --}}
             <select name="role" id="role" class="form-control" required>
-                <option value="encadrent">Encadrent</option>
-                {{-- <option value="rapporteur">Rapporteur</option>
-                <option value="examinateur">Examinateur</option> --}}
-                {{-- <option value="president">Président</option> --}}
+                <option value="encadrent">Encadrent</option>            
             </select>
 
             <button type="submit" class="btn btn-success mt-3">Affecter</button>

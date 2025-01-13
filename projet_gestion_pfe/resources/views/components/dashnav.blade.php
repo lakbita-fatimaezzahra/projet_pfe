@@ -11,7 +11,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 10px 20px;
-            background-color: #006D24;
+            background-color: #134B70;
             color: white;
         }
         .navbar ul {
