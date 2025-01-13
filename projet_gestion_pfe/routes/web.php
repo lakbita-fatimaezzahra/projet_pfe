@@ -26,63 +26,66 @@ Route::get('/', function () {
 
 // admin
 Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    //etudiant
-        Route::get('/etudiants', [EtudiantController::class, 'index'])->name('etudiant.read');
-        Route::get('/etudiants/create', [EtudiantController::class, 'create'])->name('etudiant.create');
-        Route::post('/etudiants', [EtudiantController::class, 'store'])->name('etudiant.store');
-        Route::get('/etudiants/{id}/edit', [EtudiantController::class, 'edit'])->name('etudiant.edit');
-        Route::put('/etudiants/{id}', [EtudiantController::class, 'update'])->name('etudiant.update');
-        Route::delete('/etudiants/{id}', [EtudiantController::class, 'destroy'])->name('etudiant.destroy');
+//etudiant
+Route::get('/etudiants', [EtudiantController::class, 'index'])->name('etudiant.read');
+Route::get('/etudiants/create', [EtudiantController::class, 'create'])->name('etudiant.create');
+Route::get('/filieres/{departement_id}', [EtudiantController::class, 'getFilieres']);
+Route::get('/groupes/{filiere_id}', [EtudiantController::class, 'getGroupes']);
 
-        //Importer fichier csv
-        Route::post('/etudiant/import', [EtudiantController::class, 'import'])->name('etudiant.import');
+Route::post('/etudiants', [EtudiantController::class, 'store'])->name('etudiant.store');
+Route::get('/etudiants/{id}/edit', [EtudiantController::class, 'edit'])->name('etudiant.edit');
+Route::put('/etudiants/{id}', [EtudiantController::class, 'update'])->name('etudiant.update');
+Route::delete('/etudiants/{id}', [EtudiantController::class, 'destroy'])->name('etudiant.destroy');
 
-    //professeur
-        Route::get('/admin/professeur', [ProfesseurController::class, 'index'])->name('admin.professeur.read');
-        Route::get('/admin/professeur/create', [ProfesseurController::class, 'create'])->name('admin.professeur.create');
-        Route::post('/admin/professeur/store', [ProfesseurController::class, 'store'])->name('admin.professeur.store');
-        Route::get('/admin/professeur/{id}/update', [ProfesseurController::class, 'edit'])->name('admin.professeur.update');
-        Route::put('/admin/professeur/{id}', [ProfesseurController::class, 'update'])->name('admin.professeur.update.submit');
-        Route::delete('professeurs/{id}', [ProfesseurController::class, 'destroy'])->name('admin.professeur.delete');
+//Importer fichier csv
+Route::post('/etudiant/import', [EtudiantController::class, 'import'])->name('etudiant.import');
 
-        //Importer fichier csv
-        Route::match(['get', 'post'],'admin/professeur/import', [ProfesseurController::class, 'import'])->name('admin.professeur.import');
-    //departement
-        Route::prefix('admin')->name('admin.')->group(function () {
-            Route::resource('departement', DepartementController::class);
-        });
-        Route::get('departements/{id}/filieres', [DepartementController::class, 'showFilieres'])->name('admin.departement.filieres');
-    //filières
-        Route::prefix('admin/departement/{departementId}')->group(function () {
-            // Liste des filières
-        Route::get('filieres', [FiliereController::class, 'index'])->name('admin.departement.filieres');
-        // Ajouter une filière
-        Route::get('filieres/create', [FiliereController::class, 'create'])->name('admin.filiere.create');
-        Route::post('filieres', [FiliereController::class, 'store'])->name('admin.filiere.store');
-        Route::post('filieres', [FiliereController::class, 'store'])->name('admin.filiere.store');
-        });
-        // Afficher le formulaire de modification
-        Route::get('admin/departement/{departementId}/filieres/{id}/edit', [FiliereController::class, 'edit'])->name('admin.filiere.edit');
-        // Mettre à jour une filière
-        Route::put('admin/departement/{departementId}/filieres/{id}', [FiliereController::class, 'update'])->name('admin.filiere.update');
+//professeur
+Route::get('/admin/professeur', [ProfesseurController::class, 'index'])->name('admin.professeur.read');
+Route::get('/admin/professeur/create', [ProfesseurController::class, 'create'])->name('admin.professeur.create');
+Route::post('/admin/professeur/store', [ProfesseurController::class, 'store'])->name('admin.professeur.store');
+Route::get('/admin/professeur/{id}/update', [ProfesseurController::class, 'edit'])->name('admin.professeur.update');
+Route::put('/admin/professeur/{id}', [ProfesseurController::class, 'update'])->name('admin.professeur.update.submit');
+Route::delete('professeurs/{id}', [ProfesseurController::class, 'destroy'])->name('admin.professeur.delete');
 
-        Route::delete('admin/departement/{departementId}/filieres/{id}', [FiliereController::class, 'destroy'])->name('admin.filiere.destroy');
-    // Groupes
-        Route::prefix('admin/departement')->group(function () {
-            Route::get('/filiere/{filiereId}/groupes', [GroupeController::class, 'index'])->name('admin.groupes.index');
-            Route::get('/filiere/{filiereId}/groupes/create', [GroupeController::class, 'create'])->name('admin.groupes.create');
-            Route::post('/filiere/{filiereId}/groupes', [GroupeController::class, 'store'])->name('admin.groupes.store');
-            Route::get('/filiere/{filiereId}/groupes/{id}/edit', [GroupeController::class, 'edit'])->name('admin.groupes.edit');
-            Route::put('/filiere/{filiereId}/groupes/{id}', [GroupeController::class, 'update'])->name('admin.groupes.update');
-            Route::delete('/filiere/{filiereId}/groupes/{id}', [GroupeController::class, 'destroy'])->name('admin.groupes.destroy');
-        });
+//Importer fichier csv
+Route::match(['get', 'post'], 'admin/professeur/import', [ProfesseurController::class, 'import'])->name('admin.professeur.import');
+//departement
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('departement', DepartementController::class);
+});
+Route::get('departements/{id}/filieres', [DepartementController::class, 'showFilieres'])->name('admin.departement.filieres');
+//filières
+Route::prefix('admin/departement/{departementId}')->group(function () {
+    // Liste des filières
+    Route::get('filieres', [FiliereController::class, 'index'])->name('admin.departement.filieres');
+    // Ajouter une filière
+    Route::get('filieres/create', [FiliereController::class, 'create'])->name('admin.filiere.create');
+    Route::post('filieres', [FiliereController::class, 'store'])->name('admin.filiere.store');
+    Route::post('filieres', [FiliereController::class, 'store'])->name('admin.filiere.store');
+});
+// Afficher le formulaire de modification
+Route::get('admin/departement/{departementId}/filieres/{id}/edit', [FiliereController::class, 'edit'])->name('admin.filiere.edit');
+// Mettre à jour une filière
+Route::put('admin/departement/{departementId}/filieres/{id}', [FiliereController::class, 'update'])->name('admin.filiere.update');
+
+Route::delete('admin/departement/{departementId}/filieres/{id}', [FiliereController::class, 'destroy'])->name('admin.filiere.destroy');
+// Groupes
+Route::prefix('admin/departement')->group(function () {
+    Route::get('/filiere/{filiereId}/groupes', [GroupeController::class, 'index'])->name('admin.groupes.index');
+    Route::get('/filiere/{filiereId}/groupes/create', [GroupeController::class, 'create'])->name('admin.groupes.create');
+    Route::post('/filiere/{filiereId}/groupes', [GroupeController::class, 'store'])->name('admin.groupes.store');
+    Route::get('/filiere/{filiereId}/groupes/{id}/edit', [GroupeController::class, 'edit'])->name('admin.groupes.edit');
+    Route::put('/filiere/{filiereId}/groupes/{id}', [GroupeController::class, 'update'])->name('admin.groupes.update');
+    Route::delete('/filiere/{filiereId}/groupes/{id}', [GroupeController::class, 'destroy'])->name('admin.groupes.destroy');
+});
 
 
 
 
 //stage/rapport
 Route::get('/avant', function () {
-    return view('etudiant/avantstage',compact('id_user'));
+    return view('etudiant/avantstage', compact('id_user'));
 });
 
 Route::get('/etap2', function () {
@@ -90,15 +93,15 @@ Route::get('/etap2', function () {
     $id_user = session('user_id'); // Récupération de l'id de l'utilisateur
     return view('etudiant/etape2', compact('id_user'));
 })->name('documents');
-Route::get('/stage',[StageController::class, 'readStage'])->name('Stage');
+Route::get('/stage', [StageController::class, 'readStage'])->name('Stage');
 
-Route::get('/apres', [StageController::class,'finStage'])->name('documentsfinal');
-Route::match(['get', 'post'],'/submit-stage', [StageController::class, 'store'])->name('submitStage');
+Route::get('/apres', [StageController::class, 'finStage'])->name('documentsfinal');
+Route::match(['get', 'post'], '/submit-stage', [StageController::class, 'store'])->name('submitStage');
 Route::get('/avantstage', [StageController::class, 'insertstage'])->name('avantStage');
 Route::get('/rapport', [RapportController::class, 'create'])->name('rapport.create');
 Route::post('/rapport', [RapportController::class, 'submitRapport'])->name('submitRapport');
 Route::post('/Stage_documents', [StageController::class, 'submitDocuments'])->name('submitDocuments');
-Route::match(['get', 'post'],'/Stage_documents_fin', [StageController::class, 'submitDocumentsfin'])->name('submitDocumentsfin');
+Route::match(['get', 'post'], '/Stage_documents_fin', [StageController::class, 'submitDocumentsfin'])->name('submitDocumentsfin');
 
 Route::get('/student', [studentController::class, 'index'])->name('student');
 // Login Routes
@@ -112,9 +115,9 @@ Route::get('password/reset/{token}', [ResetPasswordController::class, 'showReset
 Route::post('password/reset', [ResetPasswordController::class, 'reset']);
 
 //prof
-Route::get('/prof',[ProfController::class,'home'])->name('home');
+Route::get('/prof', [ProfController::class, 'home'])->name('home');
 //encadrent
-Route::get('/Encadrent',[EncadrentController::class,'ListStageEncadrent'])->name('ListStageEncadrent');
+Route::get('/Encadrent', [EncadrentController::class, 'ListStageEncadrent'])->name('ListStageEncadrent');
 Route::match(['get', 'post'], '/stages/{stage_id}/planning', [EncadrentController::class, 'addPlanningToStage'])->name('addPlanning');
 Route::post('/stages/{stage_id}/plannings/{planning_id}/commentaire', [EncadrentController::class, 'uploadCommentaire']);
 Route::get('/showplannings/{stage_id}', [EncadrentController::class, 'getPlanningsForStage'])->name('showplannings');
@@ -125,7 +128,7 @@ Route::get('/show/{stage_id}', [EncadrentController::class, 'showPlanningsWithCo
 
 
 //rapporteur
-Route::get('/Rapporteur',[RapporteurController::class,'ListStageRapport'])->name('ListStageRapport');
+Route::get('/Rapporteur', [RapporteurController::class, 'ListStageRapport'])->name('ListStageRapport');
 Route::post('/rapport/update-status', [RapporteurController::class, 'updateStatus'])->name('rapport.updateStatus');
 
 Route::get('/rapport/download/{id}', [RapporteurController::class, 'downloadRapport'])->name('download.rapport');
@@ -134,9 +137,9 @@ Route::post('/rapport/upload-document', [RapporteurController::class, 'uploadDoc
 
 
 //examinateur
-Route::get('/Examinateur',[ExaminateurController::class,'ListStageExaminateur'])->name('ListStageExaminateur');
+Route::get('/Examinateur', [ExaminateurController::class, 'ListStageExaminateur'])->name('ListStageExaminateur');
 //president
-Route::get('/President',[PresidentController::class,'ListStagePresident'])->name('ListStagePresident');
+Route::get('/President', [PresidentController::class, 'ListStagePresident'])->name('ListStagePresident');
 //responsable
 Route::get('responsable/responsable', [RespController::class, 'responsable'])->name('responsable');
 //list des stagiaires
@@ -146,7 +149,7 @@ Route::post('/assign-stage', [RespController::class, 'matchAndAssign'])->name('m
 Route::get('responsable/listrapport', [RespController::class, 'listrapport'])->name('listrapport');
 //list des rapports
 Route::get('/assign-rapport/{stageId}', [RespController::class, 'showAssignFormRapport'])->name('showAssignFormRapport');
-Route::match(['get', 'post'],'/assign-rapport', [RespController::class, 'matchAndAssignRapport'])->name('matchAndAssignRapport');
+Route::match(['get', 'post'], '/assign-rapport', [RespController::class, 'matchAndAssignRapport'])->name('matchAndAssignRapport');
 Route::get('responsable/listrapport', [RespController::class, 'listrapport'])->name('listrapport');
 //deadline
-Route::get('responsable/deadline',[RespController::class,'createDeadline'])->name('deadline');
+Route::get('responsable/deadline', [RespController::class, 'createDeadline'])->name('deadline');
