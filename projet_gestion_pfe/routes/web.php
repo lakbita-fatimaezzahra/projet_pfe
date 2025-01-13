@@ -120,7 +120,7 @@ Route::match(['get', 'post'], '/stages/{stage_id}/planning', [EncadrentControlle
 Route::post('/stages/{stage_id}/plannings/{planning_id}/commentaire', [EncadrentController::class, 'uploadCommentaire']);
 Route::get('/showplannings/{stage_id}', [EncadrentController::class, 'getPlanningsForStage'])->name('showplannings');
 Route::post('/planning/{planning_id}/comment', [EncadrentController::class, 'addCommentToPlanning'])->name('prof.addComment');
-Route::get('/showplannings/{stage_id}', [EncadrentController::class, 'showPlanningsWithComments'])->name('prof.showPlanningsWithComments');
+Route::get('/show/{stage_id}', [EncadrentController::class, 'showPlanningsWithComments'])->name('prof.showPlanningsWithComments');
 
 
 
