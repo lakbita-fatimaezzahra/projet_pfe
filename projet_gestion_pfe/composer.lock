@@ -2567,6 +2567,19 @@
             "time": "2024-11-21T10:39:51+00:00"
         },
         {
+<<<<<<< HEAD
+            "name": "phpoffice/phpspreadsheet",
+            "version": "1.29.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
+                "reference": "089ffdfc04b5fcf25a3503d81a4e589f247e20e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/089ffdfc04b5fcf25a3503d81a4e589f247e20e3",
+                "reference": "089ffdfc04b5fcf25a3503d81a4e589f247e20e3",
+=======
             "name": "phpoffice/phpexcel",
             "version": "1.8.1",
             "source": {
@@ -2578,6 +2591,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
                 "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+>>>>>>> 2fe55b5e179fa027498c1c4cce5e74efece02471
                 "shasum": ""
             },
             "require": {
@@ -2622,11 +2636,18 @@
                 "xlsx"
             ],
             "support": {
+<<<<<<< HEAD
+                "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
+                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.29.8"
+            },
+            "time": "2025-01-12T03:16:27+00:00"
+=======
                 "issues": "https://github.com/PHPOffice/PHPExcel/issues",
                 "source": "https://github.com/PHPOffice/PHPExcel/tree/master"
             },
             "abandoned": "phpoffice/phpspreadsheet",
             "time": "2015-05-01T07:00:55+00:00"
+>>>>>>> 2fe55b5e179fa027498c1c4cce5e74efece02471
         },
         {
             "name": "phpoption/phpoption",

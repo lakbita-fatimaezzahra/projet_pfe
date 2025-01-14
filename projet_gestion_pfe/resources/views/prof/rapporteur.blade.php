@@ -72,6 +72,7 @@
     }
 </style>
 
+
 <div class="container mt-5">
     <h1 class="mb-4">Liste des Rapports</h1>
     <table class="table table-striped table-bordered">
@@ -123,14 +124,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="uploadDocumentForm" method="post" >
+                <form id="uploadDocumentForm" method="post" enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" name="rapport_id" id="rapport_id" value={{$rapport->rapport_id}}>
+                    <input type="hidden" name="rapport_id" id="rapport_id" value="{{ $rapport->rapport_id }}">
                     <div class="form-group">
                         <label for="document">Choisir un Document</label>
                         <input type="file" name="document" id="document" class="form-control" required>
                     </div>
-                    <button type="submit" class="btn btn-success">Upload</button>
+                    <button type="submit" class="btn btn-success" id="uploadBtn">Upload</button>
                 </form>
             </div>
         </div>
@@ -142,6 +143,46 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function () {
+        // Open the modal for uploading a document
+        $('.upload-doc-btn').on('click', function () {
+            let rapportId = $(this).data('rapport-id');
+            $('#rapport_id').val(rapportId);
+            $('#uploadDocumentModal').modal('show');
+        });
+
+        // Handle document upload form submission
+        $('#uploadDocumentForm').on('submit', function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+
+            // Disable the submit button while uploading
+            $('#uploadBtn').prop('disabled', true).text('Uploading...');
+
+            $.ajax({
+                url: '{{ route("rapport.uploadDocument") }}',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                        $('#uploadDocumentModal').modal('hide');
+                        // Optionally update the UI without reloading
+                        // $('#document-list').append('<li>' + response.documentName + '</li>');
+                    } else {
+                        alert('Failed to upload document.');
+                    }
+                    // Re-enable the submit button
+                    $('#uploadBtn').prop('disabled', false).text('Upload');
+                },
+                error: function (xhr) {
+                    alert('An error occurred: ' + xhr.responseText);
+                    $('#uploadBtn').prop('disabled', false).text('Upload');
+                }
+            });
+        });
+
         // Handle status change
         $('.status-select').on('change', function () {
             let rapportId = $(this).data('rapport-id');
@@ -167,39 +208,7 @@
                 }
             });
         });
-
-        // Open the modal for uploading a document
-        $('.upload-doc-btn').on('click', function () {
-            let rapportId = $(this).data('rapport-id');
-            $('#rapport_id').val(rapportId);
-            $('#uploadDocumentModal').modal('show');
-        });
-
-        // Handle document upload
-        $('#uploadDocumentForm').on('submit', function (e) {
-            e.preventDefault();
-            let formData = new FormData(this);
-
-            $.ajax({
-                url: '{{ route("rapport.uploadDocument") }}',
-                method: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    if (response.success) {
-                        alert(response.message);
-                        $('#uploadDocumentModal').modal('hide');
-                        location.reload();
-                    } else {
-                        alert('Failed to upload document.');
-                    }
-                },
-                error: function (xhr) {
-                    alert('An error occurred: ' + xhr.responseText);
-                }
-            });
-        });
     });
 </script>
+
 @endsection

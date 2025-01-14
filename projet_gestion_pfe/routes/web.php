@@ -18,6 +18,7 @@ use App\Http\Controllers\prof\ExaminateurController;
 use App\Http\Controllers\prof\RapporteurController;
 use App\Http\Controllers\prof\PresidentController;
 use App\Http\Controllers\prof\RespController;
+use App\Http\Controllers\DeadlineController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -155,4 +156,17 @@ Route::get('/assign-rapport/{stageId}', [RespController::class, 'showAssignFormR
 Route::match(['get', 'post'], '/assign-rapport', [RespController::class, 'matchAndAssignRapport'])->name('matchAndAssignRapport');
 Route::get('responsable/listrapport', [RespController::class, 'listrapport'])->name('listrapport');
 //deadline
+<<<<<<< HEAD
+Route::get('responsable/deadline',[RespController::class,'createDeadline'])->name('deadline');
+Route::post('responsable/deadline/add',[DeadlineController::class,'store'])->name('deadline.add');
+Route::put('/deadline/update/rapport{id}', [DeadlineController::class, 'updateDeadlineRapport'])->name('deadline.Rapport');
+Route::put('/deadline/update/stage{id}', [DeadlineController::class, 'updateDeadlineStage'])->name('deadline.Stage');
+Route::delete('/deadlineStage/delete/{id}', [DeadlineController::class, 'deleteStage'])->name('deadline.deleteStage');
+Route::delete('/deadlineRapport/delete/{id}', [DeadlineController::class, 'deleteRapport'])->name('deadline.deleteRapport');
+Route::post('/email', [DeadlineController::class, 'send'])->name('sendmail');
+
+
+
+=======
 Route::get('responsable/deadline', [RespController::class, 'createDeadline'])->name('deadline');
+>>>>>>> cfc9d1aab4b7e667ff6ee0931d048b64b13b19a3
