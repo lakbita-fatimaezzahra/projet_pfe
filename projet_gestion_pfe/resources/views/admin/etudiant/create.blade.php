@@ -156,19 +156,69 @@
         <div class="mb-3">
             <label for="departement_id" class="form-label">Département</label>
             <select class="form-control" id="departement_id" name="departement_id" required>
+                <option value="" disabled selected>-- Sélectionnez un département --</option>
                 @foreach ($departements as $departement)
                     <option value="{{ $departement->id }}">{{ $departement->libelle }}</option>
                 @endforeach
             </select>
         </div>
         <div class="mb-3">
-            <label for="groupe_id" class="form-label">Groupe</label>
-            <select class="form-control" id="groupe_id" name="groupe_id" required>
-                @foreach ($groupes as $groupe)
-                    <option value="{{ $groupe->id }}">{{ $groupe->libelle }}</option>
-                @endforeach
+            <label for="filiere_id" class="form-label">Filiere</label>
+            <select class="form-control" id="filiere_id" name="filiere_id" required>
+                <option value="" disabled selected>-- Sélectionnez une filière --</option>
             </select>
         </div>
+        <div class="mb-3">
+            <label for="groupe_id" class="form-label">Groupe</label>
+            <select class="form-control" id="groupe_id" name="groupe_id" required>
+                <option value="" disabled selected>-- Sélectionnez un groupe --</option>
+            </select>
+        </div>
+        
+        <!-- Include jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        
+        <script>
+            $(document).ready(function () {
+                $('#departement_id').on('change', function () {
+                    const departementId = $(this).val();
+                    $('#filiere_id').empty().append('<option value="" disabled selected>Chargement...</option>');
+                    $('#groupe_id').empty().append('<option value="" disabled selected>-- Sélectionnez un groupe --</option>');
+                    
+                    if (departementId) {
+                        $.ajax({
+                            url: `/filieres/${departementId}`,
+                            type: 'GET',
+                            success: function (data) {
+                                $('#filiere_id').empty().append('<option value="" disabled selected>-- Sélectionnez une filière --</option>');
+                                data.forEach(filiere => {
+                                    $('#filiere_id').append(`<option value="${filiere.id}">${filiere.libelle}</option>`);
+                                });
+                            },
+                        });
+                    }
+                });
+        
+                $('#filiere_id').on('change', function () {
+                    const filiereId = $(this).val();
+                    $('#groupe_id').empty().append('<option value="" disabled selected>Chargement...</option>');
+                    
+                    if (filiereId) {
+                        $.ajax({
+                            url: `/groupes/${filiereId}`,
+                            type: 'GET',
+                            success: function (data) {
+                                $('#groupe_id').empty().append('<option value="" disabled selected>-- Sélectionnez un groupe --</option>');
+                                data.forEach(groupe => {
+                                    $('#groupe_id').append(`<option value="${groupe.id}">${groupe.libelle}</option>`);
+                                });
+                            },
+                        });
+                    }
+                });
+            });
+        </script>
+        
         <div class="mb-3">
             <label for="photo" class="form-label">Photo</label>
             <input type="file" class="form-control" id="photo" name="photo" >
