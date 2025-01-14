@@ -120,9 +120,12 @@ Route::get('/prof', [ProfController::class, 'home'])->name('home');
 Route::get('/Encadrent', [EncadrentController::class, 'ListStageEncadrent'])->name('ListStageEncadrent');
 Route::match(['get', 'post'], '/stages/{stage_id}/planning', [EncadrentController::class, 'addPlanningToStage'])->name('addPlanning');
 Route::post('/stages/{stage_id}/plannings/{planning_id}/commentaire', [EncadrentController::class, 'uploadCommentaire']);
-Route::get('/showplannings/{stage_id}', [EncadrentController::class, 'getPlanningsForStage'])->name('showplannings');
+// Route::get('/showplannings/{stage_id}', [EncadrentController::class, 'getPlanningsForStage'])->name('showplannings');
 Route::post('/planning/{planning_id}/comment', [EncadrentController::class, 'addCommentToPlanning'])->name('prof.addComment');
-Route::get('/show/{stage_id}', [EncadrentController::class, 'showPlanningsWithComments'])->name('prof.showPlanningsWithComments');
+// Route::get('/show/{stage_id}', [EncadrentController::class, 'showPlanningsWithComments'])->name('prof.showPlanningsWithComments');
+// Route::post('/plannings/{planning_id}/comment', [EncadrentController::class, 'addCommentToPlanning'])->name('prof.addCommentToPlanning');
+Route::get('/showplannings/{stage_id}', [EncadrentController::class, 'showPlanningsWithComments'])->name('prof.showPlanningsWithComments');
+
 
 
 

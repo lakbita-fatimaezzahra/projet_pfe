@@ -123,11 +123,10 @@
                     <a href="{{ url('/showplannings/' . $stage->stage_id) }}" class="btn btn-info">
                         Commentaire
                     </a>
+                    
         
                     <!-- 'Afficher' button to show plannings with comments -->
-                    <a href="{{ route('prof.showPlanningsWithComments', $stage->stage_id) }}" class="btn btn-success btn-sm">
-                        Afficher
-                    </a>
+                  
                 </td>
             </tr>
             @endforeach
@@ -152,8 +151,12 @@
                     <input type="date" class="form-control" id="date" name="date" required>
                 </div>
                 <div class="form-group">
-                    <label for="duree">Durée (en heures)</label>
-                    <input type="number" class="form-control" id="duree" name="duree" required>
+                    <label for="heure_debut">Heure debut</label>
+                    <input type="time" class="form-control" id="heure_debut" name="heure_debut" required>
+                </div>
+                <div class="form-group">
+                    <label for="heure_fin">Heure fin</label>
+                    <input type="time" class="form-control" id="heure_fin" name="heure_fin" required>
                 </div>
                 <div class="form-group">
                     <label for="emplacement">Emplacement</label>
@@ -162,6 +165,7 @@
                         <option value="présentiel">Présentiel</option>
                     </select>
                 </div>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="closeModal()">Fermer</button>
@@ -194,6 +198,7 @@
         $('#planningModal').fadeOut();
     }
 </script>
+
 <!-- Add the modal HTML to the bottom of the Blade file -->
 <div class="modal fade" id="planningModal" tabindex="-1" aria-labelledby="planningModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
