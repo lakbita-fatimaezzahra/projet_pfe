@@ -156,5 +156,7 @@ Route::put('/deadline/update/rapport{id}', [DeadlineController::class, 'updateDe
 Route::put('/deadline/update/stage{id}', [DeadlineController::class, 'updateDeadlineStage'])->name('deadline.Stage');
 Route::delete('/deadlineStage/delete/{id}', [DeadlineController::class, 'deleteStage'])->name('deadline.deleteStage');
 Route::delete('/deadlineRapport/delete/{id}', [DeadlineController::class, 'deleteRapport'])->name('deadline.deleteRapport');
+Route::post('/email', [DeadlineController::class, 'send'])->name('sendmail');
+
 
 

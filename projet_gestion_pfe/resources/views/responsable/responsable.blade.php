@@ -11,11 +11,11 @@
         <img src="{{ asset(session('user_data')->photo) }}" alt="Responsable Photo" class="responsable-photo">
 
     </div>
-
+    
     <div class="details-container">
         <div class="details-section">
             <table>
-                
+
                 <tr>
                     <td>Nom et Prénom</td>
                     <td>{{ session('user_data')->last_name ." ".session('user_data')->name }}</td>

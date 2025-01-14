@@ -113,4 +113,7 @@ class DeadlineController extends Controller
         return redirect()->route('deadline')->with('success', 'Deadline supprimée avec succès');
     }
 
+
+
+
 }

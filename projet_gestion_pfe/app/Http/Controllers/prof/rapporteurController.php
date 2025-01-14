@@ -7,7 +7,8 @@ use App\Models\prof;
 use App\Models\Rapport;
 use Illuminate\Http\Request;
 
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TestMail;
 
 class RapporteurController extends Controller
 {
@@ -48,7 +49,7 @@ class RapporteurController extends Controller
             'rapports.contenu as rapport_contenu', // Rapport content
             'etudiants.name as etudiant_name',     // Student name
             'departements.libelle as departement_libelle',
-            'rapports.status as rapport_status' 
+            'rapports.status as rapport_status'
         )
         ->get(); // Retrieve the results
 
@@ -104,26 +105,28 @@ public function uploadDocument(Request $request)
 {
     $request->validate([
         'rapport_id' => 'required|exists:rapports,id',
-        'document' => 'required|file|mimes:pdf,doc,docx|max:2048',
+        'document' => 'required|file|mimes:pdf,doc,docx|max:10240', // 10 Mo
     ]);
 
     $rapport = Rapport::findOrFail($request->input('rapport_id'));
     $file = $request->file('document');
+    $etudiantEmail = $rapport->stage->etudiant->email;
 
-    // Save the file with a unique name
-    $fileName = time() . '_' . $file->getClientOriginalName();
-    $filePath = $file->storeAs('documents', $fileName, 'public');
+    $file = $request->file('document');
 
-    // Update the rapport's document field
-    $rapport->documentsDebut = $filePath;
-    $rapport->save();
+        // Enregistrer le fichier avec un nom unique
+        $fileName = time() . '_' . $file->getClientOriginalName();
+        $filePath = $file->storeAs('documents', $fileName, 'public'); // Le fichier sera stocké dans le dossier "storage/app/public/documents"
+        // Mettre à jour le rapport avec le chemin du fichier
+        $rapport->documentsDebut = $filePath;
+        $rapport->save();
 
+      $title= 'Mail from Laravel App';
+      $body ='This is a test email sent from Laravel.';
+    \Mail::to($etudiantEmail)->send(new TestMail($title, $body,$filePath));
     return response()->json(['success' => true, 'message' => 'Document uploaded successfully.']);
+
 }
 
-    
-    
 
-
-    
 }
