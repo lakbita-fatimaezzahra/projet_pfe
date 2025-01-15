@@ -19,7 +19,7 @@ class PasswordNotification extends Mailable
 
     public function build()
     {
-        return $this->view('')
+        return $this->view('emails.password_notification')
                     ->with('password', $this->password);
     }
 }

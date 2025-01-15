@@ -1,6 +1,6 @@
 <div class="sidebar">
     <div class="logo">
-        <img src="{{ asset('images/PFElogo2.svg') }}" alt="Logo">
+        <img src="{{ asset('images/navlogo.png') }}" alt="Logo">
     </div>
     <a href="{{ route('dashboard') }}" class="{{ request()->is('dashboard*') ? 'active' : '' }}">
         <i class="fas fa-home"></i> Acceuil

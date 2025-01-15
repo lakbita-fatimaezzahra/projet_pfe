@@ -1,257 +1,257 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+@extends('layouts.etudiant')
 
-    <title>Student Dashboard - Rapport</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            color: rgb(0, 0, 0);
-            display: flex;
-            height: 100vh;
-        }
+@section('title', 'Liste des Stagiaires')
 
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            height: 1000px;
-            background-color: #134B70;
-            color: rgb(255, 255, 255);
-            display: flex;
-            flex-direction: column;
-            text-align: center;
-        }
+@section('content')
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #ffffff;
+        color: rgb(0, 0, 0);
+        display: flex;
+        height: 100vh;
+    }
 
-        .sidebar .logo {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+    /* Sidebar */
+    .sidebar {
+        width: 250px;
+        height: 1000px;
+        background-color: #134B70;
+        color: rgb(255, 255, 255);
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
 
-        .sidebar .logo img {
-            width: 100px;
-        }
+    .sidebar .logo {
+        text-align: center;
+        margin-bottom: 20px;
+    }
 
-        .sidebar a {
-            display: block;
-            padding: 15px 20px;
-            color: rgb(255, 255, 255);
-            text-decoration: none;
-            font-size: 18px;
-        }
+    .sidebar .logo img {
+        width: 100px;
+    }
 
-        .sidebar a:hover, .sidebar a.active {
-            background-color: #ffffff;
-            color: #134B70;
-        }
+    .sidebar a {
+        display: block;
+        padding: 15px 20px;
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+        font-size: 18px;
+    }
 
-        .sidebar a i {
-            margin-right: 10px;
-        }
+    .sidebar a:hover,
+    .sidebar a.active {
+        background-color: #ffffff;
+        color: #134B70;
+    }
 
-        .sidebar .nouveau-btn {
-            margin: 20px auto;
-            background-color: #ffffff;
-            color: #134B70;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            text-align: center;
-        }
+    .sidebar a i {
+        margin-right: 10px;
+    }
 
-        .sidebar .nouveau-btn:hover {
-            background-color: #005522;
-        }
+    .sidebar .nouveau-btn {
+        margin: 20px auto;
+        background-color: #ffffff;
+        color: #134B70;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        text-align: center;
+    }
 
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
+    .sidebar .nouveau-btn:hover {
+        background-color: #005522;
+    }
 
-        .navbar {
-            background-color: #006D24;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
+    /* Main Content */
+    .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
 
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            margin-right: 15px;
-        }
+    .navbar {
+        background-color: #006D24;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
 
-        .navbar a:hover {
-            text-decoration: underline;
-        }
+    .navbar a {
+        color: white;
+        text-decoration: none;
+        margin-right: 15px;
+    }
 
-        .logout {
-            background: white;
-            color: black;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+    .navbar a:hover {
+        text-decoration: underline;
+    }
 
-        .logout:hover {
-            background-color: #f1f1f1;
-        }
+    .logout {
+        background: white;
+        color: black;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
 
-        .content-header {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-            align-items: center;
-            margin-top: 20px;
-        }
+    .logout:hover {
+        background-color: #f1f1f1;
+    }
 
-        .content-header h1 {
-            margin: 0;
-        }
+    .content-header {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        align-items: center;
+        margin-top: 20px;
+    }
 
-        .form-container {
-            margin: 20px;
-            padding: 20px;
-            background-color: #ffffff;
-            color: black;
-            border-radius: 10px;
-        }
+    .content-header h1 {
+        margin: 0;
+    }
 
-        .form-container input,
-        .form-container select,
-        .form-container textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
+    .form-container {
+        margin: 20px;
+        padding: 20px;
+        background-color: #ffffff;
+        color: black;
+        border-radius: 10px;
+    }
 
-        .form-container button {
-            padding: 15px;
-            background-color: #134B70;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-        }
+    .form-container input,
+    .form-container select,
+    .form-container textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
 
-        .form-container button:hover {
-            background-color: #005522;
-        }
+    .form-container button {
+        padding: 15px;
+        background-color: #134B70;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+    }
 
-        /* Drag-and-Drop Area */
-        .drag-drop-area {
-            border: 2px dashed #134B70;
-            border-radius: 10px;
-            padding: 30px;
-            text-align: center;
-            color: #134B70;
-        }
+    .form-container button:hover {
+        background-color: #005522;
+    }
 
-        .drag-drop-area.hover {
-            background-color: #e6f9e6;
-            border-color: #005522;
-        }
+    /* Drag-and-Drop Area */
+    .drag-drop-area {
+        border: 2px dashed #134B70;
+        border-radius: 10px;
+        padding: 30px;
+        text-align: center;
+        color: #134B70;
+    }
 
-        .drag-drop-area p {
-            font-size: 16px;
-        }
+    .drag-drop-area.hover {
+        background-color: #e6f9e6;
+        border-color: #005522;
+    }
 
-        .file-input {
-            display: none;
-        }
-        .input-wrapper {
-            position: relative;
-            width: 300px;
-        }
+    .drag-drop-area p {
+        font-size: 16px;
+    }
 
-        label {
-            font-size: 14px;
-            margin-bottom: 5px;
-            display: block;
-            color: #333;
-        }
+    .file-input {
+        display: none;
+    }
 
-        /* Disabled state styles */
-        .input-with-link:disabled {
-            background-color: #f1f1f1;
-            color: #bbb;
-        }
+    .input-wrapper {
+        position: relative;
+        width: 300px;
+    }
 
-        #notes-link-container {
-            display: block;
-            margin-top: 20px;
-        }
-        .form-container {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
+    label {
+        font-size: 14px;
+        margin-bottom: 5px;
+        display: block;
+        color: #333;
+    }
 
-        .form-container label {
-            font-weight: bold;
-            display: block;
-            margin-top: 10px;
-        }
+    /* Disabled state styles */
+    .input-with-link:disabled {
+        background-color: #f1f1f1;
+        color: #bbb;
+    }
 
-        .form-container input[name='deadline_rapport'] {
-            margin-top: 5px;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            width: 100%;
-            max-width: 300px;
-        }
+    #notes-link-container {
+        display: block;
+        margin-top: 20px;
+    }
 
-        .text-danger {
-            color: red;
-            font-weight: bold;
-        }
-    </style>
+    .form-container {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+
+    .form-container label {
+        font-weight: bold;
+        display: block;
+        margin-top: 10px;
+    }
+
+    .form-container input[name='deadline_rapport'] {
+        margin-top: 5px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .text-danger {
+        color: red;
+        font-weight: bold;
+    }
+</style>
 </head>
+
 <body>
-    <!-- Sidebar -->
-    <x-sidebar />
+
     @if (Session::get('error'))
     <script>
-   swal("message", "{{Session::get('error')}}",'error',{
-    button:true,
-    button:"OK",
-    timer:3000,
-    dangerMode:true,
-   })
+        swal("message", "{{Session::get('error')}}", 'error', {
+            button: true,
+            button: "OK",
+            timer: 3000,
+            dangerMode: true,
+        })
     </script>
     @endif
     @if (Session::get('success'))
     <script>
-   swal("message", "{{Session::get('success')}}",'success',{
-    button:true,
-    button:"OK",
-    timer:3000,
-    successMode:true,
-   })
+        swal("message", "{{Session::get('success')}}", 'success', {
+            button: true,
+            button: "OK",
+            timer: 3000,
+            successMode: true,
+        })
     </script>
     @endif
     <!-- Main Content -->
     <div class="main-content">
-       <x-dashnav/>
 
-                <!-- Deadline -->
-                <div class="form-container">
-                    <label for="deadline-rapport">Deadline - Dépôt de documents:</label>
-                    <input type="text" id="deadline-rapport" name="deadline_rapport" class="text-danger" value="{{ $deadline->date_deadline_rapport }}" disabled>
-           </div>
+
+        <!-- Deadline -->
+        <div class="form-container">
+            <label for="deadline-rapport">Deadline - Dépôt de documents:</label>
+            <input type="text" id="deadline-rapport" name="deadline_rapport" class="text-danger" value="{{ $deadline->date_deadline_rapport }}" disabled>
+        </div>
         <div class="content-header">
             <h1>Documents de stage</h1>
         </div>
@@ -261,12 +261,12 @@
             <form method="POST" action="{{ route('submitDocumentsfin') }}" enctype="multipart/form-data">
                 @csrf
                 <!-- Content (File upload) -->
-                <input type="hidden"  name="idStudent" value='{{$id_user}}'>
+                <input type="hidden" name="idStudent" value='{{$id_user}}'>
                 <div>
                     <label for="contenu">Contenu</label>
                     <div id="drag-drop-area" class="drag-drop-area">
                         <p>Drag and drop your document zip here, or click to select a file</p>
-                        <input type="file" name="contenu" id="contenu" class="file-input" >
+                        <input type="file" name="contenu" id="contenu" class="file-input">
                     </div>
                 </div>
 
@@ -308,4 +308,6 @@
         });
     </script>
 </body>
-</html>
+
+
+@endsection
