@@ -12,6 +12,7 @@ use App\Http\Controllers\admin\ProfesseurController;
 use App\Http\Controllers\admin\DepartementController;
 use App\Http\Controllers\admin\FiliereController;
 use App\Http\Controllers\admin\GroupeController;
+use App\Http\Controllers\admin\SalleController;
 use App\Http\Controllers\prof\ProfController;
 use App\Http\Controllers\prof\EncadrentController;
 use App\Http\Controllers\prof\ExaminateurController;
@@ -79,6 +80,19 @@ Route::prefix('admin/departement')->group(function () {
     Route::get('/filiere/{filiereId}/groupes/{id}/edit', [GroupeController::class, 'edit'])->name('admin.groupes.edit');
     Route::put('/filiere/{filiereId}/groupes/{id}', [GroupeController::class, 'update'])->name('admin.groupes.update');
     Route::delete('/filiere/{filiereId}/groupes/{id}', [GroupeController::class, 'destroy'])->name('admin.groupes.destroy');
+});
+
+//salles 
+
+
+// Routes for Salles CRUD operations
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/salles', [SalleController::class, 'index'])->name('salle.index');
+    Route::get('/salles/create', [SalleController::class, 'create'])->name('salle.create');
+    Route::post('/salles', [SalleController::class, 'store'])->name('salle.store');
+    Route::get('admin/salles/{id}/edit', [SalleController::class, 'edit'])->name('salle.edit');
+    Route::put('/salles/{id}', [SalleController::class, 'update'])->name('salle.update');
+    Route::delete('/salles/{id}', [SalleController::class, 'destroy'])->name('salle.destroy');
 });
 
 
@@ -156,7 +170,6 @@ Route::get('/assign-rapport/{stageId}', [RespController::class, 'showAssignFormR
 Route::match(['get', 'post'], '/assign-rapport', [RespController::class, 'matchAndAssignRapport'])->name('matchAndAssignRapport');
 Route::get('responsable/listrapport', [RespController::class, 'listrapport'])->name('listrapport');
 //deadline
-<<<<<<< HEAD
 Route::get('responsable/deadline',[RespController::class,'createDeadline'])->name('deadline');
 Route::post('responsable/deadline/add',[DeadlineController::class,'store'])->name('deadline.add');
 Route::put('/deadline/update/rapport{id}', [DeadlineController::class, 'updateDeadlineRapport'])->name('deadline.Rapport');
@@ -167,6 +180,3 @@ Route::post('/email', [DeadlineController::class, 'send'])->name('sendmail');
 
 
 
-=======
-Route::get('responsable/deadline', [RespController::class, 'createDeadline'])->name('deadline');
->>>>>>> cfc9d1aab4b7e667ff6ee0931d048b64b13b19a3

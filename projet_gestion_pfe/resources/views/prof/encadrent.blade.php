@@ -67,17 +67,16 @@
 
     /* Center Modal */
     .modal {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(0, 0, 0, 0.5);
-        width: 100%;
-        height: 100%;
-        justify-content: center;
-        align-items: center;
-    }
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 0; /* Start at the top of the page */
+    left: 0; /* Start at the left of the page */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+}
 
     .modal-content {
         background-color: white;
@@ -95,6 +94,7 @@
         border: none;
         background: transparent;
     }
+    
 </style>
 
 <div class="container mt-5">
@@ -168,8 +168,8 @@
                 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal()">Fermer</button>
-                <button type="submit" class="btn btn-primary">Ajouter Planning</button>
+                <button type="button" class="btn btn-success" onclick="closeModal()">Fermer</button>
+                <button type="submit" class="btn btn-success">Ajouter Planning</button>
             </div>
         </form>
     </div>
