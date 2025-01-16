@@ -1,4 +1,4 @@
-@extends('layouts.admin') 
+@extends('layouts.admin')
 
 @section('title', 'Ajouter un Étudiant')
 
@@ -68,10 +68,10 @@
 
         .btn-group {
             display: flex;
-            justify-content: center;            
+            justify-content: center;
         }
 
-        
+
 
         .mt-4 {
             margin-top: 20px; /* Espace supplémentaire entre le champ de photo et les boutons */
@@ -97,7 +97,7 @@
                 </ul>
             </div>
         @endif
-    
+
     <form action="{{ route('etudiant.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
@@ -165,7 +165,7 @@
         <div class="mb-3">
             <label for="filiere_id" class="form-label">Filiere</label>
             <select class="form-control" id="filiere_id" name="filiere_id" required>
-                <option value="" disabled selected>-- Sélectionnez une filière --</option>
+                <option value="filiere_id" disabled selected>-- Sélectionnez une filière --</option>
             </select>
         </div>
         <div class="mb-3">
@@ -174,17 +174,17 @@
                 <option value="" disabled selected>-- Sélectionnez un groupe --</option>
             </select>
         </div>
-        
+
         <!-- Include jQuery -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        
+
         <script>
             $(document).ready(function () {
                 $('#departement_id').on('change', function () {
                     const departementId = $(this).val();
                     $('#filiere_id').empty().append('<option value="" disabled selected>Chargement...</option>');
                     $('#groupe_id').empty().append('<option value="" disabled selected>-- Sélectionnez un groupe --</option>');
-                    
+
                     if (departementId) {
                         $.ajax({
                             url: `/filieres/${departementId}`,
@@ -198,11 +198,11 @@
                         });
                     }
                 });
-        
+
                 $('#filiere_id').on('change', function () {
                     const filiereId = $(this).val();
                     $('#groupe_id').empty().append('<option value="" disabled selected>Chargement...</option>');
-                    
+
                     if (filiereId) {
                         $.ajax({
                             url: `/groupes/${filiereId}`,
@@ -218,7 +218,7 @@
                 });
             });
         </script>
-        
+
         <div class="mb-3">
             <label for="photo" class="form-label">Photo</label>
             <input type="file" class="form-control" id="photo" name="photo" >

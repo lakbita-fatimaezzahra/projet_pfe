@@ -156,7 +156,6 @@ Route::get('/assign-rapport/{stageId}', [RespController::class, 'showAssignFormR
 Route::match(['get', 'post'], '/assign-rapport', [RespController::class, 'matchAndAssignRapport'])->name('matchAndAssignRapport');
 Route::get('responsable/listrapport', [RespController::class, 'listrapport'])->name('listrapport');
 //deadline
-<<<<<<< HEAD
 Route::get('responsable/deadline',[RespController::class,'createDeadline'])->name('deadline');
 Route::post('responsable/deadline/add',[DeadlineController::class,'store'])->name('deadline.add');
 Route::put('/deadline/update/rapport{id}', [DeadlineController::class, 'updateDeadlineRapport'])->name('deadline.Rapport');
@@ -167,6 +166,3 @@ Route::post('/email', [DeadlineController::class, 'send'])->name('sendmail');
 
 
 
-=======
-Route::get('responsable/deadline', [RespController::class, 'createDeadline'])->name('deadline');
->>>>>>> cfc9d1aab4b7e667ff6ee0931d048b64b13b19a3

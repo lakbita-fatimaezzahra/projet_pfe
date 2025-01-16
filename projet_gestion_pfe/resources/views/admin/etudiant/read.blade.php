@@ -7,7 +7,7 @@
         .container {
             max-width: 95%;
             margin: 0 auto;
-            background-color: #ffffff; /* Fond blanc pour un aspect propre */
+            background-color: #ffffff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -21,7 +21,7 @@
         }
 
         .btn-success {
-            background-color: #28a745; /* Couleur verte */
+            background-color: #28a745;
             border-color: #28a745;
             font-size: 1rem;
             padding: 8px 20px;
@@ -34,7 +34,7 @@
         }
 
         .btn-primary {
-            background-color: #007bff; /* Couleur bleue */
+            background-color: #007bff;
             border-color: #007bff;
             font-size: 1rem;
             padding: 8px 20px;
@@ -74,7 +74,6 @@
             background-color: #f8f9fa;
         }
 
-        /* Message de succès */
         .alert-success {
             color: #155724;
             background-color: #d4edda;
@@ -83,45 +82,63 @@
             margin-bottom: 20px;
             border-radius: 5px;
         }
-
     </style>
 
     @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
     @endif
 
     <div class="container mt-5">
         <h1 class="mb-4">Liste des étudiants</h1>
 
-        <!-- Afficher un message de succès -->
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
         @endif
 
-        <!-- Bouton Ajouter et Importer -->
         <div class="text-end mb-3">
-        <a href="{{ route('etudiant.create') }}" class="btn btn-success">
-           <i class="fas fa-user-plus"></i> Ajouter un étudiant
-        </a>
-            <!-- Bouton Importer -->
-            <form action="{{ route('etudiant.import') }}" method="POST" enctype="multipart/form-data" class="d-inline">
-                @csrf
-                <label for="csvFile" class="btn btn-primary" style="cursor: pointer;">
-                    <i class="fas fa-file-import"></i> Importer un fichier CSV
-                </label>
-                <input type="file" id="csvFile" name="csvFile" accept=".csv" onchange="this.form.submit()" style="display: none;">
-            </form>
+            <a href="{{ route('etudiant.create') }}" class="btn btn-success">
+                <i class="fas fa-user-plus"></i> Ajouter un étudiant
+            </a>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="importCsvButton">
+                Importer un fichier CSV
+            </button>
         </div>
 
-        <!-- Tableau des étudiants -->
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Importer un fichier CSV</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="{{ route('etudiant.import') }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="file">Choisir un fichier CSV</label>
+                                <input type="file" class="form-control" id="file" name="file" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                            <button type="submit" class="btn btn-primary">Importer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
@@ -135,7 +152,7 @@
                     <th>Genre</th>
                     <th>Matricule</th>
                     <th>Groupe</th>
-                    <th>Département</th>
+                    <th>filieres</th>
                     <th>Photo</th>
                     <th>Actions</th>
                 </tr>
@@ -153,31 +170,55 @@
                         <td>{{ $etudiant->genre }}</td>
                         <td>{{ $etudiant->matricule }}</td>
                         <td>{{ $etudiant->groupe->libelle ?? 'Non assigné' }}</td>
-                        <td>{{ $etudiant->departement->libelle ?? 'Non assigné' }}</td>
+                        <td>{{ $etudiant->filiere->libelle ?? 'Non assigné' }}</td>
                         <td>
                             <img src="{{ asset($etudiant->photo) }}" alt="Photo de l'étudiant" width="45" height="45">
                         </td>
                         <td class="text-center">
-                            <!-- Lien pour modifier avec tooltip -->
-                            <a href="{{ route('etudiant.edit', $etudiant->id) }}" class="text-decoration-none text-primary action-icon"
-                            title="Modifier" data-bs-toggle="tooltip" data-bs-placement="top">
+                            <a href="{{ route('etudiant.edit', $etudiant->id) }}" class="text-decoration-none text-primary action-icon" title="Modifier" data-bs-toggle="tooltip" data-bs-placement="top">
                                 <i class="fas fa-pen"></i>
                             </a>
-
-                            <!-- Formulaire pour supprimer avec tooltip -->
                             <form action="{{ route('etudiant.destroy', $etudiant->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="border-0 bg-transparent text-danger action-icon" title="Supprimer" data-bs-toggle="tooltip"
-                                data-bs-placement="top"  onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?')">
+                                <button type="submit" class="border-0 bg-transparent text-danger action-icon" title="Supprimer" data-bs-toggle="tooltip" data-bs-placement="top" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet étudiant ?')">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
                         </td>
-
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sélectionner le bouton d'importation CSV
+            const importButton = document.getElementById('importCsvButton');
+
+            // Sélectionner le modal
+            const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+
+            // Afficher le modal lors du clic sur le bouton Importer
+            importButton.addEventListener('click', function () {
+                modal.show();  // Affiche le modal
+            });
+
+            // Sélectionner le bouton "Close" dans le modal
+            const closeButton = document.querySelector('.modal-header .close');
+
+            // Ajouter un événement pour fermer le modal au clic sur le bouton "Close"
+            closeButton.addEventListener('click', function () {
+                modal.hide();  // Cache le modal
+            });
+
+            // Si tu veux ajouter un autre bouton "Fermer" dans le pied de page du modal :
+            const footerCloseButton = document.querySelector('.modal-footer .btn-secondary');
+            footerCloseButton.addEventListener('click', function () {
+                modal.hide();  // Cache le modal
+            });
+        });
+    </script>
+
 @endsection

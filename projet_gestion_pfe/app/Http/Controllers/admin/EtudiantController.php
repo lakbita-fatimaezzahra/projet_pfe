@@ -11,8 +11,8 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-// use App\Imports\etudiantsImport;
-// use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\EtudiantsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 
@@ -24,7 +24,7 @@ class EtudiantController extends Controller
 
     public function index()
     {
-        $etudiants = Etudiant::with(['groupe', 'departement'])->get();
+        $etudiants = Etudiant::with(['groupe', 'filiere'])->get();
         return view('admin.etudiant.read', compact('etudiants'));
     }
 
@@ -49,11 +49,10 @@ class EtudiantController extends Controller
             'Cin' => 'required|string|max:255|unique:etudiants',
             'genre' => 'required|in:male,female',
             'matricule' => 'required|string|max:255|unique:etudiants',
-            'departement_id' => 'required|exists:departements,id',
-            'filiere_id' => 'required|exists:filieres,id',
             'groupe_id' => 'required|exists:groupes,id',
             'photo' => 'required|image|max:2048',
-            'password' => 'required|string|min:8',  // Validation du mot de passe
+            'password' => 'required|string|min:8',
+            'filiere_id' => 'required|exists:filieres,id',  // Validation du mot de passe
         ], [
             'email.regex' => 'L\'email doit se terminer par @emsi-uca.ma.',
             'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
@@ -89,18 +88,29 @@ class EtudiantController extends Controller
 
 
 
-    // public function import(){
-    //     Excel::import(new etudiantsImport,request()->file('file'));
-    //     return back()->with(['seccess' => 'les donnees importes avec succe.']);
-    //     }
-    //     public function edit($id)
-    //     {
-    //         $etudiant = Etudiant::findOrFail($id); // Trouver l'étudiant par son ID
-    //         $departements = Departement::all(); // Récupérer tous les départements
-    //         $groupes = Groupe::all(); // Récupérer tous les groupes
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,txt',
+        ]);
 
-    //         return view('admin.etudiant.update', compact('etudiant', 'departements', 'groupes'));
-    //     }
+        $file = $request->file('file');
+
+        // Spécification du séparateur ";" pour le fichier CSV
+        Excel::import(new EtudiantsImport, $file->getRealPath(), null, \Maatwebsite\Excel\Excel::CSV, ['delimiter' => ';']);
+
+        return back()->with('success', 'Les données ont été importées avec succès.');
+    }
+
+
+        public function edit($id)
+        {
+            $etudiant = Etudiant::findOrFail($id); // Trouver l'étudiant par son ID
+            $departements = Departement::all(); // Récupérer tous les départements
+            $groupes = Groupe::all(); // Récupérer tous les groupes
+
+            return view('admin.etudiant.update', compact('etudiant', 'departements', 'groupes'));
+        }
 
 
     public function update(Request $request, $id)
