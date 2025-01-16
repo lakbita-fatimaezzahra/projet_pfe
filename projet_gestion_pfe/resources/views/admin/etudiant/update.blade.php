@@ -116,15 +116,7 @@
                     {{ $errors->first('email') }}
                 </div>
             @endif
-            <div class="mb-3">
-                <label for="password">Mot de passe</label>
-                <input type="password" name="password" class="form-control">
-            </div>
-                @if ($errors->has('password'))
-                <div class="alert alert-danger">
-                    {{ $errors->first('password') }}
-                </div>
-            @endif
+            
             <div class="mb-3">
                 <label for="dateN">Date de Naissance</label>
                 <input type="date" name="dateN" value="{{ $etudiant->dateN }}" class="form-control" required>

@@ -86,14 +86,51 @@
         </thead>
         <tbody>
             @foreach ($plannings as $planning)
-                <tr>
-                    <td>{{ $planning->duree }} h</td>
-                    <td>{{ $planning->emplacement }}</td>
-                    <td>{{ $planning->date }}</td>
-                    <td>{{ $planning->commentaire ?? 'Pas de commentaire' }}</td>
-                </tr>
-            @endforeach
+    <tr>
+        <!-- Display the duration of each planning (in minutes) -->
+        <td>  </p>
+            <p>Duration: {{ $planning->duration_in_minutes }} minutes</p></td>
+
+        <!-- Display the location/emplacement -->
+        <td>{{ $planning->emplacement }}</td>
+
+        <!-- Display the date -->
+        <td>{{ $planning->date }}</td>
+
+        <!-- Display the comment or the button to add a new comment -->
+        <td>
+            @if ($planning->commentaire)
+                <!-- If there is a comment, display it -->
+                {{ $planning->commentaire }}
+            @else
+                <!-- Button to show the comment form -->
+                <button class="btn btn-success" onclick="toggleCommentForm({{ $planning->id }})">Ajouter</button>
+
+                <!-- Hidden comment form that is shown when the button is clicked -->
+                <div id="comment-form-{{ $planning->id }}" style="display: none; margin-top: 10px;">
+                    <form action="{{ route('prof.addComment', $planning->id) }}" method="POST">
+                        @csrf
+                        <textarea name="commentaire" rows="4" cols="50" placeholder="Ajouter un commentaire..."></textarea>
+                        <button type="submit" class="btn btn-success mt-2">Enregistrer</button>
+                    </form>
+                </div>
+            @endif
+        </td>
+    </tr>
+@endforeach
+
+
         </tbody>
     </table>
 </div>
+<script>
+    function toggleCommentForm(planningId) {
+        var form = document.getElementById('comment-form-' + planningId);
+        if (form.style.display === "none") {
+            form.style.display = "block";
+        } else {
+            form.style.display = "none";
+        }
+    }
+</script>
 @endsection

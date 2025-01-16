@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Cahiers_encadrements;
 use App\Models\prof;
 use App\Models\Stage;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 
 
@@ -66,7 +66,8 @@ public function addPlanningToStage(Request $request, $stage_id)
     // Validate the incoming request data
     $validatedData = $request->validate([
         'date' => 'required|date',
-        'duree' => 'required|integer|min:1',
+        'heure_debut' => 'required|string', // Accepting time as string (HH:mm format)
+        'heure_fin' => 'required|string|after:heure_debut', // Ensure heure_fin is after heure_debut
         'commentaire' => 'nullable|string',
         'emplacement' => 'required|in:à distance,présentiel', // Restrict choices to valid values
     ]);
@@ -77,41 +78,19 @@ public function addPlanningToStage(Request $request, $stage_id)
     // Create a new planning entry
     $planning = Cahiers_encadrements::create([
         'date' => $validatedData['date'],
-        'duree' => $validatedData['duree'],
+        'heure_debut' => $validatedData['heure_debut'],
+        'heure_fin' => $validatedData['heure_fin'],
         'commentaire' => $validatedData['commentaire'] ?? null, // Use null if commentaire is not provided
         'emplacement' => $validatedData['emplacement'],
         'stage_id' => $stage->id,
     ]);
 
     // Return a success response
-    return response()->json([
-        'message' => 'Planning added successfully.',
-        'planning' => $planning,
-    ], 201);
+     return view('prof.succes');
 }
-//show list of plannings
-public function getPlanningsForStage($stage_id)
-{
-    try {
-        $stage = Stage::findOrFail($stage_id);
-        $plannings = $stage->plannings->map(function ($planning) {
-            return [
-                'id' => $planning->id,  // add the planning id to reference it when saving the comment
-                'duree' => $planning->duree,
-                'emplacement' => $planning->emplacement,
-                'date' => $planning->date,
-                'commentaire' => $planning->commentaire,
-            ];
-        });
 
-        return view('prof.showplannings', [
-            'stage' => $stage,
-            'plannings' => $plannings
-        ]);
-    } catch (\Exception $e) {
-        return redirect()->back()->with('error', 'Failed to fetch plannings: ' . $e->getMessage());
-    }
-}
+
+
 
 public function addCommentToPlanning(Request $request, $planning_id)
 {
@@ -130,13 +109,29 @@ public function addCommentToPlanning(Request $request, $planning_id)
         return redirect()->back()->with('error', 'Failed to add comment: ' . $e->getMessage());
     }
 }
+
+
+
 public function showPlanningsWithComments($stage_id)
 {
     try {
         // Fetch the stage with its related plannings and comments
         $stage = Stage::findOrFail($stage_id);
-        $plannings = $stage->plannings;  // assuming there's a relationship called 'plannings' on Stage model
-        
+        $plannings = $stage->plannings;
+
+        // Calculate duration for each planning
+        foreach ($plannings as $planning) {
+            // Combine date and time into full datetime strings and parse them with Carbon
+            $date_debut = Carbon::parse($planning->date_debut . ' ' . $planning->heure_debut);
+            $date_fin = Carbon::parse($planning->date_fin . ' ' . $planning->heure_fin);
+
+            // Calculate the duration in minutes and round it to a whole number
+            $duration_in_minutes = $date_debut->diffInMinutes($date_fin);
+
+            // Store the duration in the planning object
+            $planning->duration_in_minutes = $duration_in_minutes;
+        }
+
         return view('prof.showPlanningsWithComments', [
             'stage' => $stage,
             'plannings' => $plannings

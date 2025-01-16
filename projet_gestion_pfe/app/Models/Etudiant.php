@@ -45,6 +45,10 @@ class Etudiant extends Authenticatable
     {
         return $this->belongsTo(Departement::class);
     }
+    public function filiere()
+    {
+        return $this->belongsTo(Filiere::class);
+    }
 
     /**
      * Relation avec les stages.
