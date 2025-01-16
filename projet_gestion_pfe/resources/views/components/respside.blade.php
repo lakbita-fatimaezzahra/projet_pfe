@@ -11,9 +11,9 @@
     <a href="{{ route('listrapport') }}" class="{{ request()->is('responsable/listrapport') ? 'active' : '' }}">
     <i class="fas fa-file-alt"></i> List des rapports
     </a>
-    <a href="{{ route('deadline') }}" class="{{ request()->is('responsable/listrapport') ? 'active' : '' }}">
+    {{-- <a href="{{ route('deadline') }}" class="{{ request()->is('responsable/listrapport') ? 'active' : '' }}">
     <i class="fas fa-calendar-alt"></i> deadline
-    </a>
+    </a> --}}
 
 </div>
 
