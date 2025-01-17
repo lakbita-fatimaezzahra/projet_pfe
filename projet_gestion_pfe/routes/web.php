@@ -12,6 +12,7 @@ use App\Http\Controllers\admin\ProfesseurController;
 use App\Http\Controllers\admin\DepartementController;
 use App\Http\Controllers\admin\FiliereController;
 use App\Http\Controllers\admin\GroupeController;
+use App\Http\Controllers\admin\SalleController;
 use App\Http\Controllers\prof\ProfController;
 use App\Http\Controllers\prof\EncadrentController;
 use App\Http\Controllers\prof\ExaminateurController;
@@ -81,6 +82,19 @@ Route::prefix('admin/departement')->group(function () {
     Route::delete('/filiere/{filiereId}/groupes/{id}', [GroupeController::class, 'destroy'])->name('admin.groupes.destroy');
 });
 
+//salles 
+
+
+// Routes for Salles CRUD operations
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/salles', [SalleController::class, 'index'])->name('salle.index');
+    Route::get('/salles/create', [SalleController::class, 'create'])->name('salle.create');
+    Route::post('/salles', [SalleController::class, 'store'])->name('salle.store');
+    Route::get('admin/salles/{id}/edit', [SalleController::class, 'edit'])->name('salle.edit');
+    Route::put('/salles/{id}', [SalleController::class, 'update'])->name('salle.update');
+    Route::delete('/salles/{id}', [SalleController::class, 'destroy'])->name('salle.destroy');
+});
+
 
 
 
@@ -121,11 +135,11 @@ Route::get('/prof', [ProfController::class, 'home'])->name('home');
 Route::get('/Encadrent', [EncadrentController::class, 'ListStageEncadrent'])->name('ListStageEncadrent');
 Route::match(['get', 'post'], '/stages/{stage_id}/planning', [EncadrentController::class, 'addPlanningToStage'])->name('addPlanning');
 Route::post('/stages/{stage_id}/plannings/{planning_id}/commentaire', [EncadrentController::class, 'uploadCommentaire']);
-// Route::get('/showplannings/{stage_id}', [EncadrentController::class, 'getPlanningsForStage'])->name('showplannings');
 Route::post('/planning/{planning_id}/comment', [EncadrentController::class, 'addCommentToPlanning'])->name('prof.addComment');
-// Route::get('/show/{stage_id}', [EncadrentController::class, 'showPlanningsWithComments'])->name('prof.showPlanningsWithComments');
-// Route::post('/plannings/{planning_id}/comment', [EncadrentController::class, 'addCommentToPlanning'])->name('prof.addCommentToPlanning');
 Route::get('/showplannings/{stage_id}', [EncadrentController::class, 'showPlanningsWithComments'])->name('prof.showPlanningsWithComments');
+Route::match(['get', 'post'], '/available-salles/{stage_id}', [EncadrentController::class, 'getAllSalles']);
+
+
 
 
 

@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\prof;
 
 use App\Http\Controllers\Controller;
-use App\Models\Cahiers_encadrements;
+use App\Models\encadrements;
 use App\Models\prof;
+use App\Models\Salles;
 use App\Models\Stage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -63,31 +64,65 @@ class EncadrentController extends Controller
 }
 public function addPlanningToStage(Request $request, $stage_id)
 {
-    // Validate the incoming request data
+    // Validate request data
     $validatedData = $request->validate([
         'date' => 'required|date',
-        'heure_debut' => 'required|string', // Accepting time as string (HH:mm format)
-        'heure_fin' => 'required|string|after:heure_debut', // Ensure heure_fin is after heure_debut
-        'commentaire' => 'nullable|string',
-        'emplacement' => 'required|in:à distance,présentiel', // Restrict choices to valid values
+        'heure_debut' => 'required|date_format:H:i',
+        'heure_fin' => 'required|date_format:H:i|after:heure_debut',
+        'emplacement' => 'required|in:à distance,présentiel',
+        'salle_id' => 'required_if:emplacement,présentiel|exists:salles,id',
     ]);
 
-    // Ensure the stage exists
+    // Ensure stage exists
     $stage = Stage::findOrFail($stage_id);
 
-    // Create a new planning entry
-    $planning = Cahiers_encadrements::create([
+    // Check room availability if emplacement is 'présentiel'
+    if ($validatedData['emplacement'] === 'présentiel') {
+        $conflict = encadrements::where('salle_id', $validatedData['salle_id'])
+            ->where('date', $validatedData['date'])
+            ->where(function($query) use ($validatedData) {
+                $query->whereBetween('heure_debut', [$validatedData['heure_debut'], $validatedData['heure_fin']])
+                      ->orWhereBetween('heure_fin', [$validatedData['heure_debut'], $validatedData['heure_fin']])
+                      ->orWhere(function($query) use ($validatedData) {
+                          $query->where('heure_debut', '<=', $validatedData['heure_debut'])
+                                ->where('heure_fin', '>=', $validatedData['heure_fin']);
+                      });
+            })->exists();
+
+        if ($conflict) {
+            return response()->json(['errors' => ['salle_id' => ['The selected room is unavailable during this time.']]], 422);
+        }
+    }
+
+    // Create new planning
+    $planningData = [
         'date' => $validatedData['date'],
         'heure_debut' => $validatedData['heure_debut'],
         'heure_fin' => $validatedData['heure_fin'],
-        'commentaire' => $validatedData['commentaire'] ?? null, // Use null if commentaire is not provided
         'emplacement' => $validatedData['emplacement'],
-        'stage_id' => $stage->id,
-    ]);
+        'stage_id' => $stage_id,
+    ];
 
-    // Return a success response
-     return view('prof.succes');
+    if ($validatedData['emplacement'] === 'présentiel') {
+        $planningData['salle_id'] = $validatedData['salle_id'];
+    }
+
+    $planning = encadrements::create($planningData);
+
+    return response()->json(['success' => true, 'message' => 'Planning added successfully.']);
 }
+
+
+
+public function getAllSalles(Request $request, $stage_id)
+{
+    // Fetch all salles with valid emplacement
+    $allSalles = Salles::whereIn('emplacement', ['gueliz', 'centre'])->get();
+
+    // Return all salles as JSON
+    return response()->json($allSalles);
+}
+
 
 
 
@@ -99,7 +134,7 @@ public function addCommentToPlanning(Request $request, $planning_id)
     ]);
 
     try {
-        $planning = Cahiers_encadrements::findOrFail($planning_id);
+        $planning = encadrements::findOrFail($planning_id);
         $planning->commentaire = $request->commentaire;
         $planning->save();
 
@@ -140,12 +175,6 @@ public function showPlanningsWithComments($stage_id)
         return redirect()->back()->with('error', 'Failed to fetch plannings: ' . $e->getMessage());
     }
 }
-
-
-
-
-
-
 
 
 

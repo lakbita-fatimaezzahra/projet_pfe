@@ -18,7 +18,7 @@
             text-align: center;
             margin-bottom: 20px;
         }
-        label {
+        label { 
             font-weight: bold;
             color: #333333;
         }

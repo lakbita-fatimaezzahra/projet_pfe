@@ -34,9 +34,21 @@ class RespController extends Controller
 
         return view('responsable.liststage', compact('data', 'profs'));
 
-        return view('responsable.liststage', compact('data'));
+      
 
     }
+    //check prof
+//     public function listStagesWithProfAssignment()
+// {
+//     $data = Stage::with('affectation') // Assuming a relationship is defined
+//         ->get()
+//         ->map(function ($stage) {
+//             $stage->has_prof = Affectation::where('stage_id', $stage->id)->exists();
+//             return $stage;
+//         });
+
+//     return view('responsable.liststage', compact('data'));
+// }
     public function showAssignForm($stageId)
     {
         try {
