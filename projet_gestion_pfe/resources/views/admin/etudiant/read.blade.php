@@ -97,11 +97,18 @@
     <div class="container mt-5">
         <h1 class="mb-4">Liste des étudiants</h1>
 
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+        <!-- Afficher un message de succès -->
+        @if(session('error'))
+    <div class="alert alert-danger">
+        {!! session('error') !!}
+    </div>
+@endif
+
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 
         <div class="text-end mb-3">
             <a href="{{ route('etudiant.create') }}" class="btn btn-success">
@@ -172,7 +179,11 @@
                         <td>{{ $etudiant->groupe->libelle ?? 'Non assigné' }}</td>
                         <td>{{ $etudiant->filiere->libelle ?? 'Non assigné' }}</td>
                         <td>
-                            <img src="{{ asset($etudiant->photo) }}" alt="Photo de l'étudiant" width="45" height="45">
+                            <img src="{{ $etudiant->photo ? asset($etudiant->photo) : asset('images/avatar.jpeg') }}"
+                            alt="Photo de {{$etudiant->name}}"
+                            width="45"
+                            height="45"
+                            style="border-radius: 50%; object-fit: cover;">
                         </td>
                         <td class="text-center">
                             <a href="{{ route('etudiant.edit', $etudiant->id) }}" class="text-decoration-none text-primary action-icon" title="Modifier" data-bs-toggle="tooltip" data-bs-placement="top">

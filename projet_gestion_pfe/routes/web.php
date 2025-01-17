@@ -48,7 +48,7 @@ Route::post('/admin/professeur/store', [ProfesseurController::class, 'store'])->
 Route::get('/admin/professeur/{id}/update', [ProfesseurController::class, 'edit'])->name('admin.professeur.update');
 Route::put('/admin/professeur/{id}', [ProfesseurController::class, 'update'])->name('admin.professeur.update.submit');
 Route::delete('professeurs/{id}', [ProfesseurController::class, 'destroy'])->name('admin.professeur.delete');
-
+Route::post('/admin/professeur/import', [ProfesseurController::class, 'import'])->name('profsImport');
 //Importer fichier csv
 Route::match(['get', 'post'], 'admin/professeur/import', [ProfesseurController::class, 'import'])->name('admin.professeur.import');
 //departement

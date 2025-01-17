@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\admin;
-
 use Illuminate\Http\Request;
 use App\Models\Prof;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-
+use App\Imports\ProfsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProfesseurController extends Controller
 {
@@ -24,12 +24,12 @@ class ProfesseurController extends Controller
     }
     public function dashboard()
     {
-        
+
         return view('admin.dashboard.read');
     }
 
 
-    
+
 
     // Enregistrer un nouveau professeur dans la base de données
     public function store(Request $request)
@@ -46,7 +46,7 @@ class ProfesseurController extends Controller
             'role' => 'required|string',
             'photo' => 'nullable|image|max:2048',
         ]);
-    
+
         // Upload de la photo
         $photoPath = null;
         if ($request->hasFile('photo')) {
@@ -55,7 +55,7 @@ class ProfesseurController extends Controller
             $photo->move(public_path('documents/photos'), $photoName);
             $photoPath = 'documents/photos/' . $photoName;
         }
-    
+
         Prof::create([
             'name' => $request->name,
             'last_name' => $request->last_name,
@@ -68,9 +68,35 @@ class ProfesseurController extends Controller
             'role' => $request->role,
             'photo' => $photoPath,
         ]);
-    
+
         return redirect()->route('admin.professeur.read')->with('success', 'Professeur ajouté avec succès.');
     }
+
+
+
+    public function import(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:csv,txt',
+    ]);
+
+    $file = $request->file('file');
+    $import = new ProfsImport();
+
+    // Importation du fichier CSV
+    Excel::import($import, $file->getRealPath(), null, \Maatwebsite\Excel\Excel::CSV, ['delimiter' => ';']);
+
+    // Récupérer les erreurs
+    $errors = $import->getErrors();
+
+    // Vérifier s'il y a des erreurs
+    if (!empty($errors)) {
+        // Retourner les erreurs sous forme de message
+        return back()->with('error', $errors);
+    }
+
+    return back()->with('success', 'Les données ont été importées avec succès.');
+}
 
 
 

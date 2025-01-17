@@ -32,7 +32,7 @@
             background-color: #218838;
             border-color: #1e7e34;
         }
-        
+
         .btn-primary {
             background-color: #007bff;
             border-color: #007bff;
@@ -89,11 +89,18 @@
         <h1 class="mb-4">Liste des Professeurs</h1>
 
         <!-- Afficher un message de succès -->
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+        @if(session('error'))
+    <div class="alert alert-danger">
+        {!! session('error') !!}
+    </div>
+@endif
+
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
 
         <!-- Bouton Ajouter -->
         <div class="text-end mb-3" >
@@ -101,14 +108,38 @@
             <i class="fas fa-chalkboard-teacher"></i>  Ajouter un professeur
         </a>
             <!-- Bouton Importer -->
-            <form action="{{ route('admin.professeur.import') }}" method="POST" enctype="multipart/form-data" class="d-inline">
-                @csrf
-                <label for="csvFile" class="btn btn-primary" style="cursor: pointer;">
-                    <i class="fas fa-file-import"></i> Importer un fichier CSV
-                </label>
-                <input type="file" id="csvFile" name="csvFile" accept=".csv" onchange="this.form.submit()" style="display: none;">
-            </form>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="importCsvButton">
+                Importer un fichier CSV
+            </button>
         </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Importer un fichier CSV</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="{{ route('profsImport') }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="file">Choisir un fichier CSV</label>
+                                <input type="file" class="form-control" id="file" name="file" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                            <button type="submit" class="btn btn-primary">Importer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
 
         <!-- Tableau des professeurs -->
         <table class="table table-bordered table-striped">
@@ -138,29 +169,33 @@
                         <td>{{ $prof->skills }}</td>
                         <td>{{ $prof->role }}</td>
                         <td>
-                            <img src="{{ asset($prof->photo) }}" alt="Photo de {{ $prof->name }}" width="45" height="45">
+                        <img src="{{ $prof->photo ? asset($prof->photo) : asset('images/avatar.jpeg') }}"
+                        alt="Photo de {{ $prof->name }}"
+                        width="45"
+                        height="45"
+                        style="border-radius: 50%; object-fit: cover;">
                         </td>
                         <td class="text-center">
                             <!-- Lien pour modifier avec tooltip -->
-                            <a href="{{ route('admin.professeur.update', $prof->id) }}" 
-                            class="text-decoration-none text-primary action-icon" 
-                            title="Modifier" 
-                            data-bs-toggle="tooltip" 
+                            <a href="{{ route('admin.professeur.update', $prof->id) }}"
+                            class="text-decoration-none text-primary action-icon"
+                            title="Modifier"
+                            data-bs-toggle="tooltip"
                             data-bs-placement="top">
                                 <i class="fas fa-pen"></i>
                             </a>
 
                             <!-- Formulaire pour supprimer avec tooltip -->
-                            <form action="{{ route('admin.professeur.delete', $prof->id) }}" 
-                                method="POST" 
+                            <form action="{{ route('admin.professeur.delete', $prof->id) }}"
+                                method="POST"
                                 class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" 
-                                        class="border-0 bg-transparent text-danger action-icon" 
-                                        title="Supprimer" 
-                                        data-bs-toggle="tooltip" 
-                                        data-bs-placement="top" 
+                                <button type="submit"
+                                        class="border-0 bg-transparent text-danger action-icon"
+                                        title="Supprimer"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
                                         onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce professeur ?')">
                                     <i class="fas fa-trash"></i>
                                 </button>
@@ -171,4 +206,32 @@
             </tbody>
         </table>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sélectionner le bouton d'importation CSV
+            const importButton = document.getElementById('importCsvButton');
+
+            // Sélectionner le modal
+            const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+
+            // Afficher le modal lors du clic sur le bouton Importer
+            importButton.addEventListener('click', function () {
+                modal.show();  // Affiche le modal
+            });
+
+            // Sélectionner le bouton "Close" dans le modal
+            const closeButton = document.querySelector('.modal-header .close');
+
+            // Ajouter un événement pour fermer le modal au clic sur le bouton "Close"
+            closeButton.addEventListener('click', function () {
+                modal.hide();  // Cache le modal
+            });
+
+            // Si tu veux ajouter un autre bouton "Fermer" dans le pied de page du modal :
+            const footerCloseButton = document.querySelector('.modal-footer .btn-secondary');
+            footerCloseButton.addEventListener('click', function () {
+                modal.hide();  // Cache le modal
+            });
+        });
+    </script>
 @endsection

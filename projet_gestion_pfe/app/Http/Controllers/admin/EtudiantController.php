@@ -95,9 +95,19 @@ class EtudiantController extends Controller
         ]);
 
         $file = $request->file('file');
+        $import = new EtudiantsImport();
 
-        // Spécification du séparateur ";" pour le fichier CSV
-        Excel::import(new EtudiantsImport, $file->getRealPath(), null, \Maatwebsite\Excel\Excel::CSV, ['delimiter' => ';']);
+        // Importation du fichier CSV
+        Excel::import($import, $file->getRealPath(), null, \Maatwebsite\Excel\Excel::CSV, ['delimiter' => ';']);
+
+        // Récupérer les erreurs
+        $errors = $import->getErrors();
+
+        // Vérifier s'il y a des erreurs
+        if (!empty($errors)) {
+            // Retourner les erreurs sous forme de message
+            return back()->with('error', $errors);
+        }
 
         return back()->with('success', 'Les données ont été importées avec succès.');
     }
