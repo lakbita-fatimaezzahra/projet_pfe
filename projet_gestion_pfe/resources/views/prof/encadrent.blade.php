@@ -67,17 +67,16 @@
 
     /* Center Modal */
     .modal {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(0, 0, 0, 0.5);
-        width: 100%;
-        height: 100%;
-        justify-content: center;
-        align-items: center;
-    }
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 0; /* Start at the top of the page */
+    left: 0; /* Start at the left of the page */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+}
 
     .modal-content {
         background-color: white;
@@ -95,6 +94,7 @@
         border: none;
         background: transparent;
     }
+    
 </style>
 
 <div class="container mt-5">
@@ -145,19 +145,27 @@
         <form action="" method="POST" id="planningForm">
             @csrf
             <input type="hidden" id="stageId" name="stage_id">
+            
+            <!-- Error Container -->
+            <div id="errorContainer" style="display: none; color: red; margin-bottom: 10px;"></div>
+
             <div class="modal-body">
+                <!-- Date -->
                 <div class="form-group">
                     <label for="date">Date</label>
                     <input type="date" class="form-control" id="date" name="date" required>
                 </div>
+                <!-- Heure début -->
                 <div class="form-group">
-                    <label for="heure_debut">Heure debut</label>
+                    <label for="heure_debut">Heure début</label>
                     <input type="time" class="form-control" id="heure_debut" name="heure_debut" required>
                 </div>
+                <!-- Heure fin -->
                 <div class="form-group">
                     <label for="heure_fin">Heure fin</label>
                     <input type="time" class="form-control" id="heure_fin" name="heure_fin" required>
                 </div>
+                <!-- Emplacement -->
                 <div class="form-group">
                     <label for="emplacement">Emplacement</label>
                     <select class="form-control" id="emplacement" name="emplacement" required>
@@ -165,38 +173,113 @@
                         <option value="présentiel">Présentiel</option>
                     </select>
                 </div>
-                
+                <!-- Salle (only for Présentiel) -->
+                <div class="form-group" id="salleContainer" style="display: none;">
+                    <label for="salle_id">Salle</label>
+                    <select class="form-control" id="salle_id" name="salle_id"></select>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal()">Fermer</button>
-                <button type="submit" class="btn btn-primary">Ajouter Planning</button>
+                <button type="button" class="btn btn-success" onclick="closeModal()">Fermer</button>
+                <button type="submit" class="btn btn-success">Ajouter Planning</button>
             </div>
         </form>
     </div>
 </div>
 
+
 <script>
-    $(document).ready(function () {
-        $('.open-planning-modal').on('click', function () {
-            let stageId = $(this).data('stage-id');
-            let stageName = $(this).data('stage-name');
-            $('#stageId').val(stageId);
-            $('#stageName').text(stageName);
-            $('#planningModal').fadeIn();
+   $(document).ready(function () {
+    // Open modal and set dynamic data
+    $('.open-planning-modal').on('click', function () {
+        let stageId = $(this).data('stage-id');
+        let stageName = $(this).data('stage-name');
 
-            // Set the form action URL dynamically with the stage_id
-            let formAction = '/stages/' + stageId + '/planning';
-            $('#planningForm').attr('action', formAction);
-        });
+        $('#stageId').val(stageId);
+        $('#stageName').text(stageName);
 
-        $('.close, .btn-secondary').on('click', function () {
-            $('#planningModal').fadeOut();
-        });
+        $('#planningModal').fadeIn();
+        let formAction = '/stages/' + stageId + '/planning';
+        $('#planningForm').attr('action', formAction);
     });
 
+    // Close modal
     function closeModal() {
-        $('#planningModal').fadeOut();
+        $('#planningModal').fadeOut(); // Hide modal
+        $('#errorContainer').hide().html(''); // Clear error messages
+        $('#planningForm')[0].reset(); // Reset the form
+        $('#salleContainer').hide(); // Hide salle selection if visible
     }
+
+    // Show/hide salle selection
+    $('#emplacement').on('change', function () {
+        if ($(this).val() === 'présentiel') {
+            $('#salleContainer').show();
+            fetchAvailableSalles();
+        } else {
+            $('#salleContainer').hide();
+        }
+    });
+
+    // Fetch available salles via AJAX
+    function fetchAvailableSalles() {
+        let stageId = $('#stageId').val();
+
+        $.ajax({
+            url: '/available-salles/' + stageId,
+            method: 'GET',
+            success: function (data) {
+                $('#salle_id').empty();
+                if (data.length > 0) {
+                    data.forEach(function (salle) {
+                        $('#salle_id').append('<option value="' + salle.id + '">' + salle.libelle + ' (' + salle.emplacement + ')</option>');
+                    });
+                } else {
+                    $('#salle_id').append('<option>No available salles</option>');
+                }
+            },
+            error: function (error) {
+                console.log('Error fetching salles:', error);
+            }
+        });
+    }
+
+    // Form submission
+    $('#planningForm').on('submit', function (e) {
+        e.preventDefault(); // Prevent default submission
+
+        let formAction = $(this).attr('action');
+        let formData = $(this).serialize();
+
+        $.ajax({
+            url: formAction,
+            method: 'POST',
+            data: formData,
+            success: function (response) {
+                alert(response.message); // Success feedback
+                closeModal();
+                location.reload(); // Reload to reflect changes
+            },
+            error: function (xhr) {
+                if (xhr.status === 422) {
+                    let errors = xhr.responseJSON.errors;
+                    let errorMessages = '';
+
+                    for (let field in errors) {
+                        if (errors.hasOwnProperty(field)) {
+                            errorMessages += errors[field].join('<br>') + '<br>';
+                        }
+                    }
+                    $('#errorContainer').html(errorMessages).fadeIn();
+                } else {
+                    console.error('Unexpected error:', xhr);
+                }
+            }
+        });
+    });
+});
+
+
 </script>
 
 <!-- Add the modal HTML to the bottom of the Blade file -->

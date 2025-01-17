@@ -25,7 +25,7 @@ class Stage extends Model
 
     public function plannings()
     {
-        return $this->hasMany(Cahiers_encadrements::class);
+        return $this->hasMany(encadrements::class);
     }
 
     public function affectations()

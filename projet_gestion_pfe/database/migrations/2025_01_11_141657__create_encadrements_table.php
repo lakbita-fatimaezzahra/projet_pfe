@@ -3,11 +3,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCahiersEncadrementsTable extends Migration
+class EncadrementsTable extends Migration
 {
     public function up()
     {
-        Schema::create('cahiers_encadrements', function (Blueprint $table) {
+        Schema::create('encadrements', function (Blueprint $table) {
             $table->id();
             $table->date('date');             // Date of the planning
             $table->integer('duree'); 

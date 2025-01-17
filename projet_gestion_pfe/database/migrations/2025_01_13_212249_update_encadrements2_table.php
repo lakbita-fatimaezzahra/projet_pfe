@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('cahiers_encadrements', function (Blueprint $table) {
+        Schema::table('encadrements', function (Blueprint $table) {
             // Drop the 'duree' column
             $table->dropColumn('duree');
 

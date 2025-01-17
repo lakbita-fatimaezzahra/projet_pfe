@@ -1,4 +1,4 @@
-<div class="sidebar">
+<div class="sidebar" style="height: 200vh;">
     <div class="logo">
         <img src="{{ asset('images/navlogo.png') }}" alt="Logo">
     </div>
@@ -14,6 +14,9 @@
     </a>
     <a href="{{ route('admin.departement.index') }}" class="{{ request()->is('admin/departement*') ? 'active' : '' }}">
         <i class="fas fa-building"></i> Départements
+    </a>
+    <a href="{{ route('admin.salle.index') }}" class="{{ request()->is('admin/salle*') ? 'active' : '' }}">
+        <i class="fas fa-building"></i> Salles
     </a>
 </div>
 

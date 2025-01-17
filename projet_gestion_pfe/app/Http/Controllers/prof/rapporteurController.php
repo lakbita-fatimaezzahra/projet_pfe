@@ -123,7 +123,7 @@ public function uploadDocument(Request $request)
 
       $title= 'Mail from Laravel App';
       $body ='This is a test email sent from Laravel.';
-    \Mail::to($etudiantEmail)->send(new TestMail($title, $body,$filePath));
+    Mail::to($etudiantEmail)->send(new TestMail($title, $body,$filePath));
     return response()->json(['success' => true, 'message' => 'Document uploaded successfully.']);
 
 }
