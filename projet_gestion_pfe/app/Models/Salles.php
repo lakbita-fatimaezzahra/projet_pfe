@@ -34,4 +34,8 @@ class Salles extends Model
     protected $casts = [
         'emplacement' => 'string',
     ];
+    public function cahiersEncadrements()
+    {
+        return $this->hasMany(encadrements::class, 'salle_id'); // Assuming 'salle_id' is the foreign key
+    }
 }

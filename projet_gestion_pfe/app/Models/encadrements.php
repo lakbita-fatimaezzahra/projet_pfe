@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class cahiers_encadrements extends Model
+class encadrements extends Model
 {
-    protected $fillable = ['date', 'commentaire', 'emplacement','heure_debut','heure_fin', 'stage_id','salle_id'];
+    protected $fillable = ['date', 'commentaire', 'emplacement','heure_debut',
+    'heure_fin', 'stage_id','salle_id'];
 
     public function stage()
     {
