@@ -16,7 +16,7 @@
 
     /* Titre principal */
     h1 {
-        color: #134B70;
+        color: #005522;
         font-weight: bold;
         text-align: center;
         margin-bottom: 20px;
@@ -49,7 +49,7 @@
 
     /* En-têtes du tableau */
     .table thead {
-        background-color: #134B70;
+        background-color: #005522;
         color: white;
         text-align: center;
     }
@@ -74,7 +74,7 @@
 
     /* Message de succès */
     .alert-success {
-        color: #155724;
+        color: #005522;
         background-color: #d4edda;
         border-color: #c3e6cb;
         padding: 15px;

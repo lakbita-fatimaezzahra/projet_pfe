@@ -16,7 +16,7 @@
 
     /* Titre principal */
     h1 {
-        color: #134B70;
+        color: #005522;
         font-weight: bold;
         text-align: center;
         margin-bottom: 30px;
@@ -42,7 +42,7 @@
     }
 
     .form-control:focus {
-        border-color: #134B70;
+        border-color: #005522;
         box-shadow: 0 0 5px rgba(0, 112, 53, 0.5);
     }
 

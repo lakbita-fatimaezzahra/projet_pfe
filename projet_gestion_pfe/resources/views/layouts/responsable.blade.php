@@ -23,7 +23,7 @@
         .sidebar {
             width: 250px;
             height: 1000px;
-            background-color: #006d24;
+            background-color: #005522;
             color: rgb(255, 255, 255);
             display: flex;
             flex-direction: column;
@@ -36,7 +36,7 @@
         }
 
         .sidebar .logo img {
-            width: 100px;
+            width: 150px;
         }
 
         .sidebar a {
@@ -49,7 +49,7 @@
 
         .sidebar a:hover, .sidebar a.active {
             background-color: #ffffff;
-            color: #006d24;
+            color: #005522;
         }
 
         .sidebar a i {
@@ -59,7 +59,7 @@
         .sidebar .nouveau-btn {
             margin: 20px auto;
             background-color: #ffffff;
-            color: #006d24;
+            color: #005522;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
@@ -80,7 +80,7 @@
         }
 
         .navbar {
-            background-color: #006D24;
+            background-color: #005522;
             padding: 10px 20px;
             display: flex;
             justify-content: space-around;
@@ -185,7 +185,7 @@
             padding: 20px 30px;
             font-size: 25px;
             color: #ffffff;
-            background-color:#006d24 ;
+            background-color: #005522 ;
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -193,7 +193,7 @@
         }
 
         .btn:hover {
-            background-color: #006d24;
+            background-color: #005522;
         }
 
         .study-btn {
@@ -221,7 +221,7 @@
 
         .form-container button {
             padding: 15px;
-            background-color: #006d24;
+            background-color: #005522;
             color: white;
             border: none;
             border-radius: 5px;
@@ -244,7 +244,7 @@
             padding: 10px 30px;
             font-size: 18px;
             color: #fff;
-            background-color: #006d24;
+            background-color: #005522;
             border: none;
             border-radius: 5px;
             cursor: not-allowed;
@@ -269,15 +269,15 @@
 
 /* Active button (green) */
 .step-button.active {
-    background-color: #006d24;
+    background-color: #005522;
     color: white;
 }
 
 /* Inactive button (white) */
 .step-button.inactive {
     background-color: #ffffff;
-    color: #006d24;
-    border: 1px solid #006d24;
+    color: #005522;
+    border: 1px solid #005522;
 }
 
     </style>

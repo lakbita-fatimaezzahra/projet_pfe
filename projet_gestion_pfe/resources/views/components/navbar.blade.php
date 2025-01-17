@@ -40,7 +40,7 @@
 <body>
     <div class="navbar">
         <div class="logo">
-            <img src={{ asset('images/PFElogo2.svg') }} alt="EMSI Logo" style="height: 40px;">
+            <img src={{ asset('images/navlogo.png') }} alt="EMSI Logo" style="height: 40px;">
         </div>
        
         <a href="{{ route('Showlogin') }}" class="login-btn">Login</a>

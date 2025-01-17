@@ -1,141 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+@extends('layouts.etudiant')
 
+@section('title', 'Student Dashboard')
+
+@section('content')
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            color: rgb(0, 0, 0);
-            display: flex;
-            height: 100vh;
-        }
-
-        .form-container {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        .form-container label {
-            font-weight: bold;
-            display: block;
-            margin-top: 10px;
-        }
-
-        .form-container input[type="text"] {
-            margin-top: 5px;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            width: 100%;
-            max-width: 300px;
-        }
-
-        .text-danger {
-            color: red;
-            font-weight: bold;
-        }
-        .expired-message {
-            color: red;
-            font-size: 14px;
-            margin-top: 5px;
-            display: none; /* Caché par défaut */
-        }
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            background-color: #134B70;
-            color: rgb(255, 255, 255);
-            display: flex;
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .sidebar .logo {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .sidebar .logo img {
-            width: 100px;
-        }
-
-        .sidebar a {
-            display: block;
-            padding: 15px 20px;
-            color: rgb(255, 255, 255);
-            text-decoration: none;
-            font-size: 18px;
-        }
-
-        .sidebar a:hover, .sidebar a.active {
-            background-color: #ffffff;
-            color: #134B70;
-        }
-
-        .sidebar a i {
-            margin-right: 10px;
-        }
-
-        .sidebar .nouveau-btn {
-            margin: 20px auto;
-            background-color: #ffffff;
-            color: #134B70;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .sidebar .nouveau-btn:hover {
-            background-color: #134B70;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .navbar {
-            background-color: #006D24;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            margin-right: 15px;
-        }
-
-        .navbar a:hover {
-            text-decoration: underline;
-        }
-
-        .logout {
-            background: white;
-            color: black;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .logout:hover {
-            background-color: #f1f1f1;
-        }
-
+       
         .content-header {
             display: flex;
             justify-content: space-between;
@@ -233,14 +102,11 @@
         height: 350px !important;
     }
     </style>
-</head>
-<body>
-    <x-sidebar />
 
+<body>
+    
     <!-- Main Content -->
     <div class="main-content">
-        <x-dashnav/>
-
         @if (Session::get('error'))
         <script>
        swal("message", "{{Session::get('error')}}",'error',{
@@ -356,4 +222,4 @@
         });
     </script>
 </body>
-</html>
+@endsection

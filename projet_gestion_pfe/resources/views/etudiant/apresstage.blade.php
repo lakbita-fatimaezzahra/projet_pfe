@@ -1,109 +1,10 @@
 @extends('layouts.etudiant')
 
-@section('title', 'Liste des Stagiaires')
+@section('title', 'Student Dashboard - Après stage')
 
 @section('content')
 <style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background-color: #ffffff;
-        color: rgb(0, 0, 0);
-        display: flex;
-        height: 100vh;
-    }
-
-    /* Sidebar */
-    .sidebar {
-        width: 250px;
-        height: 1000px;
-        background-color: #134B70;
-        color: rgb(255, 255, 255);
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .sidebar .logo {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .sidebar .logo img {
-        width: 100px;
-    }
-
-    .sidebar a {
-        display: block;
-        padding: 15px 20px;
-        color: rgb(255, 255, 255);
-        text-decoration: none;
-        font-size: 18px;
-    }
-
-    .sidebar a:hover,
-    .sidebar a.active {
-        background-color: #ffffff;
-        color: #134B70;
-    }
-
-    .sidebar a i {
-        margin-right: 10px;
-    }
-
-    .sidebar .nouveau-btn {
-        margin: 20px auto;
-        background-color: #ffffff;
-        color: #134B70;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        text-align: center;
-    }
-
-    .sidebar .nouveau-btn:hover {
-        background-color: #005522;
-    }
-
-    /* Main Content */
-    .main-content {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .navbar {
-        background-color: #006D24;
-        padding: 10px 20px;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-    }
-
-    .navbar a {
-        color: white;
-        text-decoration: none;
-        margin-right: 15px;
-    }
-
-    .navbar a:hover {
-        text-decoration: underline;
-    }
-
-    .logout {
-        background: white;
-        color: black;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .logout:hover {
-        background-color: #f1f1f1;
-    }
+    
 
     .content-header {
         display: flex;
@@ -219,7 +120,7 @@
         font-weight: bold;
     }
 </style>
-</head>
+
 
 <body>
 

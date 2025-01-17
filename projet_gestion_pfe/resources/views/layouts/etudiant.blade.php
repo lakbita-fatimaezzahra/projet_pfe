@@ -4,9 +4,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <meta charset="UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Dashboard')</title>
@@ -24,7 +27,7 @@
         .sidebar {
             width: 250px;
             height: 1000px;
-            background-color: #134B70;
+            background-color: #005522;
             color: rgb(255, 255, 255);
             display: flex;
             flex-direction: column;
@@ -37,7 +40,7 @@
         }
 
         .sidebar .logo img {
-            width: 100px;
+            width: 150px;
         }
 
         .sidebar a {
@@ -50,7 +53,7 @@
 
         .sidebar a:hover, .sidebar a.active {
             background-color: #ffffff;
-            color: #134B70;
+            color: #005522;
         }
 
         .sidebar a i {
@@ -60,7 +63,7 @@
         .sidebar .nouveau-btn {
             margin: 20px auto;
             background-color: #ffffff;
-            color: #134B70;
+            color: #005522;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
@@ -81,7 +84,7 @@
         }
 
         .navbar {
-            background-color: #006D24;
+            background-color: #005522;
             padding: 10px 20px;
             display: flex;
             justify-content: space-around;
@@ -186,7 +189,7 @@
             padding: 20px 30px;
             font-size: 25px;
             color: #ffffff;
-            background-color:#134B70 ;
+            background-color:#005522 ;
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -194,7 +197,7 @@
         }
 
         .btn:hover {
-            background-color: #134B70;
+            background-color: #005522;
         }
 
         .study-btn {
@@ -222,7 +225,7 @@
 
         .form-container button {
             padding: 15px;
-            background-color: #134B70;
+            background-color: #005522;
             color: white;
             border: none;
             border-radius: 5px;
@@ -245,7 +248,7 @@
             padding: 10px 30px;
             font-size: 18px;
             color: #fff;
-            background-color: #134B70;
+            background-color: #005522;
             border: none;
             border-radius: 5px;
             cursor: not-allowed;
@@ -270,15 +273,15 @@
 
 /* Active button (green) */
 .step-button.active {
-    background-color: #134B70;
+    background-color: #005522;
     color: white;
 }
 
 /* Inactive button (white) */
 .step-button.inactive {
     background-color: #ffffff;
-    color: #134B70;
-    border: 1px solid #134B70;
+    color: #005522;
+    border: 1px solid #005522;
 }
 
     </style>

@@ -6,6 +6,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Inclure jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Inclure Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <title>@yield('title', 'Dashboard')</title>
     <style>
@@ -22,7 +28,7 @@
         .sidebar {
             width: 250px;
             height: 1000px;
-            background-color: #006d24 ;
+            background-color: #005522 ;
             color: rgb(255, 255, 255);
             display: flex;
             flex-direction: column;
@@ -35,7 +41,7 @@
         }
 
         .sidebar .logo img {
-            width: 100px;
+            width: 150px;
         }
 
         .sidebar a {
@@ -48,7 +54,7 @@
 
         .sidebar a:hover, .sidebar a.active {
             background-color: #ffffff;
-            color: #006d24;
+            color: #005522;
         }
 
         .sidebar a i {
@@ -58,7 +64,7 @@
         .sidebar .nouveau-btn {
             margin: 20px auto;
             background-color: #ffffff;
-            color: #006d24;
+            color: #005522;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
@@ -68,7 +74,7 @@
         }
 
         .sidebar .nouveau-btn:hover {
-            background-color: #006d24;
+            background-color: #005522;
         }
 
         /* Main Content */
@@ -79,7 +85,7 @@
         }
 
         .navbar {
-            background-color: #006d24;
+            background-color: #005522;
             padding: 10px 20px;
             display: flex;
             justify-content: space-around;
@@ -192,7 +198,7 @@
         }
 
         .btn:hover {
-            background-color: #006d24;
+            background-color: #005522;
         }
 
         .study-btn {
@@ -220,7 +226,7 @@
 
         .form-container button {
             padding: 15px;
-            background-color: #006d24;
+            background-color: #005522;
             color: white;
             border: none;
             border-radius: 5px;
@@ -229,7 +235,7 @@
         }
 
         .form-container button:hover {
-            background-color: #006d24;
+            background-color: #005522;
         }
 
         /* Step Buttons */
@@ -243,7 +249,7 @@
             padding: 10px 30px;
             font-size: 18px;
             color: #fff;
-            background-color: #006d24;
+            background-color: #005522;
             border: none;
             border-radius: 5px;
             cursor: not-allowed;
@@ -251,33 +257,33 @@
         }
 
         /* Step Buttons */
-.step-buttons {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
-}
+        .step-buttons {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
 
-.step-button {
-    padding: 10px 30px;
-    font-size: 18px;
-    border: none;
-    border-radius: 5px;
-    cursor: not-allowed;
-    margin: 0 10px;
-}
+        .step-button {
+            padding: 10px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: not-allowed;
+            margin: 0 10px;
+        }
 
-/* Active button (green) */
-.step-button.active {
-    background-color: #134B70;
-    color: white;
-}
+        /* Active button (green) */
+        .step-button.active {
+            background-color: #005522;
+            color: white;
+        }
 
-/* Inactive button (white) */
-.step-button.inactive {
-    background-color: #ffffff;
-    color: #006d24;
-    border: 1px solid #006d24;
-}
+        /* Inactive button (white) */
+        .step-button.inactive {
+            background-color: #ffffff;
+            color: #005522;
+            border: 1px solid #005522;
+        }
 
     </style>
 </head>
@@ -288,7 +294,7 @@
     <!-- Main Content -->
     <div class="main-content">
         <x-dashnav />
-        
+
         <div class="content">
             @yield('content')
         </div>

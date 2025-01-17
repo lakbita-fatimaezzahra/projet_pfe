@@ -1,9 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceuille</title>
+@extends('layouts.etudiant')
+
+@section('title', 'Acceuille')
+
+@section('content')
+
+    
     <style>
         /* Reset & Global Styles */
         * {
@@ -115,11 +116,10 @@
             margin-left: 15px
         }
     </style>
-</head>
+
 <body>
 
-    <!-- Navbar -->
-    <x-navbar />
+   
 
     <!-- Hero Section -->
     <div class="hero-section">
@@ -165,4 +165,4 @@
     <!-- Footer -->
     <x-footer />
 </body>
-</html>
+@endsection

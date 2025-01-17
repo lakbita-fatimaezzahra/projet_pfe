@@ -14,7 +14,7 @@
     }
 
     h1 {
-        color: #134B70;
+        color: #005522;
         font-weight: bold;
         text-align: center;
         margin-bottom: 20px;
@@ -32,7 +32,7 @@
     }
 
     th {
-        background-color: #134B70;
+        background-color: #005522;
         color: white;
     }
 
@@ -41,8 +41,8 @@
     }
 
     .btn-success {
-        background-color: #134B70;
-        border-color: #134B70;
+        background-color: #005522;
+        border-color: #005522;
         font-size: 1rem;
         padding: 8px 20px;
         border-radius: 5px;
