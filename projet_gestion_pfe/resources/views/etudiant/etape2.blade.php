@@ -38,7 +38,7 @@
 
         .form-container button {
             padding: 15px;
-            background-color: #134B70;
+            background-color: #005522;
             color: white;
             border: none;
             border-radius: 5px;
@@ -52,11 +52,11 @@
 
         /* Drag-and-Drop Area */
         .drag-drop-area {
-            border: 2px dashed #134B70;
+            border: 2px dashed #005522;
             border-radius: 10px;
             padding: 30px;
             text-align: center;
-            color: #134B70;
+            color: #005522;
         }
 
         .drag-drop-area.hover {
@@ -99,7 +99,7 @@
             padding: 10px 30px;
             font-size: 18px;
             color: #fff;
-            background-color: #134B70;
+            background-color: #005522;
             border: none;
             border-radius: 5px;
             cursor: not-allowed;
@@ -124,15 +124,15 @@
 
         /* Active button (green) */
         .step-button.active {
-            background-color: #134B70;
+            background-color: #005522;
             color: white;
         }
 
         /* Inactive button (white) */
         .step-button.inactive {
             background-color: #ffffff;
-            color: #134B70;
-            border: 1px solid #134B70;
+            color: #005522;
+            border: 1px solid #005522;
         }
     </style>
 

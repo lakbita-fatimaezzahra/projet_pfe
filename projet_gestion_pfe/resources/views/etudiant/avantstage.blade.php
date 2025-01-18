@@ -81,7 +81,7 @@
             padding: 20px 30px;
             font-size: 25px;
             color: #ffffff;
-            background-color:#134B70 ;
+            background-color: #005522 ;
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -89,7 +89,7 @@
         }
 
         .btn:hover {
-            background-color: #134B70;
+            background-color: #005522;
         }
 
         .study-btn {
@@ -117,7 +117,7 @@
 
         .form-container button {
             padding: 15px;
-            background-color: #134B70;
+            background-color: #005522;
             color: white;
             border: none;
             border-radius: 5px;
@@ -140,7 +140,7 @@
             padding: 10px 30px;
             font-size: 18px;
             color: #fff;
-            background-color: #134B70;
+            background-color: #005522;
             border: none;
             border-radius: 5px;
             cursor: not-allowed;
@@ -165,15 +165,15 @@
 
         /* Active button (green) */
         .step-button.active {
-            background-color: #134B70;
+            background-color: #005522;
             color: white;
         }
 
         /* Inactive button (white) */
         .step-button.inactive {
             background-color: #ffffff;
-            color: #134B70;
-            border: 1px solid #134B70;
+            color: #005522;
+            border: 1px solid #005522;
         }
         .swal-modal {
                 width: 300px !important; /* Largeur de la boîte */

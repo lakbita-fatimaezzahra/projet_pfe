@@ -80,7 +80,7 @@
             padding: 20px 30px;
             font-size: 25px;
             color: #ffffff;
-            background-color:#134B70 ;
+            background-color: #005522 ;
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -88,7 +88,7 @@
         }
 
         .btn:hover {
-            background-color: #134B70;
+            background-color: #005522;
         }
 
         .study-btn {

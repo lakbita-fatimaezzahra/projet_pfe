@@ -72,7 +72,7 @@ class ProfesseurController extends Controller
         return redirect()->route('admin.professeur.read')->with('success', 'Professeur ajouté avec succès.');
     }
 
-
+/*
 
     public function import(Request $request)
 {
@@ -98,7 +98,7 @@ class ProfesseurController extends Controller
     return back()->with('success', 'Les données ont été importées avec succès.');
 }
 
-
+*/
 
     public function edit($id)
     {

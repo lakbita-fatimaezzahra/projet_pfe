@@ -1,10 +1,9 @@
-@extends('layouts.etudiant')
-
-@section('title', 'Acceuille')
-
-@section('content')
-
-    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceuille</title>
     <style>
         /* Reset & Global Styles */
         * {
@@ -29,7 +28,7 @@
             display: flex;
             /* align-items: center;
             justify-content: space-between; */
-            background-color: #134B70;
+            background-color: #005522;
             color: white;
             padding: 50px 20px;
         }
@@ -116,10 +115,11 @@
             margin-left: 15px
         }
     </style>
-
+</head>
 <body>
 
-   
+    <!-- Navbar -->
+    <x-navbar />
 
     <!-- Hero Section -->
     <div class="hero-section">
@@ -165,4 +165,4 @@
     <!-- Footer -->
     <x-footer />
 </body>
-@endsection
+</html>

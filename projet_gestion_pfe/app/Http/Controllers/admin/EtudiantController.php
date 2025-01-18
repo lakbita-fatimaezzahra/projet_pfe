@@ -9,10 +9,12 @@ use App\Models\Filiere;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
+
 use App\Imports\EtudiantsImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Mail; // Pour envoyer des emails
+use Illuminate\Support\Str; // Pour générer des chaînes aléatoires
+
 
 
 
@@ -36,43 +38,63 @@ class EtudiantController extends Controller
         return view('admin.etudiant.create', compact('departements', 'groupes', 'filieres'));
     }
 
-    public function store(Request $request)
-    {
-        // Validation des champs avec des messages d'erreur personnalisés
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:etudiants',
-            'email' => ['required', 'email', 'max:255', 'unique:etudiants', 'regex:/^[a-zA-Z0-9._%+-]+@emsi-uca\.ma$/'],  // Email avec l'extension @emsi-uca.ma
-            'dateN' => 'required|date',
-            'CNE' => 'required|string|max:255|unique:etudiants',
-            'Cin' => 'required|string|max:255|unique:etudiants',
-            'genre' => 'required|in:male,female',
-            'matricule' => 'required|string|max:255|unique:etudiants',
-            'groupe_id' => 'required|exists:groupes,id',
-            'photo' => 'required|image|max:2048',
-            'password' => 'required|string|min:8',
-            'filiere_id' => 'required|exists:filieres,id',  // Validation du mot de passe
-        ], [
-            'email.regex' => 'L\'email doit se terminer par @emsi-uca.ma.',
-            'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
-        ]);
+   
+public function store(Request $request)
+{
+    // Validation des champs
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'username' => 'required|string|max:255|unique:etudiants',
+        'email' => ['required', 'email', 'max:255', 'unique:etudiants', 'regex:/^[a-zA-Z0-9._%+-]+@emsi-uca\.ma$/'],
+        'dateN' => 'required|date',
+        'CNE' => 'required|string|max:255|unique:etudiants',
+        'Cin' => 'required|string|max:255|unique:etudiants',
+        'genre' => 'required|in:male,female',
+        'matricule' => 'required|string|max:255|unique:etudiants',
+        'groupe_id' => 'required|exists:groupes,id',
+        'photo' => 'required|image|max:2048',
+        'filiere_id' => 'required|exists:filieres,id',
+    ], [
+        'email.regex' => 'L\'email doit se terminer par @emsi-uca.ma.',
+    ]);
 
-        // Upload de la photo
-        if ($request->hasFile('photo')) {
-            $image = $request->file('photo');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('documents/photos'), $imageName);
-            $imagePath = 'documents/photos/' . $imageName;
-        }
-
-        $validated['password'] = Hash::make($request->input('password'));
-
-        Etudiant::create(array_merge($validated, ['photo' =>  $imagePath]));
-
-        // Redirection avec message de succès
-        return redirect()->route('etudiant.read')->with('success', 'Étudiant ajouté avec succès.');
+    // Upload de la photo
+    if ($request->hasFile('photo')) {
+        $image = $request->file('photo');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('documents/photos'), $imageName);
+        $imagePath = 'documents/photos/' . $imageName;
     }
+
+    // Génération d'un mot de passe aléatoire
+    $generatedPassword = $request->input('name') . $request->input('last_name') . Str::random(4);
+    $hashedPassword = Hash::make($generatedPassword);
+
+    // Création de l'étudiant
+    $etudiant = Etudiant::create(array_merge($validated, [
+        'password' => $hashedPassword,
+        'photo' => $imagePath,
+    ]));
+
+    // Envoi de l'email avec le mot de passe
+    $emailData = [
+        'name' => $etudiant->name,
+        'password' => $generatedPassword,
+    ];
+
+    Mail::send('password_generation', $emailData, function ($message) use ($etudiant) {
+        $message->to($etudiant->email)
+                ->subject('Votre mot de passe pour accéder à la plateforme');
+    });
+
+    // Redirection avec message de succès
+    return redirect()->route('etudiant.read')->with('success', 'Étudiant ajouté avec succès. Le mot de passe a été envoyé à son email.');
+}
+
+
+
+
     public function getFilieres($departement_id)
     {
         $filieres = Filiere::where('departement_id', $departement_id)->get();
@@ -88,7 +110,7 @@ class EtudiantController extends Controller
 
 
 
-    public function import(Request $request)
+   /* public function import(Request $request)
     {
         $request->validate([
             'file' => 'required|mimes:csv,txt',
@@ -111,7 +133,7 @@ class EtudiantController extends Controller
 
         return back()->with('success', 'Les données ont été importées avec succès.');
     }
-
+*/
 
         public function edit($id)
         {

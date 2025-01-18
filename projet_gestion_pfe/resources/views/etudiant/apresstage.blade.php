@@ -38,7 +38,7 @@
 
     .form-container button {
         padding: 15px;
-        background-color: #134B70;
+        background-color: #005522;
         color: white;
         border: none;
         border-radius: 5px;
@@ -52,11 +52,11 @@
 
     /* Drag-and-Drop Area */
     .drag-drop-area {
-        border: 2px dashed #134B70;
+        border: 2px dashed #005522;
         border-radius: 10px;
         padding: 30px;
         text-align: center;
-        color: #134B70;
+        color: #005522;
     }
 
     .drag-drop-area.hover {
