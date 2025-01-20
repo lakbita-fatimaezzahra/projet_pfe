@@ -4,7 +4,7 @@
 
 @section('content')
     <style>
-       
+
         .content-header {
             display: flex;
             justify-content: space-between;
@@ -104,7 +104,7 @@
     </style>
 
 <body>
-    
+
     <!-- Main Content -->
     <div class="main-content">
         @if (Session::get('error'))

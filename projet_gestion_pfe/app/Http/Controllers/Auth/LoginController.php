@@ -27,7 +27,7 @@ class LoginController extends Controller
         $data = $request->all();
         $remember = $request->remember ?? false;
         $fieldType = filter_var($data['email'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-        if ($fieldType === 'email' && !preg_match('/@emsi-uca\.ma$/', $data['email'])) {
+        if ($fieldType === 'email' && !preg_match('/@emsi-edu\.ma$/', $data['email'])) {
             return back()->withErrors(['login' => 'L\'email doit appartenir au domaine @emsi-uca.ma'])->withInput();
         }
         // Choisir le guard selon le type d'utilisateur
@@ -47,7 +47,7 @@ class LoginController extends Controller
             if ($guard === 'etudiant') {
 
                 // Récupérer les données complètes de l'étudiant
-                $etudiant = \App\Models\Etudiant::with(['groupe', 'departement','departement.filieres'])
+                $etudiant = \App\Models\Etudiant::with(['groupe', 'filieres','departement.filieres'])
                 ->where('id', $user->id)
                 ->first();
 

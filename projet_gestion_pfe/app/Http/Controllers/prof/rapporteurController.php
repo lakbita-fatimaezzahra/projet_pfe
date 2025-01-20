@@ -121,8 +121,8 @@ public function uploadDocument(Request $request)
         $rapport->documentsDebut = $filePath;
         $rapport->save();
 
-      $title= 'Mail from Laravel App';
-      $body ='This is a test email sent from Laravel.';
+      $title= 'emsi email';
+      $body ='Voici les commentaires .';
     Mail::to($etudiantEmail)->send(new TestMail($title, $body,$filePath));
     return response()->json(['success' => true, 'message' => 'Document uploaded successfully.']);
 

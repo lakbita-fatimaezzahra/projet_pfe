@@ -38,7 +38,7 @@ class EtudiantController extends Controller
         return view('admin.etudiant.create', compact('departements', 'groupes', 'filieres'));
     }
 
-   
+
 public function store(Request $request)
 {
     // Validation des champs
@@ -54,6 +54,7 @@ public function store(Request $request)
         'matricule' => 'required|string|max:255|unique:etudiants',
         'groupe_id' => 'required|exists:groupes,id',
         'photo' => 'required|image|max:2048',
+        'departement_id' => 'required|exists:departements,id',
         'filiere_id' => 'required|exists:filieres,id',
     ], [
         'email.regex' => 'L\'email doit se terminer par @emsi-uca.ma.',
@@ -80,10 +81,10 @@ public function store(Request $request)
     // Envoi de l'email avec le mot de passe
     $emailData = [
         'name' => $etudiant->name,
-        'email' => $etudiant->email, 
+        'email' => $etudiant->email,
         'password' => $generatedPassword,
     ];
-    
+
     Mail::send('emails.password_generation', $emailData, function ($message) use ($etudiant) {
         $message->to($etudiant->email)
                 ->subject('Votre mot de passe pour accéder à la plateforme');
@@ -111,7 +112,7 @@ public function store(Request $request)
 
 
 
-   /* public function import(Request $request)
+    public function import(Request $request)
     {
         $request->validate([
             'file' => 'required|mimes:csv,txt',
@@ -134,7 +135,7 @@ public function store(Request $request)
 
         return back()->with('success', 'Les données ont été importées avec succès.');
     }
-*/
+
 
         public function edit($id)
         {
