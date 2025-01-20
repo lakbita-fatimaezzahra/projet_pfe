@@ -80,10 +80,11 @@ public function store(Request $request)
     // Envoi de l'email avec le mot de passe
     $emailData = [
         'name' => $etudiant->name,
+        'email' => $etudiant->email, 
         'password' => $generatedPassword,
     ];
-
-    Mail::send('password_generation', $emailData, function ($message) use ($etudiant) {
+    
+    Mail::send('emails.password_generation', $emailData, function ($message) use ($etudiant) {
         $message->to($etudiant->email)
                 ->subject('Votre mot de passe pour accéder à la plateforme');
     });

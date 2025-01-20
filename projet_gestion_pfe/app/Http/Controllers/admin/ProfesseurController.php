@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Imports\ProfsImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Mail; // Pour envoyer des emails
+use Illuminate\Support\Str; // Pour générer des chaînes aléatoires
 
 class ProfesseurController extends Controller
 {
@@ -33,44 +35,61 @@ class ProfesseurController extends Controller
 
     // Enregistrer un nouveau professeur dans la base de données
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:profs',
-            'email' => ['required', 'email', 'max:255', 'unique:profs', 'regex:/^[a-zA-Z0-9._%+-]+@emsi-uca\.ma$/'],
-            'password' => 'required|string|min:8|confirmed',
-            'genre' => 'required|string|in:Homme,Femme',
-            'type' => 'required|string',
-            'skills' => 'nullable|string',
-            'role' => 'required|string',
-            'photo' => 'nullable|image|max:2048',
-        ]);
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'username' => 'required|string|max:255|unique:profs',
+        'email' => ['required', 'email', 'max:255', 'unique:profs', 'regex:/^[a-zA-Z0-9._%+-]+@emsi-uca\.ma$/'],
+        'genre' => 'required|string|in:Homme,Femme',
+        'type' => 'required|string',
+        'skills' => 'nullable|string',
+        'role' => 'required|string',
+        'photo' => 'nullable|image|max:2048',
+    ]);
 
-        // Upload de la photo
-        $photoPath = null;
-        if ($request->hasFile('photo')) {
-            $photo = $request->file('photo');
-            $photoName = time() . '.' . $photo->getClientOriginalExtension();
-            $photo->move(public_path('documents/photos'), $photoName);
-            $photoPath = 'documents/photos/' . $photoName;
-        }
-
-        Prof::create([
-            'name' => $request->name,
-            'last_name' => $request->last_name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'genre' => $request->genre,
-            'type' => $request->type,
-            'skills' => $request->skills,
-            'role' => $request->role,
-            'photo' => $photoPath,
-        ]);
-
-        return redirect()->route('admin.professeur.read')->with('success', 'Professeur ajouté avec succès.');
+    // Upload de la photo
+    $photoPath = null;
+    if ($request->hasFile('photo')) {
+        $photo = $request->file('photo');
+        $photoName = time() . '.' . $photo->getClientOriginalExtension();
+        $photo->move(public_path('documents/photos'), $photoName);
+        $photoPath = 'documents/photos/' . $photoName;
     }
+
+    // Génération d'un mot de passe aléatoire
+    $generatedPassword = $request->input('name') . $request->input('last_name') . Str::random(4);
+    $hashedPassword = Hash::make($generatedPassword);
+
+    // Création du professeur
+    $prof = Prof::create([
+        'name' => $request->name,
+        'last_name' => $request->last_name,
+        'username' => $request->username,
+        'email' => $request->email,
+        'password' => $hashedPassword,
+        'genre' => $request->genre,
+        'type' => $request->type,
+        'skills' => $request->skills,
+        'role' => $request->role,
+        'photo' => $photoPath,
+    ]);
+
+    // Envoi de l'email avec le mot de passe
+    $emailData = [
+        'name' => $prof->name,
+        'email' => $prof->email,
+        'password' => $generatedPassword,
+    ];
+
+    Mail::send('emails.password_generation', $emailData, function ($message) use ($prof) {
+        $message->to($prof->email)
+                ->subject('Votre mot de passe pour accéder à la plateforme');
+    });
+
+    return redirect()->route('admin.professeur.read')->with('success', 'Professeur ajouté avec succès. Le mot de passe a été envoyé à son email.');
+}
+
 
 /*
 

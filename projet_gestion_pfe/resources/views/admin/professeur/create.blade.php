@@ -109,19 +109,7 @@
                     {{ $errors->first('email') }}
                 </div>
             @endif
-            <div class="mb-3">
-                <label for="password" class="form-label">Mot de passe</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            @if ($errors->has('password'))
-                <div class="alert alert-danger">
-                    {{ $errors->first('password') }}
-                </div>
-            @endif
-            <div class="mb-3">
-                <label for="password_confirmation" class="form-label">Confirmer le mot de passe</label>
-                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
-            </div>
+            
             <div class="mb-3">
                 <label for="genre" class="form-label">Genre</label>
                 <select class="form-control" id="genre" name="genre" required>

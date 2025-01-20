@@ -103,17 +103,7 @@
                     {{ $errors->first('email') }}
                 </div>
             @endif
-            <div class="mb-3">
-                <label for="password" class="form-label">Mot de passe</label>
-                <input type="password" class="form-control" id="password" name="password">
-                <small>Si vous ne voulez pas modifier le mot de passe, laissez ce champ vide.</small>
-            </div>
-            @if ($errors->has('password'))
-                <div class="alert alert-danger">
-                    {{ $errors->first('password') }}
-                </div>
-            @endif
-
+            
             <div class="mb-3">
                 <label for="genre">Genre</label>
                 <select name="genre" class="form-control" required>
