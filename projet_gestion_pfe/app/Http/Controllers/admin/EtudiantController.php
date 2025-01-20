@@ -46,7 +46,7 @@ public function store(Request $request)
         'name' => 'required|string|max:255',
         'last_name' => 'required|string|max:255',
         'username' => 'required|string|max:255|unique:etudiants',
-        'email' => ['required', 'email', 'max:255', 'unique:etudiants', 'regex:/^[a-zA-Z0-9._%+-]+@emsi-uca\.ma$/'],
+        'email' => ['required', 'email', 'max:255', 'unique:etudiants', 'regex:/^[a-zA-Z0-9._%+-]+@emsi-edu\.ma$/'],
         'dateN' => 'required|date',
         'CNE' => 'required|string|max:255|unique:etudiants',
         'Cin' => 'required|string|max:255|unique:etudiants',
@@ -56,7 +56,7 @@ public function store(Request $request)
         'photo' => 'required|image|max:2048',
         'filiere_id' => 'required|exists:filieres,id',
     ], [
-        'email.regex' => 'L\'email doit se terminer par @emsi-uca.ma.',
+        'email.regex' => 'L\'email doit se terminer par @emsi-edu.ma.',
     ]);
 
     // Upload de la photo
@@ -155,7 +155,7 @@ public function store(Request $request)
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:etudiants,username,' . $id,
-            'email' => ['required', 'email', 'max:255', 'unique:etudiants,email,' . $id, 'regex:/^[a-zA-Z0-9._%+-]+@emsi-uca\.ma$/'],  // Email avec l'extension @emsi-uca.ma
+            'email' => ['required', 'email', 'max:255', 'unique:etudiants,email,' . $id, 'regex:/^[a-zA-Z0-9._%+-]+@emsi-edu\.ma$/'],  
             'dateN' => 'required|date',
             'CNE' => 'required|string|max:255',
             'Cin' => 'required|string|max:255',
@@ -167,7 +167,7 @@ public function store(Request $request)
             'photo' => 'nullable|image|max:2048',
             'password' => 'nullable|string|min:8', // Le mot de passe est optionnel
         ], [
-            'email.regex' => 'L\'email doit se terminer par @emsi-uca.ma.',
+            'email.regex' => 'L\'email doit se terminer par @emsi-edu.ma.',
             'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
         ]);
 
