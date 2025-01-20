@@ -27,8 +27,8 @@ class LoginController extends Controller
         $data = $request->all();
         $remember = $request->remember ?? false;
         $fieldType = filter_var($data['email'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-        if ($fieldType === 'email' && !preg_match('/@emsi-uca\.ma$/', $data['email'])) {
-            return back()->withErrors(['login' => 'L\'email doit appartenir au domaine @emsi-uca.ma'])->withInput();
+        if ($fieldType === 'email' && !preg_match('/@emsi-edu\.ma$/', $data['email'])) {
+            return back()->withErrors(['login' => 'L\'email doit appartenir au domaine @emsi-edu.ma'])->withInput();
         }
         // Choisir le guard selon le type d'utilisateur
         $guard = match ($data['users']) {
