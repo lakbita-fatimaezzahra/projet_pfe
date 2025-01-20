@@ -46,7 +46,7 @@ public function store(Request $request)
         'name' => 'required|string|max:255',
         'last_name' => 'required|string|max:255',
         'username' => 'required|string|max:255|unique:etudiants',
-        'email' => ['required', 'email', 'max:255', 'unique:etudiants', 'regex:/^[a-zA-Z0-9._%+-]+@emsi-uca\.ma$/'],
+        'email' => ['required', 'email', 'max:255', 'unique:etudiants', 'regex:/^[a-zA-Z0-9._%+-]+@emsi-edu\.ma$/'],
         'dateN' => 'required|date',
         'CNE' => 'required|string|max:255|unique:etudiants',
         'Cin' => 'required|string|max:255|unique:etudiants',
@@ -57,7 +57,7 @@ public function store(Request $request)
         'departement_id' => 'required|exists:departements,id',
         'filiere_id' => 'required|exists:filieres,id',
     ], [
-        'email.regex' => 'L\'email doit se terminer par @emsi-uca.ma.',
+        'email.regex' => 'L\'email doit se terminer par @emsi-edu.ma.',
     ]);
 
     // Upload de la photo
@@ -114,27 +114,64 @@ public function store(Request $request)
 
     public function import(Request $request)
     {
+        // Validation du fichier uploadé
         $request->validate([
             'file' => 'required|mimes:csv,txt',
         ]);
 
+        // Récupération du fichier
         $file = $request->file('file');
+
+        // Création d'une instance de l'importation
         $import = new EtudiantsImport();
 
-        // Importation du fichier CSV
-        Excel::import($import, $file->getRealPath(), null, \Maatwebsite\Excel\Excel::CSV, ['delimiter' => ';']);
+        try {
+            // Importation du fichier CSV
+            \Maatwebsite\Excel\Facades\Excel::import($import, $file->getRealPath(), null, \Maatwebsite\Excel\Excel::CSV, [
+                'delimiter' => ';', // Délimiteur du fichier CSV
+            ]);
 
-        // Récupérer les erreurs
-        $errors = $import->getErrors();
+            // Récupérer les erreurs après l'importation
+            $errors = $import->getErrors();
 
-        // Vérifier s'il y a des erreurs
-        if (!empty($errors)) {
-            // Retourner les erreurs sous forme de message
-            return back()->with('error', $errors);
+            // Si des erreurs existent, retourner avec un message d'erreur
+            if (!empty($errors)) {
+                return back()->with('error', $errors);
+            }
+
+            // Récupérer les étudiants importés (vous pouvez stocker les emails dans la classe EtudiantsImport)
+            $importedEmails = $import->getImportedEmails(); // Assurez-vous que cette méthode existe dans EtudiantsImport
+
+            // Récupérer les étudiants importés en fonction des emails
+            $etudiants = Etudiant::whereIn('email', $importedEmails)->get();
+
+            // Envoyer un email à chaque étudiant
+            foreach ($etudiants as $etudiant) {
+                try {
+                    $emailData = [
+                        'name' => $etudiant->name,
+                        'email' => $etudiant->email,
+                        'password' => 'Mot de passe envoyé lors de l\'import', // Utilisez le mot de passe généré ou stocké
+                    ];
+
+                    \Illuminate\Support\Facades\Mail::send('emails.password_generation', $emailData, function ($message) use ($etudiant) {
+                        $message->to($etudiant->email)
+                                ->subject('Votre mot de passe pour accéder à la plateforme');
+                    });
+                } catch (\Exception $e) {
+                    // Gérer les erreurs d'envoi d'email
+                    \Log::error("Erreur lors de l'envoi de l'email à {$etudiant->email}: " . $e->getMessage());
+                }
+            }
+
+            return back()->with('success', 'Les données ont été importées avec succès et les emails ont été envoyés.');
+
+        } catch (\Exception $e) {
+            // Gestion des erreurs générales
+            return back()->with('error', 'Une erreur est survenue lors de l\'importation : ' . $e->getMessage());
         }
-
-        return back()->with('success', 'Les données ont été importées avec succès.');
     }
+
 
 
         public function edit($id)
@@ -156,7 +193,7 @@ public function store(Request $request)
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:etudiants,username,' . $id,
-            'email' => ['required', 'email', 'max:255', 'unique:etudiants,email,' . $id, 'regex:/^[a-zA-Z0-9._%+-]+@emsi-uca\.ma$/'],  // Email avec l'extension @emsi-uca.ma
+            'email' => ['required', 'email', 'max:255', 'unique:etudiants,email,' . $id, 'regex:/^[a-zA-Z0-9._%+-]+@emsi-edu\.ma$/'],
             'dateN' => 'required|date',
             'CNE' => 'required|string|max:255',
             'Cin' => 'required|string|max:255',
@@ -168,7 +205,7 @@ public function store(Request $request)
             'photo' => 'nullable|image|max:2048',
             'password' => 'nullable|string|min:8', // Le mot de passe est optionnel
         ], [
-            'email.regex' => 'L\'email doit se terminer par @emsi-uca.ma.',
+            'email.regex' => 'L\'email doit se terminer par @emsi-edu.ma.',
             'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
         ]);
 

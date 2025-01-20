@@ -101,6 +101,14 @@
         font-size: 16px;
         height: 350px !important;
     }
+    .form-container input[type="text"] {
+            margin-top: 5px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 300px;
+        }
     </style>
 
 <body>
@@ -123,11 +131,13 @@
             <div>
                 <div class="form-container">
                     <label for="deadline-stage">Deadline - Dépôt de Stage :</label>
+                    <br>
                     <input type="text" id="deadline-stage" name="deadline_stage" class="text-danger" value="{{ $deadline->date_deadline_stage }}" disabled>
-                    <span id="expired-stage" class="expired-message">Délai expiré</span>
+                    {{-- <span id="expired-stage" class="expired-message text-danger">Délai expiré</span> --}}
+                    <br>
                     <label for="deadline-rapport">Deadline - Dépôt de Rapport :</label>
                     <input type="text" id="deadline-rapport" name="deadline_rapport" class="text-danger" value="{{ $deadline->date_deadline_rapport }}" disabled>
-                    <span id="expired-rapport" class="expired-message">Délai expiré</span>
+                    {{-- <span id="expired-rapport" class="expired-message text-danger">Délai expiré</span> --}}
                 </div>
 
                 <h1>Salut, {{ $etudiant->last_name ." ".$etudiant->name }}!</h1>
@@ -221,5 +231,6 @@
             }
         });
     </script>
+
 </body>
 @endsection

@@ -121,7 +121,7 @@
                 {{ $errors->first('email') }}
             </div>
         @endif
-        
+
         <div class="mb-3">
             <label for="dateN" class="form-label">Date de naissance</label>
             <input type="date" class="form-control" id="dateN" name="dateN" required>

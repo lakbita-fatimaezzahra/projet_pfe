@@ -47,7 +47,7 @@ class LoginController extends Controller
             if ($guard === 'etudiant') {
 
                 // Récupérer les données complètes de l'étudiant
-                $etudiant = \App\Models\Etudiant::with(['groupe', 'filieres','departement.filieres'])
+                $etudiant = \App\Models\Etudiant::with(['groupe', 'departement','departement.filieres'])
                 ->where('id', $user->id)
                 ->first();
 

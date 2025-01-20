@@ -20,6 +20,7 @@ class Etudiant extends Authenticatable
         'username',
         'groupe_id',
         'matricule',
+        'departement_id',
         'filiere_id',
         'photo',
 
