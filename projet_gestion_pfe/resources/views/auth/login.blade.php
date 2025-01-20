@@ -18,7 +18,7 @@
         <div class="w-full md:w-1/2 flex items-center justify-center bg-white">
             <div class="w-full max-w-md px-6">
                 <div class="text-center mb-6">
-                    <img src="{{ asset('images/PFElogo.svg') }}" alt="Logo" class="w-40 mx-auto mb-4">
+                    <img src="{{ asset('images/emsilogo.png') }}" alt="Logo" class="w-60 mx-auto mb-4">
                     <h2 class="text-2xl font-semibold text-gray-700">Nice to see you again</h2>
                 </div>
                 <form action="{{ route('login') }}" method="POST" class="space-y-4">
@@ -56,7 +56,7 @@
                         <a href="{{ route('password.request') }}" class="text-sm text-blue-500 hover:underline">Forgot password?</a>
                     </div>
                     <button type="submit"
-                            class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-red-600 transition">
+                            class="w-full bg-green-500 text-white py-2 rounded-md hover:bg-red-600 transition">
                         Sign in
                     </button>
                 </form>
