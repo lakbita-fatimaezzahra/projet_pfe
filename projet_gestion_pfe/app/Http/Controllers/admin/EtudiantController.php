@@ -82,7 +82,7 @@ public function store(Request $request)
     $emailData = [
         'name' => $etudiant->name,
         'email' => $etudiant->email,
-        'password' => $generatedPassword,
+        'password' => $etudiant->generatedPassword,
     ];
 
     Mail::send('emails.password_generation', $emailData, function ($message) use ($etudiant) {
@@ -139,10 +139,9 @@ public function store(Request $request)
                 return back()->with('error', $errors);
             }
 
-            // Récupérer les étudiants importés (vous pouvez stocker les emails dans la classe EtudiantsImport)
-            $importedEmails = $import->getImportedEmails(); // Assurez-vous que cette méthode existe dans EtudiantsImport
+            // Récupérer les étudiants importés
+            $importedEmails = $import->getImportedEmails();
 
-            // Récupérer les étudiants importés en fonction des emails
             $etudiants = Etudiant::whereIn('email', $importedEmails)->get();
 
             // Envoyer un email à chaque étudiant
@@ -151,7 +150,7 @@ public function store(Request $request)
                     $emailData = [
                         'name' => $etudiant->name,
                         'email' => $etudiant->email,
-                        'password' => 'Mot de passe envoyé lors de l\'import', // Utilisez le mot de passe généré ou stocké
+                        'password' => $etudiant->generatedPassword,
                     ];
 
                     \Illuminate\Support\Facades\Mail::send('emails.password_generation', $emailData, function ($message) use ($etudiant) {

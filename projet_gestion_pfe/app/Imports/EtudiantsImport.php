@@ -14,7 +14,7 @@ class EtudiantsImport implements ToModel, WithHeadingRow
 {
     use Importable;
 
-    private $errors = '';
+    private $errors = [];
     private $importedEmails = [];
 
     /**
@@ -27,13 +27,14 @@ class EtudiantsImport implements ToModel, WithHeadingRow
         $existingProf = Etudiant::where('email', $row['email'])->orWhere('username', $row['username'])->first();
 
         if ($existingProf) {
-            $this->errors .= "L'email '{$row['email']}' ou le nom d'utilisateur '{$row['username']}' existe déjà. ";
+            $this->errors[] = "L'email '{$row['email']}' ou le nom d'utilisateur '{$row['username']}' existe déjà.";
             return null;
         }
 
         try {
             $dateN = Carbon::createFromFormat('m/d/Y', $row['daten'])->format('Y-m-d');
         } catch (\Exception $e) {
+            $this->errors[] = "Date de naissance invalide pour l'email '{$row['email']}'";
             $dateN = null;
         }
 
@@ -79,7 +80,7 @@ class EtudiantsImport implements ToModel, WithHeadingRow
 
     public function getErrors()
     {
-        return $this->errors;
+        return implode("\n", $this->errors);
     }
 
     public function getImportedEmails()
