@@ -60,22 +60,10 @@ class ProfesseurController extends Controller
     // Génération d'un mot de passe aléatoire
     $generatedPassword = $request->input('name') . $request->input('last_name') . Str::random(4);
     $hashedPassword = Hash::make($generatedPassword);
-
-    // Création du professeur
-    $prof = Prof::create([
-        'name' => $request->name,
-        'last_name' => $request->last_name,
-        'username' => $request->username,
-        'email' => $request->email,
+    $prof = Prof::create(array_merge($validated, [
         'password' => $hashedPassword,
-        'genre' => $request->genre,
-        'type' => $request->type,
-        'skills' => $request->skills,
-        'role' => $request->role,
-        'photo' => $photoPath,
-    ]);
-
-    // Envoi de l'email avec le mot de passe
+        'photo' =>  $photoPath ,
+    ]));
     $emailData = [
         'name' => $prof->name,
         'email' => $prof->email,
@@ -86,6 +74,11 @@ class ProfesseurController extends Controller
         $message->to($prof->email)
                 ->subject('Votre mot de passe pour accéder à la plateforme');
     });
+    // Création du professeur
+
+
+    // Envoi de l'email avec le mot de passe
+
 
     return redirect()->route('admin.professeur.read')->with('success', 'Professeur ajouté avec succès. Le mot de passe a été envoyé à son email.');
 }
@@ -103,21 +96,29 @@ class ProfesseurController extends Controller
     $import = new ProfsImport();
 
     // Importation du fichier CSV
-    Excel::import($import, $file->getRealPath(), null, \Maatwebsite\Excel\Excel::CSV, ['delimiter' => ';']);
+    try {
+        // Importation du fichier CSV
+        \Maatwebsite\Excel\Facades\Excel::import($import, $file->getRealPath(), null, \Maatwebsite\Excel\Excel::CSV, [
+            'delimiter' => ';', // Délimiteur du fichier CSV
+        ]);
 
-    // Récupérer les erreurs
-    $errors = $import->getErrors();
+        // Récupérer les erreurs après l'importation
+        $errors = $import->getErrors();
 
-    // Vérifier s'il y a des erreurs
-    if (!empty($errors)) {
-        // Retourner les erreurs sous forme de message
-        return back()->with('error', $errors);
+        // Si des erreurs existent, retourner avec un message d'erreur
+        if (!empty($errors)) {
+            return back()->with('error', $errors);
+        }
+
+
+        return back()->with('success', 'Les données ont été importées avec succès et les emails ont été envoyés.');
+
+    } catch (\Exception $e) {
+        // Gestion des erreurs générales
+        return back()->with('error', 'Une erreur est survenue lors de l\'importation : ' . $e->getMessage());
     }
 
-    return back()->with('success', 'Les données ont été importées avec succès.');
 }
-
-
 
     public function edit($id)
     {

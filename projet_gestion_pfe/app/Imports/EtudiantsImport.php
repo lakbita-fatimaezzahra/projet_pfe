@@ -62,7 +62,7 @@ class EtudiantsImport implements ToModel, WithHeadingRow
             'departement_id' => $this->getDepartementId($row['departement']),
         ]);
 
-        $this->importedEmails[] = $row['email'];
+
 
         $emailData = [
             'name' => $etudiant->name,
@@ -83,10 +83,7 @@ class EtudiantsImport implements ToModel, WithHeadingRow
         return implode("\n", $this->errors);
     }
 
-    public function getImportedEmails()
-    {
-        return $this->importedEmails;
-    }
+
 
     private function getDepartementId($departementName)
     {

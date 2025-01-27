@@ -82,7 +82,7 @@ public function store(Request $request)
     $emailData = [
         'name' => $etudiant->name,
         'email' => $etudiant->email,
-        'password' => $etudiant->generatedPassword,
+        'password' => $generatedPassword,
     ];
 
     Mail::send('emails.password_generation', $emailData, function ($message) use ($etudiant) {
@@ -137,30 +137,6 @@ public function store(Request $request)
             // Si des erreurs existent, retourner avec un message d'erreur
             if (!empty($errors)) {
                 return back()->with('error', $errors);
-            }
-
-            // Récupérer les étudiants importés
-            $importedEmails = $import->getImportedEmails();
-
-            $etudiants = Etudiant::whereIn('email', $importedEmails)->get();
-
-            // Envoyer un email à chaque étudiant
-            foreach ($etudiants as $etudiant) {
-                try {
-                    $emailData = [
-                        'name' => $etudiant->name,
-                        'email' => $etudiant->email,
-                        'password' => $etudiant->generatedPassword,
-                    ];
-
-                    \Illuminate\Support\Facades\Mail::send('emails.password_generation', $emailData, function ($message) use ($etudiant) {
-                        $message->to($etudiant->email)
-                                ->subject('Votre mot de passe pour accéder à la plateforme');
-                    });
-                } catch (\Exception $e) {
-                    // Gérer les erreurs d'envoi d'email
-                    \Log::error("Erreur lors de l'envoi de l'email à {$etudiant->email}: " . $e->getMessage());
-                }
             }
 
             return back()->with('success', 'Les données ont été importées avec succès et les emails ont été envoyés.');
